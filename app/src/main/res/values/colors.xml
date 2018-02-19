@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Color-->
+    <color name="Seek_Background">#F3F3F3</color>
+    <color name="Seek_On">#F3BB24</color>
+    <color name="Seek_Off">#E8E8E8</color>
+    <color name="Top_Tab_Background">#46657D</color>
+    <color name="Top_Tab_indicator">#FFFFFF</color>
+
+    <!-- Item Color-->
+    <color name="item_alarm_time">#333333</color>
+    <color name="item_alarm_timeinfo">#999999</color>
+    <color name="item_alarm_address">#666666</color>
+    <color name="item_alarm_days">#666666</color>
+    <color name="item_alarm_memo">#666666</color>
+
+    <color name="item_array_view_text_first">#ffffff</color>
+    <color name="item_array_view_text_second">#8273ae</color>
+
+    <color name="item_search_address_text">#333333</color>
+
+    <!-- Activity Color-->
+    <color name="activity_search_address_TV_title">#333333</color>
+    <color name="activity_search_address_ET_searchbar">#333333</color>
+    <color name="activity_search_address_ET_searchbar_hint">#dddddd</color>
+
+    <color name="activity_add_alarm_TV_title">#666666</color>
+    <color name="activity_add_alarm_TV_attr">#666666</color>
+    <color name="activity_add_alarm_TV_address_form_hint">#dddddd</color>
+    <color name="activity_add_alarm_TV_address_form">#333333</color>
+    <color name="activity_add_alarm_ET_alarm_name_hint">#999999</color>
+
+    <!-- Fragment Color-->
+    <color name="fragment_home_TV_weather_info">#ffffff</color>
+
+    <!-- Line Color-->
+    <color name="item_search_address_line">#dddddd</color>
+
+</resources>

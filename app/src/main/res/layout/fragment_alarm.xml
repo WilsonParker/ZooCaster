@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.graction.developer.zoocaster.Fragment.AlarmFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layer_4"
+        android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+        <View
+            style="@style/Style_MarginView"
+            android:layout_weight="26" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="308"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/fragment_alarm_LL1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/Style_MarginView"
+                    android:layout_weight="84" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/fragment_alarm_RV"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="346.7"
+                    app:layoutManager="LinearLayoutManager" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="183.3">
+
+                    <ImageView
+                        android:layout_width="@dimen/fragment_alarm_bottom_add_button_width"
+                        android:layout_height="@dimen/fragment_alarm_bottom_add_button_height"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:onClick="@{activity::addAlarm}"
+                        app:srcCompat="@drawable/bottom_plus" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_alarm_LL2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <View
+            style="@style/Style_MarginView"
+            android:layout_weight="26" />
+    </LinearLayout>
+</layout>

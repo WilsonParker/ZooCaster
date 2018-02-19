@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.graction.developer.zoocaster.Fragment.TestFragment" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dust">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.graction.developer.zoocaster.UI.Layout.HareCircleProgressView
+                android:id="@+id/donut_progress"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="100dp"
+                app:donut_animate_time="2000"
+                app:donut_background_color="#00efeded"
+                app:donut_circle_starting_degree="-90"
+                app:donut_finished_color="#ead77a7a"
+                app:donut_finished_stroke_width="5dp"
+                app:donut_inner_bottom_text="h2"
+                app:donut_max="100"
+                app:donut_progress="50"
+                app:donut_show_text="true"
+                app:donut_unfinished_stroke_width="3dp" />
+
+            <Button
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:text="animate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="Hour" />
+
+                <EditText
+                    android:id="@+id/fragment_test_ET_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="Minute" />
+
+                <EditText
+                    android:id="@+id/fragment_test_ET_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="Second" />
+
+                <EditText
+                    android:id="@+id/fragment_test_ET_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{activity::alarmTest}"
+                android:text="Alarm" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

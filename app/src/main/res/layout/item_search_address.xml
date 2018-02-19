@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.graction.developer.zoocaster.Model.Address.AddressModel.Prediction" />
+
+        <variable
+            name="viewHolder"
+            type="com.graction.developer.zoocaster.Adapter.AddressListAdapter.ViewHolder" />
+
+        <variable
+            name="isLast"
+            type="java.lang.Boolean" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/item_search_address_root"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_search_address_root_height"
+        android:onClick='@{(view) -> viewHolder.onClick(item)}'
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/item_search_address_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="45"
+            android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="16.7" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="343.3"
+                android:gravity="center_vertical"
+                android:text='@{item.description}'
+                android:textColor="@color/item_search_address_text"
+                android:lines="1"
+                android:textSize="@dimen/item_search_address_text_font_size"
+                tool:text="경기도 안양시 만안구 안양동 1-6" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/item_search_address_line"
+            android:visibility="@{isLast ? View.VISIBLE : View.GONE}" />
+    </LinearLayout>
+</layout>

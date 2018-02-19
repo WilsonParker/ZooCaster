@@ -1,0 +1,50 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <!--
+        Fragment
+    -->
+    <!-- fragment_alarm -->
+    <dimen name="fragment_alarm_bottom_add_button_width">74dp</dimen>
+    <dimen name="fragment_alarm_bottom_add_button_height">74dp</dimen>
+
+    <dimen name="fragment_home_TV_weather_info_1">13.9sp</dimen>
+    <dimen name="fragment_home_TV_weather_delim">14.8sp</dimen>
+    <dimen name="fragment_home_TV_weather_current_temp">65.4sp</dimen>
+    <dimen name="fragment_home_TV_message">18sp</dimen>
+    <dimen name="fragment_home_TV_weather_info_2">14sp</dimen>
+
+    <!--
+        Activity
+    -->
+    <dimen name="activity_search_address_TV_title_font_size">17sp</dimen>
+    <dimen name="activity_search_address_ET_searchbar_hint_size">14sp</dimen>
+
+    <dimen name="activity_add_alarm_TV_title_font_size">16sp</dimen>
+    <dimen name="activity_add_alarm_TV_attr_font_size">14sp</dimen>
+    <dimen name="activity_add_alarm_TV_address_form_hint_size">14sp</dimen>
+    <dimen name="activity_add_alarm_ET_alarm_name_hint_size">12sp</dimen>
+
+    <!--
+        ItemViewItem
+    -->
+    <!-- item_alarm -->
+    <dimen name="item_alarm_root_width">308dp</dimen>
+    <dimen name="item_alarm_root_height">172.6px</dimen> <!-- Scalable -->
+
+    <dimen name="item_alarm_address_font_size">15sp</dimen>
+    <dimen name="item_alarm_timeinfo_font_size">12sp</dimen>
+    <dimen name="item_alarm_time_font_size">25sp</dimen>
+    <dimen name="item_alarm_days_font_size">13sp</dimen>
+    <dimen name="item_alarm_memo_font_size">13sp</dimen>
+
+    <!--<dimen name="item_search_address_root_height">46px</dimen> &lt;!&ndash; Scalable &ndash;&gt;-->
+    <dimen name="item_search_address_root_height">72px</dimen> <!-- Scalable -->
+    <dimen name="item_search_address_text_font_size">14sp</dimen>
+
+
+
+</resources>

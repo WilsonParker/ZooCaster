@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ap="http://schmas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.graction.developer.zoocaster.Fragment.Test2Fragment" />
+
+    </data>
+
+    <!--<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/weekly">
+
+    </FrameLayout>-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c9bbbb">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="100dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10">
+
+                <Button
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:onClick="@{(view)->activity.reLoad()}"
+                    android:text="reload" />
+                <!--<com.androidplot.xy.XYPlot
+                    android:id="@+id/xyplot"
+                    style="@style/Custom_APDefacto2.Dark2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_weight="9"
+                    ap:lineLabesRotationBottom="-45" />-->
+
+                <HorizontalScrollView
+                    android:id="@+id/hc"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.androidplot.xy.XYPlot
+                            android:id="@+id/xyplot"
+                            style="@style/Custom_APDefacto.Dark"
+                            android:layout_width="1200dp"
+                            android:layout_height="250dp"
+                            ap:lineLabesRotationBottom="-45" />
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+                <!--<com.graction.developer.zoocaster.UI.Layout.CustomXYPlot-->
+                <com.androidplot.xy.XYPlot
+                    android:id="@+id/xyplot2"
+                    style="@style/Custom_APDefacto.Dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:layout_below="@+id/hc"
+                    ap:graphWidget.marginTop="20dp"
+                    ap:lineLabesRotationBottom="-45"
+                    ap:marginBottom="20dp"
+                    ap:marginLeft="10dp"
+                    ap:marginRight="10dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+</layout>

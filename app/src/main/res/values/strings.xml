@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">ZooCaster</string>
+    <string name="title_home">Current</string>
+    <string name="title_dashboard">Daily</string>
+    <string name="title_alarm">Alarm</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Receive-->
+
+    <!-- Value-->
+    <string name="DEVICE_STANDARD_WIDTH">360</string>
+    <string name="DEVICE_STANDARD_HEIGHT">640</string>
+    <string name="DEVICE_FULL_HEIGHT">614</string>
+    <string name="FRAGMENT_STANDARD_HEIGHT">530</string>
+
+    <!-- Activity -->
+    <string name="activity_search_address_TV_title">지역설정</string>
+    <string name="activity_search_address_ET_searchbar_hint">도로명 또는 동 이름으로 검색해주세요</string>
+    <string name="activity_add_alarm_TV_title">알람설정</string>
+    <string name="activity_add_alarm_TV_address">지역설정</string>
+    <string name="activity_add_alarm_TV_address_form_hint">search</string>
+    <string name="activity_add_alarm_TV_time">알람시간</string>
+    <string name="activity_add_alarm_TV_day">요일반복</string>
+    <string name="activity_add_alarm_TV_alarm">알람</string>
+    <string name="activity_add_alarm_TV_alarm_name">알람이름</string>
+    <string name="activity_add_alarm_ET_alarm_name_hint">설정안함</string>
+
+    <!-- Fragment -->
+    <string name="fragment_home_TV_info2_1">강수확률</string>
+    <string name="fragment_home_TV_info2_2">강수량</string>
+    <string name="fragment_home_TV_info2_3">미세먼지</string>
+
+</resources>

@@ -1,0 +1,208 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- <declare-styleable name="DonutProgress">
+         <attr name="donut_progress" format="integer"/>
+         <attr name="donut_max" format="integer"/>
+         <attr name="donut_unfinished_color" format="color"/>
+         <attr name="donut_finished_color" format="color"/>
+         <attr name="donut_finished_stroke_width" format="dimension"/>
+         <attr name="donut_unfinished_stroke_width" format="dimension"/>
+         <attr name="donut_text_size" format="dimension"/>
+         <attr name="donut_text_color" format="color"/>
+         <attr name="donut_text" format="string"/>
+         <attr name="donut_prefix_text" format="string"/>
+         <attr name="donut_suffix_text" format="string"/>
+         <attr name="donut_background_color" format="color"/>
+     </declare-styleable>-->
+
+    <!--
+        Style
+    -->
+    <style name="Style_TextView_wh" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Style_TextView_ei" parent="@android:style/Widget.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Style_TextView_es" parent="@android:style/Widget.TextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Style_TextView_wh_es" parent="Style_TextView_wh">
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Style_MarginView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="Style_AddActivityAlarm_SeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:minHeight">10dp</item>
+        <item name="android:maxHeight">10dp</item>
+        <item name="android:max">10</item>
+        <item name="android:progress">5</item>
+    </style>
+
+    <!-- Activity -->
+    <style name="AddActivityAlarm_BT_save" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/save_btn_b_5_b_5_b_5</item>
+        <item name="android:text">저장</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AddActivityAlarm_BT_cancel" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/cancel_btn</item>
+        <item name="android:text">취소</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#b5b5b5</item>
+    </style>
+
+    <style name="AddActivityAlarm_BT_modify" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/save_btn_b_5_b_5_b_5</item>
+        <item name="android:text">수정</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <!-- AndroidPlot -->
+
+    <style name="Custom_APDefacto">
+        <item name="titleTextSize">20sp</item>
+        <item name="rangeTitleTextSize">13sp</item>
+        <item name="domainTitleTextSize">13sp</item>
+        <item name="graphMarginTop">20dp</item>
+        <item name="graphMarginBottom">40dp</item>
+        <item name="graphMarginLeft">15dp</item>
+        <item name="graphMarginRight">10dp</item>
+        <item name="domainLineThickness">1dp</item>
+        <item name="rangeLineThickness">1dp</item>
+        <item name="domainOriginLineThickness">2dp</item>
+        <item name="rangeOriginLineThickness">2dp</item>
+        <item name="legendTextSize">15sp</item>
+        <item name="legendIconHeight">15dp</item>
+        <item name="legendIconWidth">15dp</item>
+        <item name="legendHeight">25dp</item>
+        <item name="legendAnchor">right_bottom</item>
+        <item name="borderColor">@color/ap_transparent</item>
+        <item name="gridInsetTop">1dp</item>
+        <item name="gridInsetBottom">20dp</item>
+        <item name="gridInsetLeft">25dp</item>
+        <item name="gridInsetRight">1dp</item>
+        <item name="lineLabels">left|bottom</item>
+        <item name="lineLabelInsetTop">1dp</item>
+        <item name="lineLabelInsetBottom">10dp</item>
+        <item name="lineLabelInsetLeft">20dp</item>
+        <item name="lineLabelInsetRight">1dp</item>
+        <item name="lineLabelTextSizeTop">15sp</item>
+        <item name="lineLabelTextSizeBottom">15sp</item>
+        <item name="lineLabelTextSizeLeft">15sp</item>
+        <item name="lineLabelTextSizeRight">15sp</item>
+        <item name="lineLabelAlignLeft">right</item>
+        <item name="lineLabelAlignRight">left</item>
+        <item name="lineLabelAlignTop">left</item>
+        <item name="lineLabelAlignBottom">right</item>
+        <item name="lineLabelRotationBottom">-45</item>
+        <item name="lineLabelRotationTop">-45</item>
+        <item name="lineExtensionLeft">3dp</item>
+        <item name="lineExtensionBottom">3dp</item>
+    </style>
+
+    <style name="Custom_APDefacto.Dark">
+        <item name="android:background">@color/ap_black</item>
+        <item name="backgroundColor">@color/ap_black</item>
+        <item name="graphBackgroundColor">@color/ap_black</item>
+        <item name="gridBackgroundColor">@color/ap_charcoal</item>
+        <item name="domainLineColor">@color/off_white</item>
+        <item name="rangeLineColor">@color/off_white</item>
+        <item name="domainOriginLineColor">@color/off_white</item>
+        <item name="rangeOriginLineColor">@color/off_white</item>
+        <item name="lineLabelTextColorTop">@color/off_white</item>
+        <item name="lineLabelTextColorBottom">@color/off_white</item>
+        <item name="lineLabelTextColorLeft">@color/off_white</item>
+        <item name="lineLabelTextColorRight">@color/off_white</item>
+        <item name="titleTextColor">@color/ap_white</item>
+        <item name="domainTitleTextColor">@color/ap_white</item>
+        <item name="rangeTitleTextColor">@color/ap_white</item>
+        <item name="legendTextColor">@color/ap_white</item>
+    </style>
+
+    <style name="Custom_APDefacto2">
+        <item name="titleTextSize">0sp</item>
+        <item name="rangeTitleTextSize">0sp</item>
+        <item name="domainTitleTextSize">0sp</item>
+        <item name="graphMarginTop">15dp</item>
+        <item name="graphMarginBottom">15dp</item>
+        <item name="graphMarginLeft">15dp</item>
+        <item name="graphMarginRight">15dp</item>
+        <item name="domainLineThickness">0dp</item>
+        <item name="rangeLineThickness">0dp</item>
+        <item name="domainOriginLineThickness">0dp</item>
+        <item name="rangeOriginLineThickness">0dp</item>
+        <item name="legendTextSize">0sp</item>
+        <item name="legendIconHeight">0dp</item>
+        <item name="legendIconWidth">0dp</item>
+        <item name="legendHeight">0dp</item>
+        <item name="legendAnchor">right_bottom</item>
+        <item name="borderColor">@color/ap_transparent</item>
+        <item name="gridInsetTop">15dp</item>
+        <item name="gridInsetBottom">15dp</item>
+        <item name="gridInsetLeft">15dp</item>
+        <item name="gridInsetRight">15dp</item>
+        <item name="lineLabels">left|bottom</item>
+        <item name="lineLabelInsetTop">0dp</item>
+        <item name="lineLabelInsetBottom">0dp</item>
+        <item name="lineLabelInsetLeft">0dp</item>
+        <item name="lineLabelInsetRight">0dp</item>
+        <item name="lineLabelTextSizeTop">0sp</item>
+        <item name="lineLabelTextSizeBottom">0sp</item>
+        <item name="lineLabelTextSizeLeft">0sp</item>
+        <item name="lineLabelTextSizeRight">0sp</item>
+        <item name="lineLabelAlignLeft">right</item>
+        <item name="lineLabelAlignRight">left</item>
+        <item name="lineLabelAlignTop">left</item>
+        <item name="lineLabelAlignBottom">right</item>
+        <item name="lineLabelRotationBottom">-45</item>
+        <item name="lineLabelRotationTop">-45</item>
+        <item name="lineExtensionLeft">0dp</item>
+        <item name="lineExtensionBottom">0dp</item>
+    </style>
+
+    <style name="Custom_APDefacto2.Dark2">
+        <item name="android:background">#00ffffff</item>
+        <item name="backgroundColor">#00ffffff</item>
+        <item name="graphBackgroundColor">#00ffffff</item>
+        <item name="gridBackgroundColor">#00ffffff</item>
+        <item name="domainLineColor">#00000000</item>
+        <item name="rangeLineColor">#00000000</item>
+        <item name="domainOriginLineColor">#00000000</item>
+        <item name="rangeOriginLineColor">#00000000</item>
+        <item name="lineLabelTextColorTop">#00000000</item>
+        <item name="lineLabelTextColorBottom">#00000000</item>
+        <item name="lineLabelTextColorLeft">#00000000</item>
+        <item name="lineLabelTextColorRight">#00000000</item>
+        <item name="titleTextColor">#00000000</item>
+        <item name="domainTitleTextColor">#00000000</item>
+        <item name="rangeTitleTextColor">#00000000</item>
+        <item name="legendTextColor">#00000000</item>
+    </style>
+
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- TAG KEY-->
+    <item name="TAG_SEEKBAR_DISALBED" type="id"/>
+    <item name="TAG_SEEKBAR_ENALBED" type="id"/>
+</resources>

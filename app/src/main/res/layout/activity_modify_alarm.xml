@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.graction.developer.zoocaster.Activity.ModifyAlarmActivity" />
+    </data>
+
+    <RelativeLayout
+        android:background="#eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="#ffffff"
+            android:id="@+id/activity_add_alarm_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="13" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="14.7"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:weightSum="14.7">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="14.7"
+                    android:onClick="@{(view) -> activity.onBackPressed()}"
+                    app:srcCompat="@drawable/arrow" />
+            </LinearLayout>
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/activity_add_alarm_TV_title"
+                android:textColor="@color/activity_add_alarm_TV_title"
+                android:textSize="@dimen/activity_add_alarm_TV_title_font_size"
+                tool:text="알람 설정" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_alarm_topbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#eeeeee"
+                    android:gravity="center_horizontal"
+                    android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="330"
+                        android:orientation="vertical"
+                        android:weightSum="719.3">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="6.7dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="96.7dp"
+                            android:background="@drawable/location_setting_bg"
+                            android:weightSum="330">
+
+                            <View
+                                style="@style/Style_MarginView"
+                                android:layout_weight="17.3" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="296"
+                                android:orientation="vertical"
+                                android:weightSum="96.7">
+
+                                <TextView
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="39.7"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/activity_add_alarm_TV_address"
+                                    android:textColor="@color/activity_add_alarm_TV_attr"
+                                    android:textSize="@dimen/activity_add_alarm_TV_attr_font_size" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="40"
+                                    android:weightSum="296">
+
+                                    <FrameLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="40.3">
+
+                                        <ImageView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            app:srcCompat="@drawable/current_location_btn" />
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center_horizontal"
+                                            android:weightSum="40.3">
+
+                                            <LinearLayout
+                                                android:layout_width="0dp"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="17.3"
+                                                android:gravity="center_vertical"
+                                                android:orientation="vertical"
+                                                android:weightSum="40.3">
+
+                                                <ImageView
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_weight="17.3"
+                                                    app:srcCompat="@drawable/current_location_icon" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                    </FrameLayout>
+
+                                    <View
+                                        style="@style/Style_MarginView"
+                                        android:layout_weight="3.3" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="252.3"
+                                        android:onClick="@{activity::searchEvent}"
+                                        android:background="@drawable/searchbar"
+                                        android:weightSum="252.3">
+
+                                        <View
+                                            style="@style/Style_MarginView"
+                                            android:layout_weight="15" />
+
+                                        <TextView
+                                            android:id="@+id/activity_add_alarm_TV_address"
+                                            style="@style/Style_TextView_es"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="210.7"
+                                            android:background="@null"
+                                            android:gravity="center_vertical"
+                                            android:hint="@string/activity_add_alarm_TV_address_form_hint"
+                                            android:textColor="@color/activity_add_alarm_TV_address_form"
+                                            android:textColorHint="@color/activity_add_alarm_TV_address_form_hint"
+                                            android:textSize="@dimen/activity_add_alarm_TV_address_form_hint_size" />
+
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="16.3"
+                                            android:gravity="center_vertical"
+                                            android:orientation="vertical"
+                                            android:weightSum="40">
+
+                                            <ImageView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="0dp"
+                                                android:layout_weight="16.7"
+                                                app:srcCompat="@drawable/search_icon" />
+                                        </LinearLayout>
+
+                                        <View
+                                            style="@style/Style_MarginView"
+                                            android:layout_weight="10.3" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <View
+                                style="@style/Style_MarginView"
+                                android:layout_weight="16.7" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="6.7dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/location_setting_bg"
+                            android:gravity="center_horizontal"
+                            android:minHeight="177.7dp"
+                            android:weightSum="330">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="296"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="46dp"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/activity_add_alarm_TV_time"
+                                    android:textColor="@color/activity_add_alarm_TV_attr"
+                                    android:textSize="@dimen/activity_add_alarm_TV_attr_font_size" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0.7dp"
+                                    android:background="@drawable/line_b_5_b_5_b_5" />
+
+                                <TimePicker
+                                    android:id="@+id/activity_add_alarm_TimePicker"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:onTimeChanged="@{activity::onTimeChange}"
+                                    android:timePickerMode="spinner" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="6.7dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="91dp"
+                            android:background="@drawable/location_setting_bg"
+                            android:gravity="center_horizontal"
+                            android:weightSum="330">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="296"
+                                android:orientation="vertical"
+                                android:weightSum="91">
+
+                                <TextView
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="29.4"
+                                    android:gravity="bottom"
+                                    android:text="@string/activity_add_alarm_TV_time"
+                                    android:textColor="@color/activity_add_alarm_TV_attr"
+                                    android:textSize="@dimen/activity_add_alarm_TV_attr_font_size" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="10" />
+
+                                <com.graction.developer.zoocaster.UI.Layout.CustomArrayView
+                                    android:id="@+id/activity_add_alarm_CustomArrayView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="36"
+                                    app:isMultiSelected="true"
+                                    app:item_layout="@layout/item_array_view"
+                                    app:orientation="horizontal" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="6.7dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="175.3dp"
+                            android:background="@drawable/location_setting_bg"
+                            android:gravity="center_horizontal"
+                            android:weightSum="330">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="296"
+                                android:orientation="vertical"
+                                android:weightSum="175.3">
+
+                                <TextView
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="29.7"
+                                    android:gravity="bottom"
+                                    android:text="@string/activity_add_alarm_TV_alarm"
+                                    android:textColor="@color/activity_add_alarm_TV_attr"
+                                    android:textSize="@dimen/activity_add_alarm_TV_attr_font_size" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="10" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="35"
+                                    android:orientation="horizontal"
+                                    android:weightSum="330">
+
+                                    <ImageView
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="35"
+                                        android:onClick="@{(view) -> activity.selectAlarmType(false)}"
+                                        app:srcCompat="@drawable/phon_on_654_fa_1" />
+
+                                    <View
+                                        style="@style/Style_MarginView"
+                                        android:layout_weight="8.3" />
+
+                                    <ImageView
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="35"
+                                        android:onClick="@{(view) -> activity.selectAlarmType(true)}"
+                                        app:srcCompat="@drawable/sound_off" />
+
+                                    <View
+                                        style="@style/Style_MarginView"
+                                        android:layout_weight="6.7" />
+
+                                    <LinearLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="211.3"
+                                        android:gravity="center_vertical"
+                                        android:orientation="vertical"
+                                        android:weightSum="35">
+
+                                        <SeekBar
+                                            android:id="@+id/activity_add_alarm_SB_volume"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:max="10"
+                                            android:progress="5"
+                                            android:progressDrawable="@drawable/seekbar_on2"
+                                            />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="16.3" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.7"
+                                    android:background="@drawable/line_b_5_b_5_b_5" />
+
+                                <TextView
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="29.3"
+                                    android:gravity="bottom"
+                                    android:text="@string/activity_add_alarm_TV_alarm_name"
+                                    android:textColor="@color/activity_add_alarm_TV_attr"
+                                    android:textSize="@dimen/activity_add_alarm_TV_attr_font_size" />
+
+                                <EditText
+                                    android:id="@+id/activity_add_alarm_ET_memo"
+                                    style="@style/Style_TextView_es"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="21"
+                                    android:background="@null"
+                                    android:gravity="bottom"
+                                    android:hint="@string/activity_add_alarm_ET_alarm_name_hint"
+                                    android:textColor="@color/activity_add_alarm_ET_alarm_name_hint"
+                                    android:textSize="@dimen/activity_add_alarm_ET_alarm_name_hint_size" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="16.3" />
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.7"
+                                    android:background="@drawable/line_b_5_b_5_b_5" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="16.3" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="16.7dp" />
+
+                        <Button
+                            style="@style/AddActivityAlarm_BT_modify"
+                            android:layout_width="match_parent"
+                            android:layout_height="46.7dp"
+                            android:onClick='@{activity::modifyAlarm}' />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="16.7dp" />
+
+                        <Button
+                            style="@style/AddActivityAlarm_BT_cancel"
+                            android:layout_width="match_parent"
+                            android:layout_height="46.7dp"
+                            android:onClick='@{(view) -> activity.onBackPressed()}' />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="33.3dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>
