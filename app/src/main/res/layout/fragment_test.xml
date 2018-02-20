@@ -26,18 +26,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="100dp"
-                app:donut_animate_time="2000"
+                app:donut_animate_time="500"
                 app:donut_background_color="#00efeded"
                 app:donut_circle_starting_degree="-90"
                 app:donut_finished_color="#ead77a7a"
                 app:donut_finished_stroke_width="5dp"
                 app:donut_inner_bottom_text="h2"
                 app:donut_max="100"
-                app:donut_progress="50"
+                app:donut_progress="80"
                 app:donut_show_text="true"
                 app:donut_unfinished_stroke_width="3dp" />
 
             <Button
+                android:id="@+id/fragment_test_BT_animate"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:text="animate" />

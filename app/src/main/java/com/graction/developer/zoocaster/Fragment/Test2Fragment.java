@@ -51,15 +51,15 @@ public class Test2Fragment extends BaseFragment {
 //        initXYPlot(binding.xyplot2);
         // reduce the number of range labels
 //        initXYPlotWithAnimation(plot);
-        initXYPlot(binding.xyplot2);
+//        initXYPlot(binding.xyplot2);
 
     }
 
     private void initXYPlot(XYPlot plot){
         // create a couple arrays of y-values to plot:
-        final Number[] domainLabels = {0, 1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
-        Number[] series1Numbers = {0, 1, 4, 2, 8, 4, 16, 8, 32, 16, 64};
-        Number[] series2Numbers = {0, 5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
+        final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
+        Number[] series1Numbers = {1, 4, 2, 8, 4, 16, 8, 32, 16, 64};
+        Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
 
         // turn the above arrays into XYSeries':
         // (Y_VALS_ONLY means use the element index as the x value)
@@ -129,7 +129,7 @@ public class Test2Fragment extends BaseFragment {
 
         // Create a couple arrays of y-values to plot:
         Number[] series1Numbers = {1, 8, 5, 2, 7, 4};
-        Number[] series2Numbers = {4, 6, 3, 8, 2, 10};
+        Number[] series2Numbers = {14, 6, 3, 8, 2, 18};
 
         // Turn the above arrays into XYSeries':
         XYSeries series1 = new SimpleXYSeries(
@@ -173,7 +173,7 @@ public class Test2Fragment extends BaseFragment {
     }
 
     public void reLoad(){
-        initXYPlot(binding.xyplot2);
+//        initXYPlot(binding.xyplot2);
         initXYPlotWithAnimation(binding.xyplot);
         logger.log(HLogger.LogType.INFO,"reLoad()","reLoad");
     }

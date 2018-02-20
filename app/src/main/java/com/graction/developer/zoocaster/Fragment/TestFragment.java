@@ -1,5 +1,6 @@
 package com.graction.developer.zoocaster.Fragment;
 
+import android.animation.ObjectAnimator;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.Model.Item.AlarmItem;
@@ -63,12 +65,23 @@ public class TestFragment extends BaseFragment {
     protected void init(View view) {
         logger.log(INFO, "init");
         binding.setActivity(this);
+        binding.fragmentTestBTAnimate.setOnClickListener((v) -> binding.donutProgress.drawWithAnimate());
+
         initService();
     }
 
     @Override
     public void onResume() {
+        logger.log(INFO, "onResume()", "onResume");
         super.onResume();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if(isVisibleToUser){
+            binding.donutProgress.drawWithAnimate();
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 
     private void initService() {
@@ -113,12 +126,12 @@ public class TestFragment extends BaseFragment {
     }
 
     public void test2() {
-        VSManager.getInstance().vibrate(getActivity(),2000);
+        VSManager.getInstance().vibrate(getActivity(), 2000);
     }
 
     public void test3(boolean isSpeaker) {
         Context context = getActivity();
-        AlarmItem item = new AlarmItem(3, "address", "memo", new int[]{1,1,1,1,1,1,1,1}, 0,0,5,1, isSpeaker);
+        AlarmItem item = new AlarmItem(3, "address", "memo", new int[]{1, 1, 1, 1, 1, 1, 1, 1}, 0, 0, 5, 1, isSpeaker);
         AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(DataStorage.Action.RECEIVE_ACTION_ALARM_START);
 //        Intent alarmIntent = new Intent(context, AlarmReceiver.class);

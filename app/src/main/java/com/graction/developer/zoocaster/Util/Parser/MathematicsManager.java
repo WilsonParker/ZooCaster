@@ -18,9 +18,16 @@ public class MathematicsManager {
 
     public int rounds(double d, double digit) {
         double p = Math.pow(10, digit);
-        return (int) Math.round(Math.round((d * p)) / p);
+        return (int) (Math.round(d * p) / p);
     }
 
+    public double roundsParseDouble(double d, double digit) {
+        double p = Math.pow(10, digit), roundNum = d * p, upNum = roundNum % 10;
+        if (upNum > 4)
+            roundNum += 10;
+        roundNum -= upNum;
+        return roundNum / p;
+    }
 
     public int rounds(String d, double digit) {
         double p = Math.pow(10, digit);

@@ -22,32 +22,6 @@ public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
     private boolean isFirst;
     private FragmentAdapter fragmentAdapter;
-    private Fragment fragment;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_current:
-                    fragment = HomeFragment.getInstance();
-                    break;
-                case R.id.navigation_daily:
-                    fragment = Forecast5DayFragment.getInstance();
-                    break;
-                case R.id.navigation_alarm:
-                    fragment = AlarmFragment.getInstance();
-                    break;
-                case R.id.navigation_alarmtest:
-                    fragment = TestFragment.getInstance();
-                    break;
-            }
-            replaceContent();
-            return true;
-        }
-
-    };
 
     @Override
     protected void init() {

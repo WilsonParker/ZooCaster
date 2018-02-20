@@ -7,7 +7,7 @@ import com.androidplot.xy.XYSeries;
  * Created by Graction06 on 2018-02-13.
  */
 
-public class AnimatedSeries implements XYSeries,Runnable {
+public class AnimatedSeries implements XYSeries, Runnable {
 
     private final XYPlot plot;
     private final XYSeries series;
@@ -31,10 +31,11 @@ public class AnimatedSeries implements XYSeries,Runnable {
             while (step < stepCount) {
                 factor = step / (float) stepCount;
                 Thread.sleep(50);
-//                    Thread.sleep(50);
                 plot.redraw();
                 step++;
             }
+            factor = 1;
+            plot.redraw();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +53,7 @@ public class AnimatedSeries implements XYSeries,Runnable {
 
     @Override
     public Number getY(int index) {
-        return series.getY(index).doubleValue() * factor;
+        return (int) series.getY(index).doubleValue() * factor;
     }
 
     @Override

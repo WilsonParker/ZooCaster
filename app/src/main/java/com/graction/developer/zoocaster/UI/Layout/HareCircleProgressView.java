@@ -85,9 +85,33 @@ public class HareCircleProgressView extends View {
     /*
      * Customizing
      */
-    private static final int ANIMATE_CYCLE = 200;
+    private static final int ANIMATE_CYCLE = 25;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            while (isAnimated && anim_time <= donut_animate_time) {
+                try {
+                    setAnimProgress(anim_progress);
+//                    Log.i("Circle", String.format("%f : %0,2f : %0,2f: %f", progress, perProgress, anim_progress, anim_time));
+                    Thread.sleep(ANIMATE_CYCLE);
+                    anim_time += ANIMATE_CYCLE;
+                    anim_progress += perProgress;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            setAnimProgress(progress);
+            isAnimated = false;
+        }
+    };
+    private MathematicsManager mathematicsManager;
+    private Handler handler = new Handler();
+    private Thread thread;
+
+    private boolean isAnimated;
     private int donut_animate_time;
-    private boolean donut_animate_for_max;
+    private float anim_time = 0;
+    private double perProgress, anim_progress;
 
     public HareCircleProgressView(Context context) {
         this(context, null);
@@ -121,6 +145,8 @@ public class HareCircleProgressView extends View {
         this.initByAttributes(attributes);
         attributes.recycle();
         this.initPainters();
+
+        mathematicsManager = MathematicsManager.getInstance();
     }
 
     protected void initPainters() {
@@ -186,7 +212,6 @@ public class HareCircleProgressView extends View {
         this.innerBackgroundColor = attributes.getColor(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_background_color, 0);
 
         this.donut_animate_time = attributes.getInt(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_animate_time, 0);
-        this.donut_animate_for_max = attributes.getBoolean(com.github.lzyzsd.circleprogress.R.styleable.DonutProgress_donut_animate_for_max, false);
 
     }
 
@@ -500,43 +525,44 @@ public class HareCircleProgressView extends View {
             canvas.drawBitmap(bitmap, (float) (this.getWidth() - bitmap.getWidth()) / 2.0F, (float) (this.getHeight() - bitmap.getHeight()) / 2.0F, (Paint) null);
         }
 
-        drawWithAnimate(canvas);
-
-    }
-
-    int anim_time = 0, anim_startDegree = 0, anim_progress = 0;
-
-    public void drawWithAnimate(Canvas canvas) {
         float delta = Math.max(this.finishedStrokeWidth, this.unfinishedStrokeWidth);
         this.finishedOuterRect.set(delta, delta, (float) this.getWidth() - delta, (float) this.getHeight() - delta);
         this.unfinishedOuterRect.set(delta, delta, (float) this.getWidth() - delta, (float) this.getHeight() - delta);
-        float innerCircleRadius = ((float) this.getWidth() - Math.min(this.finishedStrokeWidth, this.unfinishedStrokeWidth) + Math.abs(this.finishedStrokeWidth - this.unfinishedStrokeWidth)) / 2.0F;
+        float innerCircleRadius = ((float) this.getWidth() - Math.min(finishedStrokeWidth, unfinishedStrokeWidth) + Math.abs(this.finishedStrokeWidth - this.unfinishedStrokeWidth)) / 2.0F;
+//                    float innerCircleRadius = ((float) this.getWidth() - Math.min(this.finishedStrokeWidth, this.unfinishedStrokeWidth) + Math.abs(this.finishedStrokeWidth - this.unfinishedStrokeWidth)) / 2.0F;
         canvas.drawCircle((float) this.getWidth() / 2.0F, (float) this.getHeight() / 2.0F, innerCircleRadius, this.innerCirclePaint);
-//        canvas.drawArc(this.unfinishedOuterRect, 0, 360.0F, false, this.unfinishedPaint);
-        canvas.drawArc(this.unfinishedOuterRect, (float) this.getStartingDegree() + this.getProgressAngle(), 360.0F - this.getProgressAngle(), false, this.unfinishedPaint);
-//        canvas.drawArc(this.finishedOuterRect, (float) this.getStartingDegree(), this.getProgressAngle(), false, this.finishedPaint);
+        canvas.drawArc(this.unfinishedOuterRect, 0, 360.0F, false, this.unfinishedPaint);
+        canvas.drawArc(this.finishedOuterRect, (float) this.getStartingDegree(), this.getAnimProgressAngle(), false, this.finishedPaint);
 
-        double perProgress = MathematicsManager.getInstance().rounds(ANIMATE_CYCLE / donut_animate_time, 1);
-        Handler handler = new Handler();
-        Thread thread = new Thread(() -> {
-            while (anim_time < donut_animate_time) {
-                try {
-                    handler.post(() -> {
-//                        canvas.drawArc(this.finishedOuterRect, anim_progress, anim_progress += perProgress, false, this.finishedPaint);
-//                        invalidate();
-                    });
-                    Log.i("Circle", "draw");
-                    Thread.sleep(ANIMATE_CYCLE);
-                    anim_time += ANIMATE_CYCLE;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        perProgress = mathematicsManager.roundsParseDouble(progress / mathematicsManager.roundsParseDouble(donut_animate_time / ANIMATE_CYCLE, 5), 5);
+    }
+
+    public void drawWithAnimate() {
+        if (!isAnimated) {
+            anim_time = 0;
+            anim_progress = 0;
+            isAnimated = true;
+            thread = new Thread(runnable);
+            thread.start();
+        }
+    }
+
+    private void setAnimProgress(double anim_progress) {
+        handler.post(() -> {
+            this.anim_progress = anim_progress;
+            if (this.anim_progress > (float) this.getMax()) {
+                this.anim_progress %= (float) this.getMax();
             }
+            invalidate();
         });
-        thread.start();
-        canvas.drawArc(this.finishedOuterRect, (float) this.getStartingDegree() + anim_progress, (float) this.getStartingDegree() + (anim_progress += perProgress), false, this.finishedPaint);
-        Log.i("Circle", String.format("%,2f : %d",perProgress, anim_progress));
-        invalidate();
+    }
+
+    private float getAnimProgressAngle() {
+        return (float) this.getAnimProgress() / (float) this.max * 360.0F;
+    }
+
+    private double getAnimProgress() {
+        return this.anim_progress;
     }
 
 }
