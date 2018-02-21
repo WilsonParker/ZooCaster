@@ -6,9 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
+import com.androidplot.Plot;
 import com.androidplot.ui.Anchor;
 import com.androidplot.ui.DynamicTableModel;
 import com.androidplot.ui.HorizontalPositioning;
@@ -36,7 +38,11 @@ import com.androidplot.xy.XYFramingModel;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYLegendWidget;
 import com.androidplot.xy.XYPlot;
+import com.androidplot.xy.XYSeries;
+import com.androidplot.xy.XYSeriesBundle;
+import com.androidplot.xy.XYSeriesFormatter;
 import com.androidplot.xy.XYSeriesRegistry;
+import com.androidplot.xy.XYSeriesRenderer;
 import com.androidplot.xy.YValueMarker;
 import com.graction.developer.zoocaster.R;
 
@@ -48,7 +54,7 @@ import java.util.List;
  * Created by Graction06 on 2018-02-12.
  */
 
-public class CustomXYPlot2 extends XYPlot {
+public class CustomXYPlot2 extends Plot<XYSeries, XYSeriesFormatter, XYSeriesRenderer, XYSeriesBundle, XYSeriesRegistry> {
 
     /*private static final int DEFAULT_GRAPH_WIDGET_H_DP = 18;
     private static final int DEFAULT_GRAPH_WIDGET_W_DP = 10;
@@ -161,28 +167,33 @@ public class CustomXYPlot2 extends XYPlot {
         Bar
     }
 
+    private XYPlot xyPlot;
+
     public CustomXYPlot2(Context context, String title) {
         super(context, title);
+        xyPlot = new XYPlot(context, title);
     }
 
     public CustomXYPlot2(Context context, String title, RenderMode mode) {
         super(context, title, mode);
+        xyPlot = new XYPlot(context, title, mode);
     }
 
     public CustomXYPlot2(Context context, AttributeSet attributes) {
         super(context, attributes);
+        xyPlot = new XYPlot(context, attributes);
     }
 
     public CustomXYPlot2(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
+        xyPlot = new XYPlot(context, attrs, defStyle);
     }
 
     @Override
     protected void onPreInit() {
         legend = new XYLegendWidget(
                 getLayoutManager(),
-                this,
+                xyPlot,
                 new Size(
                         PixelUtils.dpToPix(DEFAULT_LEGEND_WIDGET_H_DP),
                         SizeMode.ABSOLUTE, 0.5f, SizeMode.RELATIVE),
@@ -195,7 +206,7 @@ public class CustomXYPlot2 extends XYPlot {
 
         graph = new XYGraphWidget(
                 getLayoutManager(),
-                this,
+                xyPlot,
                 new Size(
                         PixelUtils.dpToPix(DEFAULT_GRAPH_WIDGET_H_DP),
                         SizeMode.FILL,
@@ -203,7 +214,8 @@ public class CustomXYPlot2 extends XYPlot {
                         SizeMode.FILL));
 
         Paint backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.DKGRAY);
+//        backgroundPaint.setColor(Color.DKGRAY);
+        backgroundPaint.setColor(Color.parseColor("#00ffffff"));
         backgroundPaint.setStyle(Paint.Style.FILL);
         graph.setBackgroundPaint(backgroundPaint);
 
@@ -238,6 +250,7 @@ public class CustomXYPlot2 extends XYPlot {
                 PixelUtils.dpToPix(DEFAULT_GRAPH_WIDGET_Y_OFFSET_DP),
                 VerticalPositioning.ABSOLUTE_FROM_CENTER,
                 Anchor.RIGHT_MIDDLE);
+        graph.setMarginLeft(50);
 
         domainTitle.position(
                 PixelUtils.dpToPix(DEFAULT_DOMAIN_LABEL_WIDGET_X_OFFSET_DP),
@@ -273,7 +286,7 @@ public class CustomXYPlot2 extends XYPlot {
     @Override
     protected void onAfterConfig() {
         // display some generic series data in editors that support it:
-        if(isInEditMode()) {
+        if (isInEditMode()) {
 
             switch (previewMode) {
                 case LineAndPoint: {
@@ -296,7 +309,7 @@ public class CustomXYPlot2 extends XYPlot {
                             new CandlestickSeries.Item(2, 17, 2, 15),
                             new CandlestickSeries.Item(6, 11, 11, 7),
                             new CandlestickSeries.Item(8, 16, 10, 15));
-                    CandlestickMaker.make(this, new CandlestickFormatter(), candlestickSeries);
+                    CandlestickMaker.make(xyPlot, new CandlestickFormatter(), candlestickSeries);
                 }
                 break;
                 case Bar: {
@@ -310,16 +323,16 @@ public class CustomXYPlot2 extends XYPlot {
 
     @Override
     protected void processAttrs(TypedArray attrs) {
-        this. previewMode = XYPlot.PreviewMode.values()[attrs.getInt(
+        this.previewMode = XYPlot.PreviewMode.values()[attrs.getInt(
                 com.androidplot.R.styleable.xy_XYPlot_previewMode, XYPlot.PreviewMode.LineAndPoint.ordinal())];
 
         String domainLabelAttr = attrs.getString(com.androidplot.R.styleable.xy_XYPlot_domainTitle);
-        if(domainLabelAttr != null) {
+        if (domainLabelAttr != null) {
             getDomainTitle().setText(domainLabelAttr);
         }
 
         String rangeLabelAttr = attrs.getString(com.androidplot.R.styleable.xy_XYPlot_rangeTitle);
-        if(rangeLabelAttr != null) {
+        if (rangeLabelAttr != null) {
             getRangeTitle().setText(rangeLabelAttr);
         }
 
@@ -367,7 +380,7 @@ public class CustomXYPlot2 extends XYPlot {
         // this call must be AFTER the notify so that if the listener
         // is a synchronized series, it has the opportunity to
         // place a read lock on it's data.
-        getRegistry().estimate(this); // TODO: clean this mechanism up!!!
+        getRegistry().estimate(xyPlot); // TODO: clean this mechanism up!!!
     }
 
     /**
@@ -381,7 +394,8 @@ public class CustomXYPlot2 extends XYPlot {
         return getGraph().containsPoint(x, y);
     }
 
-    /**                                                           `
+    /**
+     * `
      * Convenience method - wraps containsPoint(PointF).
      *
      * @param point
@@ -479,13 +493,13 @@ public class CustomXYPlot2 extends XYPlot {
 
     /**
      * Convert a screen point into a series xy value.
-     * @param point
+     *
+//     * @param point
      * @return
      */
     /*public XYCoords screentoSeries(PointF point) {
         return getGraph().screenToSeries(point);
     }*/
-
     public void calculateMinMaxVals() {
         prevMinX = bounds.isMinXSet() ? bounds.getMinX() : null;
         prevMaxX = bounds.isMaxXSet() ? bounds.getMaxX() : null;
@@ -498,21 +512,21 @@ public class CustomXYPlot2 extends XYPlot {
         bounds.setMaxY(constraints.getMaxY());
 
         // only calculate if we must:
-        if(!bounds.isFullyDefined()) {
+        if (!bounds.isFullyDefined()) {
 
             RectRegion b = SeriesUtils.minMax(constraints, getRegistry().getSeriesList());
 
-            if(!bounds.isMinXSet()) {
+            if (!bounds.isMinXSet()) {
                 bounds.setMinX(b.getMinX());
             }
-            if(!bounds.isMaxXSet()) {
+            if (!bounds.isMaxXSet()) {
                 bounds.setMaxX(b.getMaxX());
             }
 
-            if(!bounds.isMinYSet()) {
+            if (!bounds.isMinYSet()) {
                 bounds.setMinY(b.getMinY());
             }
-            if(!bounds.isMaxYSet()) {
+            if (!bounds.isMaxYSet()) {
                 bounds.setMaxY(b.getMaxY());
             }
         }
@@ -691,7 +705,6 @@ public class CustomXYPlot2 extends XYPlot {
     }
 
     /**
-     *
      * @param mode
      * @param origin
      * @param extent
@@ -701,9 +714,9 @@ public class CustomXYPlot2 extends XYPlot {
         if (mode == BoundaryMode.FIXED) {
             double o = origin.doubleValue();
             double e = extent.doubleValue();
-            return new Number[] {o - e, o + e};
+            return new Number[]{o - e, o + e};
         }
-        return new Number[] {null, null};
+        return new Number[]{null, null};
     }
 
     /**
@@ -1083,7 +1096,6 @@ public class CustomXYPlot2 extends XYPlot {
     }
 
     /**
-     *
      * @return The current min/max values for real domain and range that fall within the visible
      * graph space.
      */
@@ -1212,5 +1224,10 @@ public class CustomXYPlot2 extends XYPlot {
     protected XYSeriesRegistry getRegistryInstance() {
         XYSeriesRegistry registry = new XYSeriesRegistry();
         return registry;
+    }
+
+    @Override
+    protected void drawRect(Canvas canvas, RectF dims, Paint paint) {
+        super.drawRect(canvas, dims, paint);
     }
 }

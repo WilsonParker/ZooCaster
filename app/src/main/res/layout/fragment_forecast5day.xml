@@ -47,7 +47,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                        <com.graction.developer.zoocaster.UI.Layout.CustomXYPlot2
+                            <!--style="@style/Custom_APDefacto2.Dark2"-->
+                        <!--<com.graction.developer.zoocaster.UI.Layout.CustomXYPlot-->
+                        <com.androidplot.xy.XYPlot
                             android:id="@+id/xyplot"
                             style="@style/Custom_APDefacto2.Dark2"
                             android:layout_width="1200dp"

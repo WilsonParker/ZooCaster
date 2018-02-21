@@ -31,6 +31,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.graction.developer.zoocaster.Activity.AlarmActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="com.graction.developer.zoocaster.Activity.AddAlarmActivity" />
+        <activity android:name="com.graction.developer.zoocaster.Activity.ModifyAlarmActivity" />
+        <activity
+            android:name="com.graction.developer.zoocaster.Activity.SearchAddressActivity"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+
         <!-- Receiver -->
         <receiver android:name="com.graction.developer.zoocaster.Receiver.AlarmReceiver">
             <intent-filter>
@@ -50,14 +59,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCEJrAe1Go07xiXi5lykoOs74ewu-y-xEQ" />
 
-        <activity
-            android:name="com.graction.developer.zoocaster.Activity.AlarmActivity"
-            android:launchMode="singleTask" />
-        <activity android:name="com.graction.developer.zoocaster.Activity.AddAlarmActivity" />
-        <activity android:name="com.graction.developer.zoocaster.Activity.ModifyAlarmActivity" />
-        <activity
-            android:name="com.graction.developer.zoocaster.Activity.SearchAddressActivity"
-            android:windowSoftInputMode="adjustPan|stateVisible" />
     </application>
 
 </manifest>

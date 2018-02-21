@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 
@@ -18,6 +19,7 @@ import com.androidplot.ui.VerticalPositioning;
 import com.androidplot.ui.widget.TextLabelWidget;
 import com.androidplot.util.AttrUtils;
 import com.androidplot.util.PixelUtils;
+import com.androidplot.util.SeriesUtils;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CandlestickFormatter;
 import com.androidplot.xy.CandlestickMaker;
@@ -177,10 +179,14 @@ public class CustomXYPlot extends XYPlot {
                         SizeMode.FILL));
 
         Paint backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.DKGRAY);
+//        backgroundPaint.setColor(Color.DKGRAY);
+        backgroundPaint.setColor(Color.parseColor("#00FFFFFF"));
         backgroundPaint.setStyle(Paint.Style.FILL);
         graph.setBackgroundPaint(backgroundPaint);
-
+        graph.setMarginLeft(50);
+        graph.setGridBackgroundPaint(backgroundPaint);
+        graph.setPaddingRight(50);
+        graph.setPaddingLeft(100);
 
         domainTitle = new TextLabelWidget(
                 getLayoutManager(),
@@ -247,7 +253,7 @@ public class CustomXYPlot extends XYPlot {
     @Override
     protected void onAfterConfig() {
         // display some generic series data in editors that support it:
-        if (isInEditMode()) {
+        if(isInEditMode()) {
 
             switch (previewMode) {
                 case LineAndPoint: {
@@ -284,50 +290,50 @@ public class CustomXYPlot extends XYPlot {
 
     @Override
     protected void processAttrs(TypedArray attrs) {
-        this.previewMode = XYPlot.PreviewMode.values()[attrs.getInt(
-                R.styleable.xy_XYPlot_previewMode, XYPlot.PreviewMode.LineAndPoint.ordinal())];
+        this. previewMode = XYPlot.PreviewMode.values()[attrs.getInt(
+                com.androidplot.R.styleable.xy_XYPlot_previewMode, XYPlot.PreviewMode.LineAndPoint.ordinal())];
 
-        String domainLabelAttr = attrs.getString(R.styleable.xy_XYPlot_domainTitle);
-        if (domainLabelAttr != null) {
+        String domainLabelAttr = attrs.getString(com.androidplot.R.styleable.xy_XYPlot_domainTitle);
+        if(domainLabelAttr != null) {
             getDomainTitle().setText(domainLabelAttr);
         }
 
-        String rangeLabelAttr = attrs.getString(R.styleable.xy_XYPlot_rangeTitle);
-        if (rangeLabelAttr != null) {
+        String rangeLabelAttr = attrs.getString(com.androidplot.R.styleable.xy_XYPlot_rangeTitle);
+        if(rangeLabelAttr != null) {
             getRangeTitle().setText(rangeLabelAttr);
         }
 
         AttrUtils.configureStep(attrs, getDomainStepModel(),
-                R.styleable.xy_XYPlot_domainStepMode, R.styleable.xy_XYPlot_domainStep);
+                com.androidplot.R.styleable.xy_XYPlot_domainStepMode, com.androidplot.R.styleable.xy_XYPlot_domainStep);
 
         AttrUtils.configureStep(attrs, getRangeStepModel(),
-                R.styleable.xy_XYPlot_rangeStepMode, R.styleable.xy_XYPlot_rangeStep);
+                com.androidplot.R.styleable.xy_XYPlot_rangeStepMode, com.androidplot.R.styleable.xy_XYPlot_rangeStep);
 
         // domainLabelPaint
         AttrUtils.configureTextPaint(attrs, getDomainTitle().getLabelPaint(),
-                R.styleable.xy_XYPlot_domainTitleTextColor, R.styleable.xy_XYPlot_domainTitleTextSize);
+                com.androidplot.R.styleable.xy_XYPlot_domainTitleTextColor, com.androidplot.R.styleable.xy_XYPlot_domainTitleTextSize);
 
         // rangeLabelPaint
         AttrUtils.configureTextPaint(attrs, getRangeTitle().getLabelPaint(),
-                R.styleable.xy_XYPlot_rangeTitleTextColor, R.styleable.xy_XYPlot_rangeTitleTextSize);
+                com.androidplot.R.styleable.xy_XYPlot_rangeTitleTextColor, com.androidplot.R.styleable.xy_XYPlot_rangeTitleTextSize);
 
         // legendWTextPaint
         AttrUtils.configureTextPaint(attrs, getLegend().getTextPaint(),
-                R.styleable.xy_XYPlot_legendTextColor,
-                R.styleable.xy_XYPlot_legendTextSize);
+                com.androidplot.R.styleable.xy_XYPlot_legendTextColor,
+                com.androidplot.R.styleable.xy_XYPlot_legendTextSize);
 
         // legendIconSize
         AttrUtils.configureSize(attrs, getLegend().getIconSize(),
-                R.styleable.xy_XYPlot_legendIconHeightMode, R.styleable.xy_XYPlot_legendIconHeight,
-                R.styleable.xy_XYPlot_legendIconWidthMode, R.styleable.xy_XYPlot_legendIconWidth);
+                com.androidplot.R.styleable.xy_XYPlot_legendIconHeightMode, com.androidplot.R.styleable.xy_XYPlot_legendIconHeight,
+                com.androidplot.R.styleable.xy_XYPlot_legendIconWidthMode, com.androidplot.R.styleable.xy_XYPlot_legendIconWidth);
 
         // legend size & position
         AttrUtils.configureWidget(attrs, getLegend(),
-                R.styleable.xy_XYPlot_legendHeightMode, R.styleable.xy_XYPlot_legendHeight,
-                R.styleable.xy_XYPlot_legendWidthMode, R.styleable.xy_XYPlot_legendWidth,
-                R.styleable.xy_XYPlot_legendHorizontalPositioning, R.styleable.xy_XYPlot_legendHorizontalPosition,
-                R.styleable.xy_XYPlot_legendVerticalPositioning, R.styleable.xy_XYPlot_legendVerticalPosition,
-                R.styleable.xy_XYPlot_legendAnchor, R.styleable.xy_XYPlot_legendVisible);
+                com.androidplot.R.styleable.xy_XYPlot_legendHeightMode, com.androidplot.R.styleable.xy_XYPlot_legendHeight,
+                com.androidplot.R.styleable.xy_XYPlot_legendWidthMode, com.androidplot.R.styleable.xy_XYPlot_legendWidth,
+                com.androidplot.R.styleable.xy_XYPlot_legendHorizontalPositioning, com.androidplot.R.styleable.xy_XYPlot_legendHorizontalPosition,
+                com.androidplot.R.styleable.xy_XYPlot_legendVerticalPositioning, com.androidplot.R.styleable.xy_XYPlot_legendVerticalPosition,
+                com.androidplot.R.styleable.xy_XYPlot_legendAnchor, com.androidplot.R.styleable.xy_XYPlot_legendVisible);
 
         getGraph().processAttrs(attrs);
     }
@@ -344,8 +350,349 @@ public class CustomXYPlot extends XYPlot {
         getRegistry().estimate(this); // TODO: clean this mechanism up!!!
     }
 
-    // *********************************************************************************************
+    /**
+     * Checks whether the point is within the plot's graph area.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean containsPoint(float x, float y) {
+        return getGraph().containsPoint(x, y);
+    }
 
+    /**                                                           `
+     * Convenience method - wraps containsPoint(PointF).
+     *
+     * @param point
+     * @return
+     */
+    public boolean containsPoint(PointF point) {
+        return containsPoint(point.x, point.y);
+    }
+
+    public void setCursorPosition(PointF point) {
+        getGraph().setCursorPosition(point);
+    }
+
+    public void setCursorPosition(float x, float y) {
+        getGraph().setCursorPosition(x, y);
+    }
+
+    public void calculateMinMaxVals() {
+        prevMinX = bounds.isMinXSet() ? bounds.getMinX() : null;
+        prevMaxX = bounds.isMaxXSet() ? bounds.getMaxX() : null;
+        prevMinY = bounds.isMinYSet() ? bounds.getMinY() : null;
+        prevMaxY = bounds.isMaxYSet() ? bounds.getMaxY() : null;
+
+        bounds.setMinX(constraints.getMinX());
+        bounds.setMaxX(constraints.getMaxX());
+        bounds.setMinY(constraints.getMinY());
+        bounds.setMaxY(constraints.getMaxY());
+
+        // only calculate if we must:
+        if(!bounds.isFullyDefined()) {
+
+            RectRegion b = SeriesUtils.minMax(constraints, getRegistry().getSeriesList());
+
+            if(!bounds.isMinXSet()) {
+                bounds.setMinX(b.getMinX());
+            }
+            if(!bounds.isMaxXSet()) {
+                bounds.setMaxX(b.getMaxX());
+            }
+
+            if(!bounds.isMinYSet()) {
+                bounds.setMinY(b.getMinY());
+            }
+            if(!bounds.isMaxYSet()) {
+                bounds.setMaxY(b.getMaxY());
+            }
+        }
+
+        // at this point we now know what points are going to be visible on our
+        // plot, but we still need to make corrections based on modes being used:
+        // (grow, shrink etc.)
+        switch (constraints.getDomainFramingModel()) {
+            case ORIGIN:
+                updateDomainMinMaxForOriginModel();
+                break;
+            case EDGE:
+                bounds.setMaxX(applyUserMinMax(getCalculatedUpperBoundary(
+                        constraints.getDomainUpperBoundaryMode(), prevMaxX, bounds.getMaxX()),
+                        innerLimits.getMaxX(), outerLimits.getMaxX()));
+                bounds.setMinX(applyUserMinMax(getCalculatedLowerBoundary(
+                        constraints.getDomainLowerBoundaryMode(),
+                        prevMinX, bounds.getMinX()),
+                        outerLimits.getMinX(), innerLimits.getMinX()));
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Domain Framing Model not yet supported: " + constraints.getDomainFramingModel());
+        }
+
+        switch (constraints.getRangeFramingModel()) {
+            case ORIGIN:
+                updateRangeMinMaxForOriginModel();
+                break;
+            case EDGE:
+                if (getRegistry().size() > 0) {
+                    bounds.setMaxY(applyUserMinMax(getCalculatedUpperBoundary(
+                            constraints.getRangeUpperBoundaryMode(),
+                            prevMaxY, bounds.getMaxY()), innerLimits.getMaxY(), outerLimits.getMaxY()));
+                    bounds.setMinY(applyUserMinMax(getCalculatedLowerBoundary(
+                            constraints.getRangeLowerBoundaryMode(),
+                            prevMinY, bounds.getMinY()), outerLimits.getMinY(), innerLimits.getMinY()));
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Range Framing Model not yet supported: " + constraints.getRangeFramingModel());
+        }
+
+
+        calculatedOrigin.x = userDomainOrigin != null ?
+                userDomainOrigin : bounds.getMinX();
+
+        calculatedOrigin.y = this.userRangeOrigin != null ?
+                userRangeOrigin : bounds.getMinY();
+    }
+
+    protected Number getCalculatedUpperBoundary(BoundaryMode mode, Number previousMax, Number calculatedMax) {
+        switch (mode) {
+            case FIXED:
+                break;
+            case AUTO:
+                break;
+            case GROW:
+                if (!(previousMax == null || calculatedMax.doubleValue() > previousMax.doubleValue())) {
+                    calculatedMax = previousMax;
+                }
+                break;
+            case SHRINK:
+                if (!(previousMax == null || calculatedMax.doubleValue() < previousMax.doubleValue())) {
+                    calculatedMax = previousMax;
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("BoundaryMode not supported: " + mode);
+        }
+        return calculatedMax;
+    }
+
+    protected Number getCalculatedLowerBoundary(BoundaryMode mode, Number previousMin, Number calculatedMin) {
+        switch (mode) {
+            case FIXED:
+                break;
+            case AUTO:
+                break;
+            case GROW:
+                if (!(previousMin == null || calculatedMin.doubleValue() < previousMin.doubleValue())) {
+                    return previousMin;
+                }
+                break;
+            case SHRINK:
+                if (!(previousMin == null || calculatedMin.doubleValue() > previousMin.doubleValue())) {
+                    return previousMin;
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                        "BoundaryMode not supported: " + mode);
+        }
+        return calculatedMin;
+    }
+
+    /**
+     * Apply user supplied min and max to the calculated boundary value.
+     *
+     * @param value
+     * @param min
+     * @param max
+     */
+    private static Number applyUserMinMax(Number value, Number min, Number max) {
+        value = (((min == null) || (value == null) || (value.doubleValue() > min.doubleValue()))
+                ? value
+                : min);
+        value = (((max == null) || (value == null) || (value.doubleValue() < max.doubleValue()))
+                ? value
+                : max);
+        return value;
+    }
+
+    /**
+     * Centers the domain axis on origin.
+     *
+     * @param origin
+     */
+    public void centerOnDomainOrigin(@NonNull Number origin) {
+        centerOnDomainOrigin(origin, null, BoundaryMode.AUTO);
+    }
+
+    /**
+     * Centers the domain on origin, calculating the upper and lower boundaries of the axis
+     * using mode and extent.
+     *
+     * @param origin
+     * @param extent
+     * @param mode
+     */
+    public void centerOnDomainOrigin(@NonNull Number origin, Number extent, BoundaryMode mode) {
+        if (origin == null) {
+            throw new IllegalArgumentException("Origin param cannot be null.");
+        }
+        constraints.setDomainFramingModel(XYFramingModel.ORIGIN);
+        setUserDomainOrigin(origin);
+        domainOriginExtent = extent;
+        domainOriginBoundaryMode = mode;
+
+        Number[] minMax = getOriginMinMax(domainOriginBoundaryMode, userDomainOrigin, domainOriginExtent);
+        constraints.setMinX(minMax[0]);
+        constraints.setMaxX(minMax[1]);
+    }
+
+    /**
+     * Centers the range axis on origin.
+     *
+     * @param origin
+     */
+    public void centerOnRangeOrigin(@NonNull Number origin) {
+        centerOnRangeOrigin(origin, null, BoundaryMode.AUTO);
+    }
+
+    /**
+     * Centers the domain on origin, calculating the upper and lower boundaries of the axis
+     * using mode and extent.
+     *
+     * @param origin
+     * @param extent
+     * @param mode
+     */
+    @SuppressWarnings("SameParameterValue")
+    public void centerOnRangeOrigin(@NonNull Number origin, Number extent, BoundaryMode mode) {
+        if (origin == null) {
+            throw new IllegalArgumentException("Origin param cannot be null.");
+        }
+        constraints.setRangeFramingModel(XYFramingModel.ORIGIN);
+        setUserRangeOrigin(origin);
+        rangeOriginExtent = extent;
+        rangeOriginBoundaryMode = mode;
+
+        Number[] minMax = getOriginMinMax(rangeOriginBoundaryMode, userRangeOrigin, rangeOriginExtent);
+        constraints.setMinY(minMax[0]);
+        constraints.setMaxY(minMax[1]);
+    }
+
+    /**
+     *
+     * @param mode
+     * @param origin
+     * @param extent
+     * @return result[0] is min, result[1] is max
+     */
+    protected Number[] getOriginMinMax(BoundaryMode mode, Number origin, Number extent) {
+        if (mode == BoundaryMode.FIXED) {
+            double o = origin.doubleValue();
+            double e = extent.doubleValue();
+            return new Number[] {o - e, o + e};
+        }
+        return new Number[] {null, null};
+    }
+
+    /**
+     * Returns the distance between x and y.
+     * Result is never a negative number.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    private static double distance(double x, double y) {
+        if (x > y) {
+            return x - y;
+        } else {
+            return y - x;
+        }
+    }
+
+    public void updateDomainMinMaxForOriginModel() {
+        double origin = userDomainOrigin.doubleValue();
+        double maxDelta = distance(bounds.getMaxX().doubleValue(), origin);
+        double minDelta = distance(bounds.getMinX().doubleValue(), origin);
+        double delta = maxDelta > minDelta ? maxDelta : minDelta;
+        double lowerBoundary = origin - delta;
+        double upperBoundary = origin + delta;
+        switch (domainOriginBoundaryMode) {
+            case AUTO:
+                bounds.setMinX(lowerBoundary);
+                bounds.setMaxX(upperBoundary);
+
+                break;
+            // if fixed, then the value already exists within "user" vals.
+            case FIXED:
+                break;
+            case GROW: {
+
+                if (prevMinX == null || lowerBoundary < prevMinX.doubleValue()) {
+                    bounds.setMinX(lowerBoundary);
+                } else {
+                    bounds.setMinX(prevMinX);
+                }
+
+                if (prevMaxX == null || upperBoundary > prevMaxX.doubleValue()) {
+                    bounds.setMaxX(upperBoundary);
+                } else {
+                    bounds.setMaxX(prevMaxX);
+                }
+            }
+            break;
+            case SHRINK:
+                if (prevMinX == null || lowerBoundary > prevMinX.doubleValue()) {
+                    bounds.setMinX(lowerBoundary);
+                } else {
+                    bounds.setMinX(prevMinX);
+                }
+
+                if (prevMaxX == null || upperBoundary < prevMaxX.doubleValue()) {
+                    bounds.setMaxX(upperBoundary);
+                } else {
+                    bounds.setMaxX(prevMaxX);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Domain Origin Boundary Mode not yet supported: " + domainOriginBoundaryMode);
+        }
+    }
+
+    public void updateRangeMinMaxForOriginModel() {
+        switch (rangeOriginBoundaryMode) {
+            case AUTO:
+                double origin = userRangeOrigin.doubleValue();
+                double maxDelta = distance(bounds.getMaxY().doubleValue(), origin);
+                double minDelta = distance(bounds.getMinY().doubleValue(), origin);
+                if (maxDelta > minDelta) {
+                    bounds.setMinY(origin - maxDelta);
+                    bounds.setMaxY(origin + maxDelta);
+                } else {
+                    bounds.setMinY(origin - minDelta);
+                    bounds.setMaxY(origin + minDelta);
+                }
+                break;
+            case FIXED:
+            case GROW:
+            case SHRINK:
+            default:
+                throw new UnsupportedOperationException(
+                        "Range Origin Boundary Mode not yet supported: " + rangeOriginBoundaryMode);
+        }
+    }
+
+    /**
+     * Convenience method - wraps XYGraphWidget.getLinesPerRangeLabel().
+     * Equivalent to getGraphWidget().getLinesPerRangeLabel().
+     *
+     * @return
+     */
     public int getLinesPerRangeLabel() {
         return graph.getLinesPerRangeLabel();
     }
@@ -629,6 +976,7 @@ public class CustomXYPlot extends XYPlot {
     }
 
     /**
+     *
      * @return The current min/max values for real domain and range that fall within the visible
      * graph space.
      */
@@ -758,4 +1106,5 @@ public class CustomXYPlot extends XYPlot {
         XYSeriesRegistry registry = new XYSeriesRegistry();
         return registry;
     }
+
 }

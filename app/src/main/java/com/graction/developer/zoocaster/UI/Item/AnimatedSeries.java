@@ -1,5 +1,6 @@
 package com.graction.developer.zoocaster.UI.Item;
 
+import com.androidplot.Plot;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 
@@ -9,18 +10,18 @@ import com.androidplot.xy.XYSeries;
 
 public class AnimatedSeries implements XYSeries, Runnable {
 
-    private final XYPlot plot;
+    private final Plot plot;
     private final XYSeries series;
     private int step = 0;
     private int stepCount = 25;
     private float factor = 0;
 
-    public AnimatedSeries(XYPlot plot, XYSeries series) {
+    public AnimatedSeries(Plot plot, XYSeries series) {
         this.plot = plot;
         this.series = series;
     }
 
-    public AnimatedSeries(XYPlot plot, XYSeries series, int stepCount) {
+    public AnimatedSeries(Plot plot, XYSeries series, int stepCount) {
         this(plot, series);
         this.stepCount = stepCount;
     }
