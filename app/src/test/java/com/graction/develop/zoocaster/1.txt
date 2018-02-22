@@ -1,0 +1,10 @@
+insert into FineDust values
+(default, 0, 0, '좋음', 0, 30, 'TERMINATED', "#1DDB16", "좋음", "KOREA"),
+(default, 0, 0, '보통', 31, 80, 'TERMINATED', "#FFE400", "보통", "KOREA"),
+(default, 0, 0, '나쁨', 81, 150,'TERMINATED', "#F15F5F", "나쁨", "KOREA"),
+(default, 0, 0, '매우나쁨', 151, 300,'TERMINATED', "#FF0000", "매우나쁨", "KOREA"),
+
+(default, 0, 0, '좋음', 0, 30, 'TERMINATED', "#1DDB16", "좋음", "WHO"),
+(default, 0, 0, '보통', 31, 50, 'TERMINATED', "#FFE400", "보통", "WHO"),
+(default, 0, 0, '나쁨', 51, 100,'TERMINATED', "#F15F5F", "나쁨", "WHO"),
+(default, 0, 0, '매우나쁨', 101, 300,'TERMINATED', "#FF0000", "매우나쁨", "WHO")

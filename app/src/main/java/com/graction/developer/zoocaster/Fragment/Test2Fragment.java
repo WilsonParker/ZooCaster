@@ -91,7 +91,7 @@ plot.addSeries(series1test, series1Format);
     private void initXYPlot(XYPlot plot) {
         // create a couple arrays of y-values to plot:
         final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
-        Number[] series1Numbers = {null, 1, 8, 5, 2, 7, 10, null};
+        Number[] series1Numbers = {0, 1, 8, 5, 2, 7, 10, 0};
         Number[] series2Numbers = {0, 0, 0, 0, 0, 0, 0, 0};
 
         // turn the above arrays into XYSeries':

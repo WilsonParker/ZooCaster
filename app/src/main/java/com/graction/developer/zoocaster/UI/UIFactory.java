@@ -49,7 +49,7 @@ public class UIFactory {
         RAT_DEVICE_WIDTH = math.rounds(size.x / BASE_WIDTH, BASE_DIGIT);
         RAT_DEVICE_HEIGHT = math.rounds(size.y / BASE_HEIGHT, BASE_DIGIT);
 
-        logger.log(HLogger.LogType.INFO, "init", "%d : %d", size.x, size.y);
+//        logger.log(HLogger.LogType.INFO, "init", "%d : %d", size.x, size.y);
 
     }
 
@@ -99,8 +99,8 @@ public class UIFactory {
         }
         e.setLayoutParams(mLayoutParams);
 
-        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%,2f : %,2f", RAT_DEVICE_WIDTH, RAT_DEVICE_HEIGHT);
-        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%d : %d", mLayoutParams.width, mLayoutParams.height);
+//        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%,2f : %,2f", RAT_DEVICE_WIDTH, RAT_DEVICE_HEIGHT);
+//        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%d : %d", mLayoutParams.width, mLayoutParams.height);
         return e;
     }
 

@@ -1,6 +1,7 @@
 package com.graction.developer.zoocaster.Util.File;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,33 +9,44 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.util.Log;
 
+import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.Util.Thread.ThreadManager;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import retrofit2.http.Url;
 
 /**
  * Created by graction03 on 2017-09-29.
  */
 
 public class BaseActivityFileManager {
-    private static final BaseActivityFileManager ourInstance = new BaseActivityFileManager();
-    public enum FileType{
-        File, Image
+    public enum FileType {
+        File, Image, ByteArray
     }
+
+    private static final BaseActivityFileManager ourInstance = new BaseActivityFileManager();
+    private static final FileType DEFAULT_FILETYPE = FileType.Image;
+    private static final boolean OverrideDefault = false;
+
     private Activity activity;
     private AssetManager assetManager;
-    private final boolean OverrideDefault = false;
 
     private ThreadManager<byte[]> threadManager;
     private byte[] buf;
@@ -198,6 +210,33 @@ public class BaseActivityFileManager {
         return getDrawableFromAssets(assetManager, path);
     }
 
+    public Bitmap getBitmapFromStorage(String path) throws FileNotFoundException {
+        File file = new File(getPath() + path);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        return bitmap;
+    }
+
+    public File getFileFromStorage(String path) throws FileNotFoundException {
+        File file = new File(getPath() + path);
+        return file;
+    }
+
+    public byte[] getByteArrayFromStorage(String path) throws IOException {
+        File file = getFile(path);
+        byte[] bytes = new byte[(int) file.length()];
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
+        bufferedInputStream.read(bytes, 0 , bytes.length);
+        bufferedInputStream.close();
+        return bytes;
+    }
+
+    public byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return bytes;
+    }
+
     /*
     *
     * ex) path : images/background/test.gif
@@ -297,6 +336,7 @@ public class BaseActivityFileManager {
         }
         return result;
     }
+
     private String[] separatePathAndName(String file) {
         String[] result = new String[2];
         result[0] = file.substring(0, file.lastIndexOf("/") + 1);
@@ -319,11 +359,12 @@ public class BaseActivityFileManager {
     public String getPath(String file) {
         return getPath() + file;
     }
+
     public String getFilePath() {
         return activity.getFilesDir().getAbsolutePath() + File.separator;
     }
 
-    public File getFile(String file){
+    public File getFile(String file) {
         return new File(getPath() + file);
     }
 
@@ -332,13 +373,87 @@ public class BaseActivityFileManager {
     }
 
     public boolean isExistsAndSaveFile(String path, String name, String url) throws IOException, InterruptedException {
-        if(isExists(path + name)){
+        return isExistsAndSaveFile(path, name, url, DEFAULT_FILETYPE);
+    }
+
+    public boolean isExistsAndSaveFile(String path, String name, String url, FileType fileType) throws IOException, InterruptedException {
+        if (isExists(path + name)) {
             return true;
-        }else{
-            saveFile(path, name, url);
+        } else {
+            switch (fileType) {
+                case File:
+                    saveFile(path, name, url);
+                    break;
+                case Image:
+                    saveImage(path, name, url);
+                    break;
+                case ByteArray:
+                    saveByteArray(url, path + name);
+                    break;
+            }
         }
         return false;
     }
+
+    private String TAG = "BaseActivityFileManager";
+
+    public void saveByteArray(String url, String file) throws InterruptedException {
+        threadManager = new ThreadManager<byte[]>(
+                () -> {
+                    try {
+                        File saveFile = new File(getPath() + file);
+
+                        long startTime = System.currentTimeMillis();
+
+                        Log.d(TAG, "on do in background, url open connection");
+
+                        URL address = new URL(url);
+                        InputStream is = address.openConnection().getInputStream();
+                        Log.d(TAG, "on do in background, url get input stream");
+                        BufferedInputStream bis = new BufferedInputStream(is);
+                        Log.d(TAG, "on do in background, create buffered input stream");
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        Log.d(TAG, "on do in background, create buffered array output stream");
+
+                        byte[] img = new byte[1024];
+
+                        int current = 0;
+
+                        Log.d(TAG, "on do in background, write byte to baos");
+                        while ((current = bis.read()) != -1) {
+                            baos.write(current);
+                        }
+
+
+                        Log.d(TAG, "on do in background, done write");
+
+                        Log.d(TAG, "on do in background, create fos");
+                        FileOutputStream fos = new FileOutputStream(saveFile);
+                        fos.write(baos.toByteArray());
+
+                        Log.d(TAG, "on do in background, write to fos");
+                        fos.flush();
+
+                        fos.close();
+                        is.close();
+                        Log.d(TAG, "on do in background, done write to fos");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        threadManager.threadComplete();
+                    }
+                },
+                new ThreadManager.ThreadComplete() {
+                    @Override
+                    public void complete() {
+
+                    }
+                }
+        );
+        threadManager.run();
+    }
+
 }
 
  /*

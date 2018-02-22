@@ -75,7 +75,7 @@ public class HomeFragment extends BaseFragment {
         googleLocationManager = new GoogleLocationManager(address -> {
             logger.log(HLogger.LogType.INFO, "address : " + address);
 //                TV_address.setText(address);
-            binding.fragmentHomeTVAddress.setText(address);
+//            binding.fragmentHomeTVAddress.setText(address);
         });
 
 //        initUI();
@@ -123,6 +123,8 @@ public class HomeFragment extends BaseFragment {
                     } else {
                         logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
                         logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
+                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
+                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
                         endThread();
                     }
                 }
@@ -149,20 +151,20 @@ public class HomeFragment extends BaseFragment {
                 ImageModel imageModel = weatherModel.getImageModel();
                 try {
                     // Background Image
-                    GlideImageManager.getInstance().bindImage(getActivity(), binding.fragmentHomeIVBackground, new RequestOptions().centerCrop(), imageModel.getBackground_img_path(), imageModel.getBackground_img_name(), weatherModel.getBackground_img_url());
-
+                    GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeIVBackground, new RequestOptions().centerCrop(), imageModel.getBackground_img_path(), imageModel.getBackground_img_name(), weatherModel.getBackground_img_url());
                     // Character Image
-                    String character_path = "/assets/images/character/", character_img = "test2.gif";
-//                        baseActivityFileManager.saveImage(imageModel.getCharacter_img_path(), imageModel.getCharacter_img_name(), weatherModel.getCharacter_img_url());
-                    baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, "http://192.168.0.8:8101/zoocasterAssets/" + character_path + character_img);
-                    /*GifDrawable gifDrawable = new GifDrawable(new BufferedInputStream(new FileInputStream(baseActivityFileManager.getFile(character_path + character_img))));
-                    GifManager.getInstance().bindGif(gifDrawable
-                            , binding.fragmentHomeIVCharacter
-                            , loopNumber -> gifDrawable.stop()
-                            , (view) -> gifDrawable.start()
-                    );*/
+//                    String character_path = "/assets/images/character/", character_img = "test2.gif";
+                    String character_path = imageModel.getCharacter_img_path(), character_img = imageModel.getCharacter_img_name(),
+                            effect_path = imageModel.getEffect_img_path(), effect_img = imageModel.getEffect_img_name();
+//                    baseActivityFileManager.saveImage(imageModel.getCharacter_img_path(), imageModel.getCharacter_img_name(), weatherModel.getCharacter_img_url());
+//                    baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, "http://192.168.0.8:8101/lumi" + character_path + character_img);
+                    logger.log(HLogger.LogType.INFO, "reloadWeatherInfo()","%s : %s : %s", character_path, character_img, weatherModel.getCharacter_img_url());
+                    baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, weatherModel.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
+                    setGifAnimate(binding.fragmentHomeIVCharacter, character_path + character_img);
 
-                    setGifAnimate(binding.fragmentHomeIVCharacter2, character_path + character_img);
+//                    baseActivityFileManager.isExistsAndSaveFile(effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
+//                    binding.fragmentHomeGVEffect.setImageDrawable(baseActivityFileManager.getDrawableFromAssets(effect_path+effect_img));
+                    GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeGVEffect, new RequestOptions().centerCrop(), effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
                 } catch (Exception e) {
                     logger.log(HLogger.LogType.ERROR, "reloadWeatherInfo()", "reloadWeatherInfo Error", e);
                 }

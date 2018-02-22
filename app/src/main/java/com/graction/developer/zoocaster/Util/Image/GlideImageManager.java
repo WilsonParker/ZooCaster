@@ -99,10 +99,23 @@ public class GlideImageManager {
      * If you have an image, import it download as url if not
      */
     public void bindImage(Context context, ImageView imageView, RequestOptions requestOptions, String path, String name, String url) throws IOException, InterruptedException {
+        bindImage(context, imageView, requestOptions, path, name, url, BaseActivityFileManager.FileType.Image);
+    }
+
+    public void bindImage(Context context, ImageView imageView, RequestOptions requestOptions, String path, String name, String url, BaseActivityFileManager.FileType fileType) throws IOException, InterruptedException {
         BaseActivityFileManager baseActivityFileManager = BaseActivityFileManager.getInstance();
         RequestBuilder requestBuilder;
-        if (baseActivityFileManager.isExistsAndSaveFile(path, name, url)) {
-            requestBuilder = Glide.with(context).load(baseActivityFileManager.getFile(path + name));
+        if (baseActivityFileManager.isExistsAndSaveFile(path, name, url, fileType)) {
+            switch (fileType) {
+                case ByteArray:
+                    requestBuilder = Glide.with(context).load(baseActivityFileManager.getByteArrayFromStorage(path + name));
+                    break;
+                case File:
+                case Image:
+                default:
+                    requestBuilder = Glide.with(context).load(baseActivityFileManager.getFile(path + name));
+                    break;
+            }
         } else {
             requestBuilder = Glide.with(context).load(url);
         }
@@ -110,7 +123,6 @@ public class GlideImageManager {
             requestBuilder.apply(requestOptions);
         requestBuilder.into(imageView);
     }
-
 }
 
 
