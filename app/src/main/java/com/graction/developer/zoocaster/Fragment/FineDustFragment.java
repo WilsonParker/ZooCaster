@@ -1,0 +1,126 @@
+package com.graction.developer.zoocaster.Fragment;
+
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.graction.developer.zoocaster.Data.DataStorage;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
+import com.graction.developer.zoocaster.Model.VO.FineDustVO;
+import com.graction.developer.zoocaster.Net.Net;
+import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.databinding.FragmentFinedustBinding;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualityModel;
+
+public class FineDustFragment extends BaseFragment {
+    private static final int SYNC_ID = 0B0100;
+    private FragmentFinedustBinding binding;
+    private ArrayList<FineDustVO> fineDustStandard;
+
+    public static Fragment getInstance() {
+        Fragment fragment = new FineDustFragment();
+        return fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_finedust, null, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    protected void init(View view) {
+        binding.setActivity(this);
+        initFineDustStandard();
+    }
+
+    private void initFineDustStandard() {
+        Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
+        setCall(call);
+        addAction(() -> call.enqueue(new Callback<SimpleResponseModel<ArrayList<FineDustVO>>>() {
+            @Override
+            public void onResponse(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Response<SimpleResponseModel<ArrayList<FineDustVO>>> response) {
+                if (response.isSuccessful()) {
+                    logger.log(HLogger.LogType.INFO, "void onResponse(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Response<SimpleResponseModel<ArrayList<FineDustVO>>> response)", "isSuccessFul");
+                    fineDustStandard = response.body().getResult();
+                    setIntegratedAirQualityItem();
+                }
+                endThread(SYNC_ID);
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Throwable t) {
+                logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
+                endThread(SYNC_ID);
+            }
+        }), SYNC_ID);
+        startSync();
+    }
+
+    public String getGrade(String s) {
+        if (s != null) {
+            int value = Integer.parseInt(s);
+            for (FineDustVO vo : fineDustStandard) {
+                if (vo.getFineDust_min() <= value && value <= vo.getFineDust_max()) {
+                    return vo.getFineDust_grade();
+                }
+            }
+        }
+        return "?";
+    }
+
+    public String getColor(String s) {
+        if (s != null) {
+            int value = Integer.parseInt(s);
+            for (FineDustVO vo : fineDustStandard) {
+                if (vo.getFineDust_min() <= value && value <= vo.getFineDust_max()) {
+                    return vo.getFineDust_color();
+                }
+            }
+        }
+        return "#FFFFFF";
+    }
+
+    public String getColorForGrade(String grade) {
+        if (grade != null) {
+            for (FineDustVO vo : fineDustStandard) {
+                if (grade.equals(vo.getFineDust_grade())) {
+                    return vo.getFineDust_color();
+                }
+            }
+        }
+        return "#FFFFFF";
+    }
+
+    private void setIntegratedAirQualityItem() {
+        if (integratedAirQualityModel != null) {
+            binding.setIntegratedAirQualityModelItem(DataStorage.integratedAirQualityModel.getFirstItem());
+            logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : "+DataStorage.integratedAirQualityModel.getFirstItem());
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            binding.donutProgress.drawWithAnimate();
+            setIntegratedAirQualityItem();
+//            binding.executePendingBindings();
+            binding.notifyChange();
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+}

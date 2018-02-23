@@ -10,10 +10,6 @@
             type="com.graction.developer.zoocaster.Model.Response.WeatherModel" />
 
         <variable
-            name="integratedAirQualityModel"
-            type="com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel" />
-
-        <variable
             name="integratedAirQualityModelItem"
             type="com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel.IntegratedAirQualityModelItem" />
     </data>

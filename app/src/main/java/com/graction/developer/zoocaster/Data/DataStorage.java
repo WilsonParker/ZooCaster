@@ -2,9 +2,12 @@ package com.graction.developer.zoocaster.Data;
 
 
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
+import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Model.Xml.Weather;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**

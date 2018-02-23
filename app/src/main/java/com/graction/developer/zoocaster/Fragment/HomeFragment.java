@@ -49,11 +49,6 @@ public class HomeFragment extends BaseFragment {
     private GpsManager gpsManager;
     private GoogleLocationManager googleLocationManager;
     private BaseActivityFileManager baseActivityFileManager = BaseActivityFileManager.getInstance();
-    private Call call;
-    private SyncObject syncObject = SyncObject.getInstance();
-
-
-    private String background_img_url = "", character_img_url = "", effect_img_url = "";
 
     public static Fragment getInstance() {
         return instance;
@@ -100,46 +95,34 @@ public class HomeFragment extends BaseFragment {
         // callIntegratedAirQuality();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (call.isExecuted())
-            call.cancel();
-    }
-
-
     private void currentWeather() {
-        call = Net.getInstance().getFactoryIm().selectWeather(gpsManager.getLatitude(), gpsManager.getLongitude());
-        try {
-            syncObject.addAction(() -> call.enqueue(new Callback<WeatherModel>() {
-                @Override
-                public void onResponse(Call<WeatherModel> call, Response<WeatherModel> response) {
-                    if (response.isSuccessful()) {
-                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "isSuccessful");
-                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
-                        weatherModel = response.body();
-                        reloadWeatherInfo();
-                        callIntegratedAirQuality();
-                    } else {
-                        logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
-                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
-                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
-                        logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
-                        endThread();
-                    }
+        Call call = Net.getInstance().getFactoryIm().selectWeather(gpsManager.getLatitude(), gpsManager.getLongitude());
+        setCall(call);
+        addAction(() -> call.enqueue(new Callback<WeatherModel>() {
+            @Override
+            public void onResponse(Call<WeatherModel> call, Response<WeatherModel> response) {
+                if (response.isSuccessful()) {
+                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "isSuccessful");
+                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
+                    weatherModel = response.body();
+                    reloadWeatherInfo();
+                    callIntegratedAirQuality();
+                } else {
+                    logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
+                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
+                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
+                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
+                    endThread(SYNC_ID);
                 }
+            }
 
-                @Override
-                public void onFailure(Call<WeatherModel> call, Throwable t) {
-                    logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
-                    endThread();
-                }
-            }), SYNC_ID);
-
-            syncObject.start();
-        } catch (InterruptedException e) {
-            logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "InterruptedException", e);
-        }
+            @Override
+            public void onFailure(Call<WeatherModel> call, Throwable t) {
+                logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
+                endThread(SYNC_ID);
+            }
+        }), SYNC_ID);
+        startSync();
     }
 
     private void reloadWeatherInfo() {
@@ -175,17 +158,18 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void callIntegratedAirQuality() {
-        call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude());
+        Call call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude());
+        setCall(call);
         call.enqueue(new Callback<IntegratedAirQualityModel>() {
             @Override
             public void onResponse(Call<IntegratedAirQualityModel> call, Response<IntegratedAirQualityModel> response) {
                 if (response.isSuccessful()) {
                     integratedAirQualityModel = response.body();
                     if (integratedAirQualityModel != null) {
-                        binding.setIntegratedAirQualityModel(integratedAirQualityModel);
+//                        binding.setIntegratedAirQualityModel(integratedAirQualityModel);
                         binding.setIntegratedAirQualityModelItem(integratedAirQualityModel.getFirstItem());
                         logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualityModel);
-                        endThread();
+                        endThread(SYNC_ID);
                     }
                 }
             }
@@ -193,7 +177,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onFailure(Call<IntegratedAirQualityModel> call, Throwable t) {
                 logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                endThread();
+                endThread(SYNC_ID);
             }
         });
     }
@@ -207,11 +191,4 @@ public class HomeFragment extends BaseFragment {
         );
     }
 
-    private void endThread(){
-        try {
-            syncObject.end(SYNC_ID);
-        } catch (InterruptedException e) {
-            logger.log(HLogger.LogType.ERROR, "endThread()", "endThread InterruptedException", e);
-        }
-    }
 }

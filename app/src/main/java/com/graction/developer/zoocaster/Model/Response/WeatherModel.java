@@ -1,7 +1,7 @@
 package com.graction.developer.zoocaster.Model.Response;
 
 
-import com.graction.developer.zoocaster.Model.AddressItem;
+import com.graction.developer.zoocaster.Model.Item.AddressItem;
 import com.graction.developer.zoocaster.Model.FineDustModel;
 import com.graction.developer.zoocaster.Model.ImageModel;
 import com.graction.developer.zoocaster.Model.Weather.Clouds;

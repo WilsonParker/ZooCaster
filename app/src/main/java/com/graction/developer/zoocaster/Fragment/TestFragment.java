@@ -121,6 +121,12 @@ public class TestFragment extends BaseFragment {
         logger.log(INFO, simpleDateFormat.format(mCalendar.getTimeInMillis()));
     }
 
+    /*
+    *
+    * Test
+    *
+    * */
+
     public void test1() {
         VSManager.getInstance().vibrate(getActivity(), VSManager.PATTERN_1, VSManager.REPEAT_NONE);
     }

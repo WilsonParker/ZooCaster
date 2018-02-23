@@ -1,9 +1,13 @@
 package com.graction.developer.zoocaster.Net;
 
 import com.graction.developer.zoocaster.Model.Response.DailyForecast;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
+import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Model.Response.Forecast5DayModel;
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -26,4 +30,8 @@ public interface NetFactoryIm {
 	// call Integrated Air Quality
 	@GET("app/integratedAirQuality")
 	Call<IntegratedAirQualityModel> selectIntegratedAirQuality(@Query("lat") double lat, @Query("lon") double lon);
+
+	// get activated fineDustType list
+	@GET("app/fine_dust_standard")
+	Call<SimpleResponseModel<ArrayList<FineDustVO>>> selectFineDustStandard();
 }

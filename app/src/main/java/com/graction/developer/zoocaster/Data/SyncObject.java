@@ -24,7 +24,7 @@ public class SyncObject {
         list.offer(new SyncItem(action, id));
     }
 
-    public void start() throws InterruptedException {
+    public synchronized void start() throws InterruptedException {
         if (!isRunning && list.size() > 0) {
             nowSync = list.poll();
             Handler handler = new Handler();

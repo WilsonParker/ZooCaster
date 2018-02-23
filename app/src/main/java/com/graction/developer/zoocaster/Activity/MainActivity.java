@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.graction.developer.zoocaster.Adapter.FragmentAdapter;
 import com.graction.developer.zoocaster.Fragment.AlarmFragment;
+import com.graction.developer.zoocaster.Fragment.FineDustFragment;
 import com.graction.developer.zoocaster.Fragment.Forecast5DayFragment;
 import com.graction.developer.zoocaster.Fragment.HomeFragment;
 import com.graction.developer.zoocaster.Fragment.Test2Fragment;
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity {
         ArrayList<FragmentAdapter.TabItem> items = new ArrayList<>();
         items.add(new FragmentAdapter.TabItem(HomeFragment.getInstance(), R.drawable.tab_home));
         items.add(new FragmentAdapter.TabItem(Test2Fragment.getInstance(), R.drawable.tab_week));
-        items.add(new FragmentAdapter.TabItem(TestFragment.getInstance(), R.drawable.tab_dust));
+        items.add(new FragmentAdapter.TabItem(FineDustFragment.getInstance(), R.drawable.tab_dust));
         items.add(new FragmentAdapter.TabItem(AlarmFragment.getInstance(), R.drawable.tab_alarm));
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), items, (index, item) -> {
             binding.activityMainTab.getTabAt(index).setCustomView(fragmentAdapter.getView(MainActivity.this, R.layout.item_tab, item.getResIcon()));

@@ -535,6 +535,7 @@ public class HareCircleProgressView extends View {
         canvas.drawArc(this.finishedOuterRect, (float) this.getStartingDegree(), this.getAnimProgressAngle(), false, this.finishedPaint);
 
         perProgress = mathematicsManager.roundsParseDouble(progress / mathematicsManager.roundsParseDouble(donut_animate_time / ANIMATE_CYCLE, 5), 5);
+
     }
 
     public void drawWithAnimate() {

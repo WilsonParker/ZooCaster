@@ -1,4 +1,4 @@
-package com.graction.developer.zoocaster.Model;
+package com.graction.developer.zoocaster.Model.Item;
 
 public class AddressItem {
     public AddressItem() {
