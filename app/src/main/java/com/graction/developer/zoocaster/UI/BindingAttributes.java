@@ -3,6 +3,7 @@ package com.graction.developer.zoocaster.UI;
 import android.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ public class BindingAttributes {
 
     @BindingAdapter("textColor")
     public static void setTextColor(TextView textView, String color){
-        textView.setTextColor(Color.parseColor(color));
+        if(color != null)
+            textView.setTextColor(Color.parseColor(color));
     }
 }

@@ -1,19 +1,21 @@
 insert into FineDust values
-(default, 0, 0, '좋음', 0, 30, 'TERMINATED', "좋음", "KOREA"),
-(default, 0, 0, '보통', 31, 80, 'TERMINATED', "보통", "KOREA"),
-(default, 0, 0, '나쁨', 81, 150,'TERMINATED', "나쁨", "KOREA"),
-(default, 0, 0, '매우나쁨', 151, 300,'TERMINATED', "매우나쁨", "KOREA"),
-(default, 0, 0, '좋음', 0, 30, 'TERMINATED', "좋음", "WHO"),
-(default, 0, 0, '보통', 31, 50, 'TERMINATED', "보통", "WHO"),
-(default, 0, 0, '나쁨', 51, 100,'TERMINATED', "나쁨", "WHO"),
-(default, 0, 0, '매우나쁨', 101, 300,'TERMINATED', "매우나쁨", "WHO")
+(default, "pm10", 0, 0, '좋음', 0, 30, 'TERMINATED', "좋음", "KOREA"),
+(default, "pm10", 0, 0, '보통', 31, 80, 'TERMINATED', "보통", "KOREA"),
+(default, "pm10", 0, 0, '나쁨', 81, 150,'TERMINATED', "나쁨", "KOREA"),
+(default, "pm10", 0, 0, '매우나쁨', 151, 300,'TERMINATED', "매우나쁨", "KOREA"),
+(default, "pm10", 0, 0, '좋음', 0, 30, 'TERMINATED', "좋음", "WHO"),
+(default, "pm10", 0, 0, '보통', 31, 50, 'TERMINATED', "보통", "WHO"),
+(default, "pm10", 0, 0, '나쁨', 51, 100,'TERMINATED', "나쁨", "WHO"),
+(default, "pm10", 0, 0, '매우나쁨', 101, 300,'TERMINATED', "매우나쁨", "WHO")
+,
 
-insert into DataStandard values
-("좋음",""#1DDB16"),
-("보통",""#FFE400"),
-("나쁨",""#F15F5F"),
-("매우나쁨",""#FF0000")
+(default, "pm2.5", 0, 0, '좋음', 0, 15, 'TERMINATED', "좋음", "KOREA"),
+(default, "pm2.5", 0, 0, '보통', 16, 50, 'TERMINATED', "보통", "KOREA"),
+(default, "pm2.5", 0, 0, '나쁨', 51, 100,'TERMINATED', "나쁨", "KOREA"),
+(default, "pm2.5", 0, 0, '매우나쁨', 101, 300,'TERMINATED', "매우나쁨", "KOREA"),
+(default, "pm2.5", 0, 0, '좋음', 0, 15, 'TERMINATED', "좋음", "WHO"),
+(default, "pm2.5", 0, 0, '보통', 16, 25, 'TERMINATED', "보통", "WHO"),
+(default, "pm2.5", 0, 0, '나쁨', 26, 50,'TERMINATED', "나쁨", "WHO"),
+(default, "pm2.5", 0, 0, '매우나쁨', 51, 300,'TERMINATED', "매우나쁨", "WHO")
+
 ;
-
-
-

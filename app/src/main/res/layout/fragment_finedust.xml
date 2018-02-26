@@ -10,8 +10,15 @@
             type="com.graction.developer.zoocaster.Fragment.FineDustFragment" />
 
         <variable
-            name="integratedAirQualityModelItem"
+            name="modelItem"
             type="com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel.IntegratedAirQualityModelItem" />
+
+        <variable
+            name="pm10"
+            type="String" />
+        <variable
+            name="pm25"
+            type="String" />
     </data>
 
     <FrameLayout
@@ -55,14 +62,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.pm10Value}" />
+                    android:text="@{modelItem.pm10Value}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{activity.getGrade(integratedAirQualityModelItem.pm10Value)}"
-                    textColor="@{activity.getColor(integratedAirQualityModelItem.pm10Value)}" />
+                    android:text="@{modelItem.getGrade(modelItem.pm10Value, pm10)}"
+                    textColor="@{modelItem.getColorForGrade(modelItem.getGrade(modelItem.pm10Value, pm10))}" />
 
             </LinearLayout>
 
@@ -81,14 +88,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.pm25Value}" />
+                    android:text="@{modelItem.pm25Value}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{activity.getGrade(integratedAirQualityModelItem.pm25Value)}"
-                    textColor="@{activity.getColor(integratedAirQualityModelItem.pm25Value)}" />
+                    android:text="@{modelItem.getGrade(modelItem.pm25Value, pm25)}"
+                    textColor="@{modelItem.getColorForGrade(modelItem.getGrade(modelItem.pm25Value, pm25))}" />
             </LinearLayout>
 
             <LinearLayout
@@ -106,14 +113,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.khaiValue}" />
+                    android:text="@{modelItem.khaiValue}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.khaiGrade}"
-                    textColor="@{activity.getColorForGrade(integratedAirQualityModelItem.khaiGrade)}" />
+                    android:text="@{modelItem.getGrade(modelItem.khaiGrade)}"
+                    textColor="@{modelItem.getColorForIntGrade(modelItem.khaiGrade)}" />
             </LinearLayout>
 
             <LinearLayout
@@ -131,14 +138,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.o3Value}" />
+                    android:text="@{modelItem.o3Value}" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
-                    android:text="@{integratedAirQualityModelItem.o3Grade}"
-                    textColor="@{activity.getColorForGrade(integratedAirQualityModelItem.o3Grade)}" />
+                    android:text="@{modelItem.getGrade(modelItem.o3Grade)}"
+                    textColor="@{modelItem.getColorForIntGrade(modelItem.o3Grade)}" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

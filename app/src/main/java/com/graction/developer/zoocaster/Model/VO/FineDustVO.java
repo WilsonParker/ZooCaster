@@ -4,13 +4,14 @@ package com.graction.developer.zoocaster.Model.VO;
 import com.graction.developer.zoocaster.Model.ImageModel;
 
 /*
-	Open Data API
+    Open Data API
 	등급	좋음	보통	나쁨	매우나쁨
 	Grade 값	1	2	3	4
 */
 public class FineDustVO extends ImageModel {
-    private int fineDust_index, fineDust_min, fineDust_max, fineDust_background_ref_file_index, fineDust_character_ref_file_index;
-    private String fineDust_grade, fineDust_activation, fineDustType_activation, fineDust_color, fineDust_message;
+    private int fineDust_index, fineDust_background_ref_file_index, fineDust_character_ref_file_index;
+    private double fineDust_min, fineDust_max;
+    private String fineDust_grade, fineDust_activation, fineDustType_activation, fineDust_color, fineDust_message, fineDust_type;
 
     public int getFineDust_index() {
         return fineDust_index;
@@ -20,7 +21,7 @@ public class FineDustVO extends ImageModel {
         this.fineDust_index = fineDust_index;
     }
 
-    public int getFineDust_min() {
+    public double getFineDust_min() {
         return fineDust_min;
     }
 
@@ -28,7 +29,7 @@ public class FineDustVO extends ImageModel {
         this.fineDust_min = fineDust_min;
     }
 
-    public int getFineDust_max() {
+    public double getFineDust_max() {
         return fineDust_max;
     }
 
@@ -92,9 +93,17 @@ public class FineDustVO extends ImageModel {
         this.fineDustType_activation = fineDustType_activation;
     }
 
-    public String getStringGrade(String grade){
+    public String getFineDust_type() {
+        return fineDust_type;
+    }
+
+    public void setFineDust_type(String fineDust_type) {
+        this.fineDust_type = fineDust_type;
+    }
+
+    public String getStringGrade(String grade) {
         String result = "보통";
-        switch(grade){
+        switch (grade) {
             case "1":
                 result = "좋음";
                 break;
@@ -110,5 +119,4 @@ public class FineDustVO extends ImageModel {
         }
         return result;
     }
-
 }

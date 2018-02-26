@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.graction.developer.zoocaster.Data.DataStorage;
+import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
 import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Net.Net;
@@ -70,44 +71,13 @@ public class FineDustFragment extends BaseFragment {
         startSync();
     }
 
-    public String getGrade(String s) {
-        if (s != null) {
-            int value = Integer.parseInt(s);
-            for (FineDustVO vo : fineDustStandard) {
-                if (vo.getFineDust_min() <= value && value <= vo.getFineDust_max()) {
-                    return vo.getFineDust_grade();
-                }
-            }
-        }
-        return "?";
-    }
-
-    public String getColor(String s) {
-        if (s != null) {
-            int value = Integer.parseInt(s);
-            for (FineDustVO vo : fineDustStandard) {
-                if (vo.getFineDust_min() <= value && value <= vo.getFineDust_max()) {
-                    return vo.getFineDust_color();
-                }
-            }
-        }
-        return "#FFFFFF";
-    }
-
-    public String getColorForGrade(String grade) {
-        if (grade != null) {
-            for (FineDustVO vo : fineDustStandard) {
-                if (grade.equals(vo.getFineDust_grade())) {
-                    return vo.getFineDust_color();
-                }
-            }
-        }
-        return "#FFFFFF";
-    }
-
     private void setIntegratedAirQualityItem() {
         if (integratedAirQualityModel != null) {
-            binding.setIntegratedAirQualityModelItem(DataStorage.integratedAirQualityModel.getFirstItem());
+            IntegratedAirQualityModel.IntegratedAirQualityModelItem item = DataStorage.integratedAirQualityModel.getFirstItem();
+            item.setFineDustStandard(fineDustStandard);
+            binding.setPm10(IntegratedAirQualityModel.TYPE_PM10);
+            binding.setPm25(IntegratedAirQualityModel.TYPE_PM25);
+            binding.setModelItem(item);
             logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : "+DataStorage.integratedAirQualityModel.getFirstItem());
         }
     }

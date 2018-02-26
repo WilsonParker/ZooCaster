@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Response;
 
+import com.graction.developer.zoocaster.Model.VO.FineDustVO;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -8,6 +11,7 @@ import java.util.List;
 	Grade 값	1	2	3	4
 */
 public class IntegratedAirQualityModel {
+    public static final String TYPE_PM10 = "pm10", TYPE_PM25 = "pm2.5", TYPE_O3 = "o3";
     private List<IntegratedAirQualityModelItem> list;
     private IntegratedAirQualityModelItem parm, ArpltnInforInqireSvcVo;
     private int totalCount;
@@ -58,6 +62,7 @@ public class IntegratedAirQualityModel {
     }
 
     public class IntegratedAirQualityModelItem {
+        private ArrayList<FineDustVO> fineDustStandard;
         private String _returnType, dateTerm        // 날짜 기간
                 , dataTime, mangName        // 측정망 정보
                 , resultCode    // 결과 코드
@@ -372,6 +377,14 @@ public class IntegratedAirQualityModel {
             this.o3Grade = o3Grade;
         }
 
+        public ArrayList<FineDustVO> getFineDustStandard() {
+            return fineDustStandard;
+        }
+
+        public void setFineDustStandard(ArrayList<FineDustVO> fineDustStandard) {
+            this.fineDustStandard = fineDustStandard;
+        }
+
         @Override
         public String toString() {
             return "IntegratedAirQualityModelItem{" +
@@ -408,56 +421,104 @@ public class IntegratedAirQualityModel {
                     '}';
         }
 
-        public String gradeToString(String grade) {
+        public String getGrade(String grade) {
             String result;
             switch (grade) {
                 case "1":
                     result = "좋음";
                     break;
+                case "2":
+                    result = "보통";
+                    break;
                 case "3":
                     result = "나쁨";
                     break;
                 case "4":
-                    result = "매우나쁨";
-                    break;
-                case "2":
                 default:
-                    result = "보통";
+                    result = "매우나쁨";
                     break;
             }
             return result;
+        }
+
+        public String getGrade(String value, String type) {
+            if (value != null && fineDustStandard != null) {
+                int i = Integer.parseInt(value);
+                for (FineDustVO vo : fineDustStandard) {
+                    if (vo.getFineDust_type().equalsIgnoreCase(type) && vo.getFineDust_min() <= i && i <= vo.getFineDust_max()) {
+                        return vo.getFineDust_grade();
+                    }
+                }
+            }
+            return "?";
         }
 
         public String gradeToStringForKey(String key) {
             String result;
             switch (key) {
                 case KEY_CO:
-                    result = gradeToString(getCoGrade());
+                    result = getGrade(getCoGrade());
                     break;
                 case KEY_KHAI:
-                    result = gradeToString(getKhaiGrade());
+                    result = getGrade(getKhaiGrade());
                     break;
                 case KEY_PM10:
-                    result = gradeToString(getPm10Grade());
+                    result = getGrade(getPm10Grade());
                     break;
                 case KEY_PM25:
-                    result = gradeToString(getPm25Grade());
+                    result = getGrade(getPm25Grade());
                     break;
                 case KEY_O3:
-                    result = gradeToString(getO3Grade());
+                    result = getGrade(getO3Grade());
                     break;
                 case KEY_SO2:
-                    result = gradeToString(getSo2Grade());
+                    result = getGrade(getSo2Grade());
                     break;
                 case KEY_NO2:
-                    result = gradeToString(getNo2Grade());
+                    result = getGrade(getNo2Grade());
                     break;
                 default:
-                    result = gradeToString("");
+                    result = getGrade("");
                     break;
             }
             return result;
         }
+
+        public String getColor(String value) {
+            if (value != null) {
+                int i = Integer.parseInt(value);
+                for (FineDustVO vo : fineDustStandard) {
+                    if (vo.getFineDust_min() <= i && i <= vo.getFineDust_max()) {
+                        return vo.getFineDust_color();
+                    }
+                }
+            }
+            return "#000000";
+        }
+
+        public String getColorForGrade(String grade) {
+            if (grade != null) {
+                for (FineDustVO vo : fineDustStandard) {
+                    if (grade.equals(vo.getFineDust_grade())) {
+                        return vo.getFineDust_color();
+                    }
+                }
+            }
+            return "#000000";
+        }
+
+        public String getColorForIntGrade(String grade) {
+            if (grade != null) {
+                String tGrade = getGrade(grade);
+                for (FineDustVO vo : fineDustStandard) {
+                    if (tGrade .equals(vo.getFineDust_grade())) {
+                        return vo.getFineDust_color();
+                    }
+                }
+            }
+            return "#000000";
+        }
+
     }
 
 }
