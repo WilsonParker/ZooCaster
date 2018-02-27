@@ -73,20 +73,10 @@ public class HomeFragment extends BaseFragment {
 //            binding.fragmentHomeTVAddress.setText(address);
         });
 
-//        initUI();
+        binding.fragmentHomeSwipe.setOnRefreshListener(()->{
+            currentWeather();
+        });
         currentWeather();
-    }
-
-    private void initUI() {
-        InputStream is = null;
-        try {
-            is = getActivity().getAssets().open("images/background/sunny.jpg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Bitmap b = BitmapFactory.decodeStream(is);
-
-        Glide.with(this).load(b).apply(new RequestOptions().centerCrop()).into(binding.fragmentHomeIVBackground);
     }
 
     @Override
@@ -148,7 +138,10 @@ public class HomeFragment extends BaseFragment {
 //                    baseActivityFileManager.isExistsAndSaveFile(effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
 //                    binding.fragmentHomeGVEffect.setImageDrawable(baseActivityFileManager.getDrawableFromAssets(effect_path+effect_img));
                     GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeGVEffect, new RequestOptions().centerCrop(), effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
+
+                    binding.fragmentHomeSwipe.setRefreshing(false);
                 } catch (Exception e) {
+                    binding.fragmentHomeSwipe.setRefreshing(false);
                     logger.log(HLogger.LogType.ERROR, "reloadWeatherInfo()", "reloadWeatherInfo Error", e);
                 }
             }

@@ -497,26 +497,28 @@ public class IntegratedAirQualityModel {
         }
 
         public String getColorForGrade(String grade) {
+            String color = "#000000";
             if (grade != null) {
                 for (FineDustVO vo : fineDustStandard) {
                     if (grade.equals(vo.getFineDust_grade())) {
-                        return vo.getFineDust_color();
+                        return vo.getFineDust_color() != null ? vo.getFineDust_color() : color;
                     }
                 }
             }
-            return "#000000";
+            return color;
         }
 
         public String getColorForIntGrade(String grade) {
+            String color = "#000000";
             if (grade != null) {
                 String tGrade = getGrade(grade);
                 for (FineDustVO vo : fineDustStandard) {
                     if (tGrade .equals(vo.getFineDust_grade())) {
-                        return vo.getFineDust_color();
+                        return vo.getFineDust_color() != null ? vo.getFineDust_color() : color;
                     }
                 }
             }
-            return "#000000";
+            return color;
         }
 
     }

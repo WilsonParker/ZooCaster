@@ -14,335 +14,346 @@
             type="com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel.IntegratedAirQualityModelItem" />
     </data>
 
-    <FrameLayout
-        android:id="@+id/fragment_home_root"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/fragment_home_IV_background"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/fragment_home_swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/fragment_home_GV_effect"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <View
-                style="@style/Style_MarginView"
-                android:layout_weight="84" />
-
-            <View
-                style="@style/Style_MarginView"
-                android:layout_weight="33.3" />
-
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/fragment_home_root"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="47.3"
-                android:gravity="center"
-                android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/fragment_home_IV_icon_weather"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="63.3" />
-            </LinearLayout>
-
-            <View
-                style="@style/Style_MarginView"
-                android:layout_weight="4.3" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="35.3"
-                android:gravity="center_horizontal"
-                android:weightSum="@string/DEVICE_STANDARD_WIDTH">
-
-                <TextView
-                    style="@style/Style_TextView_es"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_weather_info_1"
-                    tools:text="구름 조금" />
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="6.7" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6.7"
-                    android:orientation="vertical"
-                    android:weightSum="35.3">
-
-                    <!-- 최저 온도-->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="11.3"
-                        app:srcCompat="@drawable/arrow_down" />
-
-                </LinearLayout>
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="2.3" />
-
-                <TextView
-                    style="@style/Style_TextView_es"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:text='@{weatherModel.main.temp_min+"º"}'
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_weather_info_1"
-                    tools:text="10º" />
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="3.3" />
-
-                <TextView
-                    style="@style/Style_TextView_es"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_weather_delim"
-                    android:text=" / " />
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="3.3" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6.7"
-                    android:orientation="vertical"
-                    android:weightSum="35.3">
-
-                    <!-- 최고 온도-->
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="11.3"
-                        app:srcCompat="@drawable/arrow_up" />
-
-                </LinearLayout>
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="2.3" />
-
-                <TextView
-                    style="@style/Style_TextView_es"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:text='@{weatherModel.main.temp_max+"º"}'
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_weather_info_1"
-                    tools:text="19º" />
-
-            </LinearLayout>
-
-            <!-- android:layout_weight="44.3" -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="75"
-                android:gravity="center_horizontal|top">
-
-                <TextView
-                    style="@style/Style_TextView_es"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:text='@{weatherModel.main.temp+"º"}'
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_weather_current_temp"
-                    tools:text="17º" />
-            </LinearLayout>
-
-            <!-- Contains Character-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="122.3"
-                android:gravity="center_horizontal">
+                    android:id="@+id/fragment_home_IV_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/fragment_home_IV_character"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/fragment_home_GV_effect"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <View
-                style="@style/Style_MarginView"
-                android:layout_weight="13.3" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="66.3"
-                android:gravity="center_horizontal|top">
-
-                <TextView
-                    style="@style/Style_TextView_ei"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="top|center_horizontal"
-                    android:textColor="@color/fragment_home_TV_weather_info"
-                    android:textSize="@dimen/fragment_home_TV_message"
-                    tools:text="햇빛이 따끈따끈~\n 포근한 니트를 입고 싶은 날!" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="96"
-                android:gravity="center_horizontal"
-                android:weightSum="@string/DEVICE_STANDARD_WIDTH">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="255"
-                    android:background="@drawable/rectangle_black"
-                    android:orientation="vertical"
-                    android:weightSum="96">
+                    android:orientation="vertical">
+
+                    <View
+                        style="@style/Style_MarginView"
+                        android:layout_weight="84" />
+
+                    <View
+                        style="@style/Style_MarginView"
+                        android:layout_weight="33.3" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="29.7"
-                        android:weightSum="255">
+                        android:layout_weight="47.3"
+                        android:gravity="center"
+                        android:weightSum="@string/DEVICE_STANDARD_WIDTH">
 
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
+                        <ImageView
+                            android:id="@+id/fragment_home_IV_icon_weather"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="129"
-                            android:gravity="bottom|left"
-                            android:text="@string/fragment_home_TV_info2_1"
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="강수 확률" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="100"
-                            android:gravity="bottom|right"
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="20%" />
-
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="26.3"
-                        android:weightSum="255">
-
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="129"
-                            android:gravity="bottom|left"
-                            android:text="@string/fragment_home_TV_info2_2"
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="강수량" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="100"
-                            android:gravity="bottom|right"
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="0.0mm" />
-
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="26.3"
-                        android:weightSum="255">
-
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="129"
-                            android:gravity="bottom|left"
-                            android:text="@string/fragment_home_TV_info2_3"
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="미세먼지" />
-
-                        <TextView
-                            style="@style/Style_TextView_ei"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="100"
-                            android:gravity="bottom|right"
-                            android:text='@{integratedAirQualityModelItem.gradeToStringForKey(integratedAirQualityModelItem.KEY_PM10)}'
-                            android:textColor="@color/fragment_home_TV_weather_info"
-                            android:textSize="@dimen/fragment_home_TV_weather_info_2"
-                            tools:text="보통" />
-
-                        <View
-                            style="@style/Style_MarginView"
-                            android:layout_weight="13" />
+                            android:layout_weight="63.3" />
                     </LinearLayout>
 
                     <View
                         style="@style/Style_MarginView"
-                        android:layout_weight="16.7" />
+                        android:layout_weight="4.3" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="35.3"
+                        android:gravity="center_horizontal"
+                        android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+                        <TextView
+                            style="@style/Style_TextView_es"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_weather_info_1"
+                            tools:text="구름 조금" />
+
+                        <View
+                            style="@style/Style_MarginView"
+                            android:layout_weight="6.7" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6.7"
+                            android:orientation="vertical"
+                            android:weightSum="35.3">
+
+                            <!-- 최저 온도-->
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="11.3"
+                                app:srcCompat="@drawable/arrow_down" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Style_MarginView"
+                            android:layout_weight="2.3" />
+
+                        <TextView
+                            style="@style/Style_TextView_es"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:text='@{weatherModel.main.temp_min+"º"}'
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_weather_info_1"
+                            tools:text="10º" />
+
+                        <View
+                            style="@style/Style_MarginView"
+                            android:layout_weight="3.3" />
+
+                        <TextView
+                            style="@style/Style_TextView_es"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" / "
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_weather_delim" />
+
+                        <View
+                            style="@style/Style_MarginView"
+                            android:layout_weight="3.3" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6.7"
+                            android:orientation="vertical"
+                            android:weightSum="35.3">
+
+                            <!-- 최고 온도-->
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="11.3"
+                                app:srcCompat="@drawable/arrow_up" />
+
+                        </LinearLayout>
+
+                        <View
+                            style="@style/Style_MarginView"
+                            android:layout_weight="2.3" />
+
+                        <TextView
+                            style="@style/Style_TextView_es"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:text='@{weatherModel.main.temp_max+"º"}'
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_weather_info_1"
+                            tools:text="19º" />
+
+                    </LinearLayout>
+
+                    <!-- android:layout_weight="44.3" -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="75"
+                        android:gravity="center_horizontal|top">
+
+                        <TextView
+                            style="@style/Style_TextView_es"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top"
+                            android:text='@{weatherModel.main.temp+"º"}'
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_weather_current_temp"
+                            tools:text="17º" />
+                    </LinearLayout>
+
+                    <!-- Contains Character-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="122.3"
+                        android:gravity="center_horizontal">
+
+                        <pl.droidsonroids.gif.GifImageView
+                            android:id="@+id/fragment_home_IV_character"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/Style_MarginView"
+                        android:layout_weight="13.3" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="66.3"
+                        android:gravity="center_horizontal|top">
+
+                        <TextView
+                            style="@style/Style_TextView_ei"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="top|center_horizontal"
+                            android:textColor="@color/fragment_home_TV_weather_info"
+                            android:textSize="@dimen/fragment_home_TV_message"
+                            tools:text="햇빛이 따끈따끈~\n 포근한 니트를 입고 싶은 날!" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="96"
+                        android:gravity="center_horizontal"
+                        android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="255"
+                            android:background="@drawable/rectangle_black"
+                            android:orientation="vertical"
+                            android:weightSum="96">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="29.7"
+                                android:weightSum="255">
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="129"
+                                    android:gravity="bottom|left"
+                                    android:text="@string/fragment_home_TV_info2_1"
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="강수 확률" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="100"
+                                    android:gravity="bottom|right"
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="20%" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="26.3"
+                                android:weightSum="255">
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="129"
+                                    android:gravity="bottom|left"
+                                    android:text="@string/fragment_home_TV_info2_2"
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="강수량" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="100"
+                                    android:gravity="bottom|right"
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="0.0mm" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="26.3"
+                                android:weightSum="255">
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="129"
+                                    android:gravity="bottom|left"
+                                    android:text="@string/fragment_home_TV_info2_3"
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="미세먼지" />
+
+                                <TextView
+                                    style="@style/Style_TextView_ei"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="100"
+                                    android:gravity="bottom|right"
+                                    android:text='@{integratedAirQualityModelItem.gradeToStringForKey(integratedAirQualityModelItem.KEY_PM10)}'
+                                    android:textColor="@color/fragment_home_TV_weather_info"
+                                    android:textSize="@dimen/fragment_home_TV_weather_info_2"
+                                    tools:text="보통" />
+
+                                <View
+                                    style="@style/Style_MarginView"
+                                    android:layout_weight="13" />
+                            </LinearLayout>
+
+                            <View
+                                style="@style/Style_MarginView"
+                                android:layout_weight="16.7" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        style="@style/Style_MarginView"
+                        android:layout_weight="37" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <View
-                style="@style/Style_MarginView"
-                android:layout_weight="37" />
-        </LinearLayout>
-
-    </FrameLayout>
+            </FrameLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 </layout>

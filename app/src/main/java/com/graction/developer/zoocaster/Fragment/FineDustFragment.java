@@ -45,6 +45,7 @@ public class FineDustFragment extends BaseFragment {
     @Override
     protected void init(View view) {
         binding.setActivity(this);
+        binding.fragmentFinedustSwipe.setOnRefreshListener(() -> initFineDustStandard());
         initFineDustStandard();
     }
 
@@ -60,12 +61,14 @@ public class FineDustFragment extends BaseFragment {
                     setIntegratedAirQualityItem();
                 }
                 endThread(SYNC_ID);
+                binding.fragmentFinedustSwipe.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Throwable t) {
                 logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
                 endThread(SYNC_ID);
+                binding.fragmentFinedustSwipe.setRefreshing(false);
             }
         }), SYNC_ID);
         startSync();
@@ -78,7 +81,7 @@ public class FineDustFragment extends BaseFragment {
             binding.setPm10(IntegratedAirQualityModel.TYPE_PM10);
             binding.setPm25(IntegratedAirQualityModel.TYPE_PM25);
             binding.setModelItem(item);
-            logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : "+DataStorage.integratedAirQualityModel.getFirstItem());
+            logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + DataStorage.integratedAirQualityModel.getFirstItem());
         }
     }
 
