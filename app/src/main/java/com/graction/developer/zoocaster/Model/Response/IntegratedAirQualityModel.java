@@ -82,6 +82,8 @@ public class IntegratedAirQualityModel {
                 , coGrade, khaiGrade        // 통합환경대기지수
                 , no2Grade, o3Grade, pm10Grade, pm10Grade1h, pm25Grade, pm25Grade1h, so2Grade, stationCode, totalCount, rnum, pageNo;
 
+        private String pm10StrGrade, pm25StrGrade, o3StrGrade, no2StrGrade, khaiStrGrade, so2StrGrade, pm10Color, pm25Color, o3Color, no2Color, khaiColor, so2Color;
+
         public static final String KEY_CO = "co", KEY_KHAI = "khai", KEY_O3 = "o3", KEY_PM10 = "pm10", KEY_PM25 = "pm25", KEY_SO2 = "so2", KEY_NO2 = "no2";
 
         public String get_returnType() {
@@ -385,10 +387,107 @@ public class IntegratedAirQualityModel {
             this.fineDustStandard = fineDustStandard;
         }
 
+        public String getPm10StrGrade() {
+            return pm10StrGrade;
+        }
+
+        public void setPm10StrGrade(String pm10StrGrade) {
+            this.pm10StrGrade = pm10StrGrade;
+        }
+
+        public String getPm25StrGrade() {
+            return pm25StrGrade;
+        }
+
+        public void setPm25StrGrade(String pm25StrGrade) {
+            this.pm25StrGrade = pm25StrGrade;
+        }
+
+        public String getO3StrGrade() {
+            return o3StrGrade;
+        }
+
+        public void setO3StrGrade(String o3StrGrade) {
+            this.o3StrGrade = o3StrGrade;
+        }
+
+        public String getNo2StrGrade() {
+            return no2StrGrade;
+        }
+
+        public void setNo2StrGrade(String no2StrGrade) {
+            this.no2StrGrade = no2StrGrade;
+        }
+
+        public String getKhaiStrGrade() {
+            return khaiStrGrade;
+        }
+
+        public void setKhaiStrGrade(String khaiStrGrade) {
+            this.khaiStrGrade = khaiStrGrade;
+        }
+
+        public String getSo2StrGrade() {
+            return so2StrGrade;
+        }
+
+        public void setSo2StrGrade(String so2StrGrade) {
+            this.so2StrGrade = so2StrGrade;
+        }
+
+        public String getPm10Color() {
+            return pm10Color;
+        }
+
+        public void setPm10Color(String pm10Color) {
+            this.pm10Color = pm10Color;
+        }
+
+        public String getPm25Color() {
+            return pm25Color;
+        }
+
+        public void setPm25Color(String pm25Color) {
+            this.pm25Color = pm25Color;
+        }
+
+        public String getO3Color() {
+            return o3Color;
+        }
+
+        public void setO3Color(String o3Color) {
+            this.o3Color = o3Color;
+        }
+
+        public String getNo2Color() {
+            return no2Color;
+        }
+
+        public void setNo2Color(String no2Color) {
+            this.no2Color = no2Color;
+        }
+
+        public String getKhaiColor() {
+            return khaiColor;
+        }
+
+        public void setKhaiColor(String khaiColor) {
+            this.khaiColor = khaiColor;
+        }
+
+        public String getSo2Color() {
+            return so2Color;
+        }
+
+        public void setSo2Color(String so2Color) {
+            this.so2Color = so2Color;
+        }
+
         @Override
         public String toString() {
             return "IntegratedAirQualityModelItem{" +
-                    "_returnType='" + _returnType + '\'' +
+                    "fineDustStandard=" + fineDustStandard +
+                    ", _returnType='" + _returnType + '\'' +
                     ", dateTerm='" + dateTerm + '\'' +
                     ", dataTime='" + dataTime + '\'' +
                     ", mangName='" + mangName + '\'' +
@@ -418,6 +517,18 @@ public class IntegratedAirQualityModel {
                     ", totalCount='" + totalCount + '\'' +
                     ", rnum='" + rnum + '\'' +
                     ", pageNo='" + pageNo + '\'' +
+                    ", pm10StrGrade='" + pm10StrGrade + '\'' +
+                    ", pm25StrGrade='" + pm25StrGrade + '\'' +
+                    ", o3StrGrade='" + o3StrGrade + '\'' +
+                    ", no2StrGrade='" + no2StrGrade + '\'' +
+                    ", khaiStrGrade='" + khaiStrGrade + '\'' +
+                    ", so2StrGrade='" + so2StrGrade + '\'' +
+                    ", pm10Color='" + pm10Color + '\'' +
+                    ", pm25Color='" + pm25Color + '\'' +
+                    ", o3Color='" + o3Color + '\'' +
+                    ", no2Color='" + no2Color + '\'' +
+                    ", khaiColor='" + khaiColor + '\'' +
+                    ", so2Color='" + so2Color + '\'' +
                     '}';
         }
 
@@ -519,6 +630,14 @@ public class IntegratedAirQualityModel {
                 }
             }
             return color;
+        }
+
+        public FineDustVO getFineDustVO(){
+            for(FineDustVO vo : fineDustStandard){
+                if(vo.getFineDust_type().equalsIgnoreCase(KEY_PM10) && vo.getFineDust_grade().equalsIgnoreCase(getPm10StrGrade()))
+                    return vo;
+            }
+            return null;
         }
 
     }

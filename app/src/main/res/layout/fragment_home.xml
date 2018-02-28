@@ -332,7 +332,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="100"
                                     android:gravity="bottom|right"
-                                    android:text='@{integratedAirQualityModelItem.gradeToStringForKey(integratedAirQualityModelItem.KEY_PM10)}'
+                                    android:text='@{integratedAirQualityModelItem.pm10StrGrade}'
                                     android:textColor="@color/fragment_home_TV_weather_info"
                                     android:textSize="@dimen/fragment_home_TV_weather_info_2"
                                     tools:text="보통" />

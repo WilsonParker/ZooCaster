@@ -2,6 +2,7 @@ package com.graction.developer.zoocaster.Data;
 
 
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
+import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingleModel;
 import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Model.VO.FineDustVO;
@@ -20,7 +21,7 @@ public class DataStorage {
 
     public static boolean GpsPermissionOn = false;
     public static WeatherModel weatherModel;
-    public static IntegratedAirQualityModel integratedAirQualityModel;
+    public static IntegratedAirQualitySingleModel integratedAirQualitySingleModel;
     public static Map<Integer, Weather> weathers;
 
     public class OpenWeather {
@@ -43,7 +44,9 @@ public class DataStorage {
                                 , PATH_XML = "xml/"
                                 , PATH_IMAGES= "images/"
                                 , PATH_BACKGROUND= PATH_IMAGES+"background/"
+                                , RESOURCE_URL = "http://192.168.0.8:8101/lumiAssets"
                                 ;
+
     }
 
     public class Key{

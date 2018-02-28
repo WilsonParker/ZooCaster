@@ -3,6 +3,8 @@ package com.graction.developer.zoocaster.Model.VO;
 
 import com.graction.developer.zoocaster.Model.ImageModel;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.Path.RESOURCE_URL;
+
 /*
     Open Data API
 	등급	좋음	보통	나쁨	매우나쁨
@@ -118,5 +120,13 @@ public class FineDustVO extends ImageModel {
                 break;
         }
         return result;
+    }
+
+    public String getBackground_img_url() {
+        return RESOURCE_URL+getBackground_img_path()+getBackground_img_name();
+    }
+
+    public String getCharacter_img_url() {
+        return RESOURCE_URL+getCharacter_img_path()+getCharacter_img_name();
     }
 }

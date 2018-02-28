@@ -26,6 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!--android:background="@drawable/dust"-->
+        <ImageView
+            android:id="@+id/fragment_finedust_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/fragment_finedust_swipe"
@@ -70,12 +74,18 @@
                         android:layout_marginRight="15dp"
                         android:text="@{modelItem.pm10Value}" />
 
-                    <TextView
+                    <!--<TextView
                         textColor="@{modelItem.getColorForGrade(modelItem.getGrade(modelItem.pm10Value, pm10))}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        android:text="@{modelItem.getGrade(modelItem.pm10Value, pm10)}" />
+                        android:text="@{modelItem.getGrade(modelItem.pm10Value, pm10)}" />-->
+                    <TextView
+                        textColor="@{modelItem.pm10Color}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:text="@{modelItem.pm10StrGrade}" />
 
                 </LinearLayout>
 
@@ -97,11 +107,19 @@
                         android:text="@{modelItem.pm25Value}" />
 
                     <TextView
-                        textColor="@{modelItem.getColorForGrade(modelItem.getGrade(modelItem.pm25Value, pm25))}"
+                        textColor="@{modelItem.pm25Color}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        android:text="@{modelItem.getGrade(modelItem.pm25Value, pm25)}" />
+                        android:text="@{modelItem.pm25StrGrade}" />
+                    <!--
+                                        <TextView
+                                            textColor="@{modelItem.getColorForGrade(modelItem.getGrade(modelItem.pm25Value, pm25))}"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="15dp"
+                                            android:text="@{modelItem.getGrade(modelItem.pm25Value, pm25)}" />
+                    -->
                 </LinearLayout>
 
                 <LinearLayout
@@ -121,12 +139,18 @@
                         android:layout_marginRight="15dp"
                         android:text="@{modelItem.khaiValue}" />
 
-                    <TextView
+                    <!--<TextView
                         textColor="@{modelItem.getColorForIntGrade(modelItem.khaiGrade)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        android:text="@{modelItem.getGrade(modelItem.khaiGrade)}" />
+                        android:text="@{modelItem.getGrade(modelItem.khaiGrade)}" />-->
+                    <TextView
+                        textColor="@{modelItem.khaiColor}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:text="@{modelItem.khaiStrGrade}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -147,12 +171,25 @@
                         android:text="@{modelItem.o3Value}" />
 
                     <TextView
-                        textColor="@{modelItem.getColorForIntGrade(modelItem.o3Grade)}"
+                        textColor="@{modelItem.o3Color}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
-                        android:text="@{modelItem.getGrade(modelItem.o3Grade)}" />
+                        android:text="@{modelItem.o3StrGrade}" />
+                    <!--
+                                        <TextView
+                                            textColor="@{modelItem.getColorForIntGrade(modelItem.o3Grade)}"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="15dp"
+                                            android:text="@{modelItem.getGrade(modelItem.o3Grade)}" />
+                    -->
                 </LinearLayout>
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/fragment_finedust_gif_character"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp" />
             </LinearLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>

@@ -13,11 +13,12 @@ import com.graction.developer.zoocaster.Model.Weather.Wind;
 
 import java.util.ArrayList;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.Path.RESOURCE_URL;
+
 /*
  * Current weather model
  */
 public class WeatherModel {
-	private static final String RESOURCE_URL = "http://192.168.0.8:8101/lumiAssets";
 	private Coord coord;
 	private ArrayList<Weather> weather;
 	private Main main;

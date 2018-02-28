@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.graction.developer.zoocaster.Data.SyncObject;
+import com.graction.developer.zoocaster.Net.Net;
+import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 
 abstract public class BaseFragment extends Fragment {
     protected HLogger logger;
@@ -63,4 +66,8 @@ abstract public class BaseFragment extends Fragment {
         }
     }
 
+    protected void callIntegratedAirQuality(GpsManager gpsManager, Callback callback) {
+        call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude());
+        call.enqueue(callback);
+    }
 }

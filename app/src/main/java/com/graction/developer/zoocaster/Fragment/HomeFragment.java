@@ -1,8 +1,6 @@
 package com.graction.developer.zoocaster.Fragment;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.graction.developer.zoocaster.Data.SyncObject;
 import com.graction.developer.zoocaster.Model.ImageModel;
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
+import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingleModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
@@ -30,7 +27,6 @@ import com.graction.developer.zoocaster.databinding.FragmentHomeBinding;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
@@ -38,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualityModel;
+import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
 public class HomeFragment extends BaseFragment {
@@ -73,7 +69,7 @@ public class HomeFragment extends BaseFragment {
 //            binding.fragmentHomeTVAddress.setText(address);
         });
 
-        binding.fragmentHomeSwipe.setOnRefreshListener(()->{
+        binding.fragmentHomeSwipe.setOnRefreshListener(() -> {
             currentWeather();
         });
         currentWeather();
@@ -96,13 +92,35 @@ public class HomeFragment extends BaseFragment {
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
                     weatherModel = response.body();
                     reloadWeatherInfo();
-                    callIntegratedAirQuality();
+                    if(integratedAirQualitySingleModel == null)
+                    callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
+                        @Override
+                        public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
+                            if (response.isSuccessful()) {
+                                integratedAirQualitySingleModel = response.body();
+                                if (integratedAirQualitySingleModel != null) {
+                                    // binding.setIntegratedAirQualityModel(integratedAirQualitySingleModel);
+                                    binding.setIntegratedAirQualityModelItem(integratedAirQualitySingleModel.getItem());
+                                    logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualitySingleModel);
+                                    endThread(SYNC_ID);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
+                            endThread(SYNC_ID);
+                            binding.fragmentHomeSwipe.setRefreshing(false);
+                        }
+                    });
                 } else {
                     logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
                     endThread(SYNC_ID);
+                    binding.fragmentHomeSwipe.setRefreshing(false);
                 }
             }
 
@@ -110,6 +128,7 @@ public class HomeFragment extends BaseFragment {
             public void onFailure(Call<WeatherModel> call, Throwable t) {
                 logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
                 endThread(SYNC_ID);
+                binding.fragmentHomeSwipe.setRefreshing(false);
             }
         }), SYNC_ID);
         startSync();
@@ -131,9 +150,9 @@ public class HomeFragment extends BaseFragment {
                             effect_path = imageModel.getEffect_img_path(), effect_img = imageModel.getEffect_img_name();
 //                    baseActivityFileManager.saveImage(imageModel.getCharacter_img_path(), imageModel.getCharacter_img_name(), weatherModel.getCharacter_img_url());
 //                    baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, "http://192.168.0.8:8101/lumi" + character_path + character_img);
-                    logger.log(HLogger.LogType.INFO, "reloadWeatherInfo()","%s : %s : %s", character_path, character_img, weatherModel.getCharacter_img_url());
+                    logger.log(HLogger.LogType.INFO, "reloadWeatherInfo()", "%s : %s : %s", character_path, character_img, weatherModel.getCharacter_img_url());
                     baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, weatherModel.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
-                    setGifAnimate(binding.fragmentHomeIVCharacter, character_path + character_img);
+                    GifManager.getInstance().setGifAnimate(binding.fragmentHomeIVCharacter, character_path + character_img);
 
 //                    baseActivityFileManager.isExistsAndSaveFile(effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
 //                    binding.fragmentHomeGVEffect.setImageDrawable(baseActivityFileManager.getDrawableFromAssets(effect_path+effect_img));
@@ -141,47 +160,14 @@ public class HomeFragment extends BaseFragment {
 
                     binding.fragmentHomeSwipe.setRefreshing(false);
                 } catch (Exception e) {
-                    binding.fragmentHomeSwipe.setRefreshing(false);
                     logger.log(HLogger.LogType.ERROR, "reloadWeatherInfo()", "reloadWeatherInfo Error", e);
+                    binding.fragmentHomeSwipe.setRefreshing(false);
+                    endThread(SYNC_ID);
                 }
             }
         } else {
             gpsManager.showSettingsAlert();
         }
-    }
-
-    private void callIntegratedAirQuality() {
-        Call call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude());
-        setCall(call);
-        call.enqueue(new Callback<IntegratedAirQualityModel>() {
-            @Override
-            public void onResponse(Call<IntegratedAirQualityModel> call, Response<IntegratedAirQualityModel> response) {
-                if (response.isSuccessful()) {
-                    integratedAirQualityModel = response.body();
-                    if (integratedAirQualityModel != null) {
-//                        binding.setIntegratedAirQualityModel(integratedAirQualityModel);
-                        binding.setIntegratedAirQualityModelItem(integratedAirQualityModel.getFirstItem());
-                        logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualityModel);
-                        endThread(SYNC_ID);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<IntegratedAirQualityModel> call, Throwable t) {
-                logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                endThread(SYNC_ID);
-            }
-        });
-    }
-
-    private void setGifAnimate(GifImageView gifImageView, String path) throws IOException {
-        GifDrawable gifDrawable = new GifDrawable(new BufferedInputStream(new FileInputStream(baseActivityFileManager.getFile(path))));
-        GifManager.getInstance().bindGif(gifDrawable
-                , gifImageView
-                , loopNumber -> gifDrawable.stop()
-                , (view) -> gifDrawable.start()
-        );
     }
 
 }
