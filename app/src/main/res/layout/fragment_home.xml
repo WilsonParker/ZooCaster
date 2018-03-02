@@ -45,11 +45,7 @@
 
                     <View
                         style="@style/Style_MarginView"
-                        android:layout_weight="84" />
-
-                    <View
-                        style="@style/Style_MarginView"
-                        android:layout_weight="33.3" />
+                        android:layout_weight="125.4" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -167,7 +163,6 @@
 
                     </LinearLayout>
 
-                    <!-- android:layout_weight="44.3" -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"

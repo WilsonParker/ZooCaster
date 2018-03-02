@@ -22,16 +22,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:weightSum="614">
+            android:weightSum="@string/DEVICE_FULL_HEIGHT">
 
+            <!-- Location Bar -->
             <View
                 style="@style/Style_MarginView"
-                android:layout_weight="6.7" />
+                android:layout_weight="13.7" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="30.7"
+                android:layout_weight="16.7"
                 android:weightSum="@string/DEVICE_STANDARD_WIDTH">
 
                 <View
@@ -41,15 +42,17 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="14.7"
+                    android:layout_weight="14"
+                    android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:weightSum="30.7">
+                    android:weightSum="16.7">
 
                     <!-- location icon-->
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="16.7" />
+                        android:layout_weight="16.7"
+                        app:srcCompat="@drawable/gps_icon" />
 
                 </LinearLayout>
 
@@ -58,11 +61,12 @@
                     android:layout_weight="5" />
 
                 <TextView
+                    android:id="@+id/activity_main_TV_location"
                     style="@style/Style_TextView_es"
                     android:layout_width="0dp"
-                    android:layout_weight="291"
                     android:layout_height="match_parent"
-                    android:gravity="top"
+                    android:layout_weight="295"
+                    android:gravity="center_vertical"
                     android:textColor="@color/fragment_home_TV_weather_info"
                     android:textSize="@dimen/fragment_home_TV_weather_info_1"
                     tools:text="부천시 소사구 괴안동" />
@@ -71,37 +75,104 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="20"
+                    android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:weightSum="30.7">
+                    android:weightSum="16.7">
 
                     <!-- menu icon-->
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="14" />
-
-                </LinearLayout>
-
-                <View
-                    style="@style/Style_MarginView"
-                    android:layout_weight="15.3" />
-
-                <!--<ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="334.3"
-                    app:srcCompat="@drawable/top" />-->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="334.3">
+                        android:layout_weight="14"
+                        app:srcCompat="@drawable/menu_bar" />
 
                 </LinearLayout>
 
                 <View
                     style="@style/Style_MarginView"
                     android:layout_weight="11" />
+
             </LinearLayout>
+            <!-- Location Bar -->
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="15.7" />
+
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="30.7"
+                 android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+                 <View
+                     style="@style/Style_MarginView"
+                     android:layout_weight="14.7" />
+
+                 <LinearLayout
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="14.7"
+                     android:orientation="vertical"
+                     android:weightSum="30.7">
+
+                     &lt;!&ndash; location icon&ndash;&gt;
+                     <ImageView
+                         android:layout_width="match_parent"
+                         android:layout_height="0dp"
+                         android:layout_weight="16.7" />
+
+                 </LinearLayout>
+
+                 <View
+                     style="@style/Style_MarginView"
+                     android:layout_weight="5" />
+
+                 <TextView
+                     style="@style/Style_TextView_es"
+                     android:layout_width="0dp"
+                     android:layout_weight="291"
+                     android:layout_height="match_parent"
+                     android:gravity="top"
+                     android:textColor="@color/fragment_home_TV_weather_info"
+                     android:textSize="@dimen/fragment_home_TV_weather_info_1"
+                     tools:text="부천시 소사구 괴안동" />
+
+                 <LinearLayout
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="20"
+                     android:orientation="vertical"
+                     android:weightSum="30.7">
+
+                     &lt;!&ndash; menu icon&ndash;&gt;
+                     <ImageView
+                         android:layout_width="match_parent"
+                         android:layout_height="0dp"
+                         android:layout_weight="14" />
+
+                 </LinearLayout>
+
+                 <View
+                     style="@style/Style_MarginView"
+                     android:layout_weight="15.3" />
+
+                 &lt;!&ndash;<ImageView
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="334.3"
+                     app:srcCompat="@drawable/top" />&ndash;&gt;
+                 <LinearLayout
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="334.3">
+
+                 </LinearLayout>
+
+                 <View
+                     style="@style/Style_MarginView"
+                     android:layout_weight="11" />
+             </LinearLayout>-->
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/activity_main_Tab"

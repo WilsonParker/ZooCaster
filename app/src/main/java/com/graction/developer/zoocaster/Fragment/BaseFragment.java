@@ -67,6 +67,8 @@ abstract public class BaseFragment extends Fragment {
     }
 
     protected void callIntegratedAirQuality(GpsManager gpsManager, Callback callback) {
+        logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality(GpsManager gpsManager, Callback callback)", "gpsManager is null? "+(gpsManager == null));
+
         call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude());
         call.enqueue(callback);
     }

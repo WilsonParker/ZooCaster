@@ -36,30 +36,22 @@ public class GoogleLocationManager {
     }
 
     public void getAddress(final String lat, final String lon) {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Geocoder geocoder = new Geocoder();
-                LatLng latlng = new LatLng(lat, lon);
-                GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLocation(latlng).setLanguage(LANGUAGE)
-                        .getGeocoderRequest();
-                GeocodeResponse geocoderResponse;
-                try {
-                    geocoderResponse = geocoder.geocode(geocoderRequest);
-                    geocoder.geocode(geocoderRequest);
-                    final GeocoderResult geocoderResult = geocoderResponse.getResults().iterator().next();
-                    logger.log(HLogger.LogType.INFO, "getAlarm_address(final String lat, final String lon)", geocoderResult.getFormattedAddress());
-                    handlerManager.getHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            addressHandleListener.setAddress(geocoderResult.getFormattedAddress());
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    logger.log(HLogger.LogType.ERROR, "getAlarm_address(final String lat, final String lon)", e);
-                    addressHandleListener.setAddress("주소 결과가 없습니다");
-                }
+        thread = new Thread(() -> {
+            Geocoder geocoder = new Geocoder();
+            LatLng latlng = new LatLng(lat, lon);
+            GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setLocation(latlng).setLanguage(LANGUAGE)
+                    .getGeocoderRequest();
+            GeocodeResponse geocoderResponse;
+            try {
+                geocoderResponse = geocoder.geocode(geocoderRequest);
+                geocoder.geocode(geocoderRequest);
+                final GeocoderResult geocoderResult = geocoderResponse.getResults().iterator().next();
+                logger.log(HLogger.LogType.INFO, "getAlarm_address(final String lat, final String lon)", geocoderResult.getFormattedAddress());
+                handlerManager.getHandler().post(() -> addressHandleListener.setAddress(geocoderResult.getFormattedAddress()));
+            } catch (IOException e) {
+                e.printStackTrace();
+                logger.log(HLogger.LogType.ERROR, "getAlarm_address(final String lat, final String lon)", e);
+                addressHandleListener.setAddress("주소 결과가 없습니다");
             }
         });
         thread.start();

@@ -7,6 +7,8 @@ import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Model.Xml.Weather;
+import com.graction.developer.zoocaster.Util.GPS.GoogleLocationManager;
+import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,6 +22,8 @@ public class DataStorage {
 //    public static FragmentEventListener S_FragmentEventListener;
 
     public static boolean GpsPermissionOn = false;
+//    public static GpsManager gpsManager;
+    public static GoogleLocationManager googleLocationManager;
     public static WeatherModel weatherModel;
     public static IntegratedAirQualitySingleModel integratedAirQualitySingleModel;
     public static Map<Integer, Weather> weathers;

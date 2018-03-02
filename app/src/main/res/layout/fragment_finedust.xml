@@ -186,8 +186,8 @@
                     -->
                 </LinearLayout>
 
-                <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/fragment_finedust_gif_character"
+                <ImageView
+                    android:id="@+id/fragment_finedust_IV_character"
                     android:layout_width="150dp"
                     android:layout_height="150dp" />
             </LinearLayout>

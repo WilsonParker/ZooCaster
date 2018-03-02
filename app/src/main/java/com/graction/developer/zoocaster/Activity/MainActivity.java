@@ -7,13 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.graction.developer.zoocaster.Adapter.FragmentAdapter;
+import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.Fragment.AlarmFragment;
 import com.graction.developer.zoocaster.Fragment.FineDustFragment;
 import com.graction.developer.zoocaster.Fragment.Forecast5DayFragment;
 import com.graction.developer.zoocaster.Fragment.HomeFragment;
 import com.graction.developer.zoocaster.Fragment.Test2Fragment;
 import com.graction.developer.zoocaster.Fragment.TestFragment;
+import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.Util.GPS.GoogleLocationManager;
+import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.databinding.ActivityMainBinding;
 
@@ -31,6 +35,7 @@ public class MainActivity extends BaseActivity {
             initViewPager();
             isFirst = !isFirst;
         }
+        initLocation();
     }
 
     private void initViewPager() {
@@ -53,7 +58,7 @@ public class MainActivity extends BaseActivity {
         items.add(new FragmentAdapter.TabItem(AlarmFragment.getInstance(), R.drawable.tab_alarm));
         fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), items, (index, item) -> {
             binding.activityMainTab.getTabAt(index).setCustomView(fragmentAdapter.getView(MainActivity.this, R.layout.item_tab, item.getResIcon()));
-            logger.log(HLogger.LogType.INFO, "setTabItem", "index : "+index);
+            logger.log(HLogger.LogType.INFO, "setTabItem", "index : " + index);
 
            /* ItemTabBinding itemTabBinding = ItemTabBinding.inflate(getLayoutInflater());
             View tabItem = itemTabBinding.getRoot();
@@ -99,6 +104,14 @@ public class MainActivity extends BaseActivity {
             Glide.with(MainActivity.this).load(resId).into(imageView);
         });
         binding.activityMainCNV.actionItem(0);*/
+    }
+
+    private void initLocation() {
+        DataStorage.googleLocationManager = new GoogleLocationManager(address -> {
+            logger.log(HLogger.LogType.INFO, "address : " + address);
+            binding.activityMainTVLocation.setText(address);
+//            binding.fragmentHomeTVAddress.setText(address);
+        });
     }
 
     private void replaceContent() {

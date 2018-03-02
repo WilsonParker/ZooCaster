@@ -10,13 +10,11 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.graction.developer.zoocaster.Model.ImageModel;
-import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel;
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingleModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.Util.File.BaseActivityFileManager;
-import com.graction.developer.zoocaster.Util.GPS.GoogleLocationManager;
 import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Image.GifManager;
 import com.graction.developer.zoocaster.Util.Image.GlideImageManager;
@@ -24,16 +22,11 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.Util.Weather.WeatherManager;
 import com.graction.developer.zoocaster.databinding.FragmentHomeBinding;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.googleLocationManager;
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
@@ -41,9 +34,8 @@ public class HomeFragment extends BaseFragment {
     private static final HomeFragment instance = new HomeFragment();
     private static final int SYNC_ID = 0B0001;
     private FragmentHomeBinding binding;
-    private WeatherManager weatherManager;
     private GpsManager gpsManager;
-    private GoogleLocationManager googleLocationManager;
+    private WeatherManager weatherManager;
     private BaseActivityFileManager baseActivityFileManager = BaseActivityFileManager.getInstance();
 
     public static Fragment getInstance() {
@@ -61,13 +53,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void init(View view) {
         weatherManager = WeatherManager.getInstance();
-        gpsManager = new GpsManager(getActivity());
-
-        googleLocationManager = new GoogleLocationManager(address -> {
-            logger.log(HLogger.LogType.INFO, "address : " + address);
-//                TV_address.setText(address);
-//            binding.fragmentHomeTVAddress.setText(address);
-        });
 
         binding.fragmentHomeSwipe.setOnRefreshListener(() -> {
             currentWeather();
@@ -82,6 +67,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void currentWeather() {
+        gpsManager = new GpsManager(getActivity());
+
         Call call = Net.getInstance().getFactoryIm().selectWeather(gpsManager.getLatitude(), gpsManager.getLongitude());
         setCall(call);
         addAction(() -> call.enqueue(new Callback<WeatherModel>() {
@@ -102,7 +89,7 @@ public class HomeFragment extends BaseFragment {
                                     // binding.setIntegratedAirQualityModel(integratedAirQualitySingleModel);
                                     binding.setIntegratedAirQualityModelItem(integratedAirQualitySingleModel.getItem());
                                     logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualitySingleModel);
-                                    endThread(SYNC_ID);
+                                    end();
                                 }
                             }
                         }
@@ -110,8 +97,7 @@ public class HomeFragment extends BaseFragment {
                         @Override
                         public void onFailure(Call call, Throwable t) {
                             logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                            endThread(SYNC_ID);
-                            binding.fragmentHomeSwipe.setRefreshing(false);
+                            end();
                         }
                     });
                 } else {
@@ -119,16 +105,14 @@ public class HomeFragment extends BaseFragment {
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
-                    endThread(SYNC_ID);
-                    binding.fragmentHomeSwipe.setRefreshing(false);
+                    end();
                 }
             }
 
             @Override
             public void onFailure(Call<WeatherModel> call, Throwable t) {
                 logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
-                endThread(SYNC_ID);
-                binding.fragmentHomeSwipe.setRefreshing(false);
+                end();
             }
         }), SYNC_ID);
         startSync();
@@ -137,6 +121,7 @@ public class HomeFragment extends BaseFragment {
     private void reloadWeatherInfo() {
 //        gifImageView.startAnimation();
         if (gpsManager.isGetLocation()) {
+            googleLocationManager.getAddress(gpsManager.getLocation());
 //            googleLocationManager.getAlarm_address(gpsManager.getLocation());
             if (weatherModel != null) {
                 binding.setWeatherModel(weatherModel);
@@ -158,11 +143,10 @@ public class HomeFragment extends BaseFragment {
 //                    binding.fragmentHomeGVEffect.setImageDrawable(baseActivityFileManager.getDrawableFromAssets(effect_path+effect_img));
                     GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeGVEffect, new RequestOptions().centerCrop(), effect_path, effect_img, weatherModel.getEffect_img_url(), BaseActivityFileManager.FileType.ByteArray);
 
-                    binding.fragmentHomeSwipe.setRefreshing(false);
                 } catch (Exception e) {
                     logger.log(HLogger.LogType.ERROR, "reloadWeatherInfo()", "reloadWeatherInfo Error", e);
-                    binding.fragmentHomeSwipe.setRefreshing(false);
-                    endThread(SYNC_ID);
+                }finally {
+                    end();
                 }
             }
         } else {
@@ -170,4 +154,8 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    private void end(){
+        binding.fragmentHomeSwipe.setRefreshing(false);
+        endThread(SYNC_ID);
+    }
 }

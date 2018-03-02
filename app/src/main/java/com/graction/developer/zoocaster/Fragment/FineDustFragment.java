@@ -79,28 +79,28 @@ public class FineDustFragment extends BaseFragment {
                                 if (response.isSuccessful()) {
                                     integratedAirQualitySingleModel = response.body();
                                     setIntegratedAirQualityItem();
-                                    endThread(SYNC_ID);
+                                    end();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call call, Throwable t) {
                                 logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                                endThread(SYNC_ID);
+                                end();
                             }
                         });
                     } else {
                         setIntegratedAirQualityItem();
                     }
+                } else {
+                    end();
                 }
-                binding.fragmentFinedustSwipe.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Throwable t) {
                 logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
-                endThread(SYNC_ID);
-                binding.fragmentFinedustSwipe.setRefreshing(false);
+                end();
             }
         }), SYNC_ID);
         startSync();
@@ -116,12 +116,15 @@ public class FineDustFragment extends BaseFragment {
         binding.setModelItem(item);
         try {
             GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentFinedustBackground, new RequestOptions().centerCrop(), vo.getBackground_img_path(), vo.getBackground_img_name(), vo.getBackground_img_url());
-            BaseActivityFileManager.getInstance().isExistsAndSaveFile(vo.getCharacter_img_path(), vo.getCharacter_img_name(), vo.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
-            GifManager.getInstance().setGifAnimate(binding.fragmentFinedustGifCharacter, vo.getCharacter_img_path()+ vo.getCharacter_img_name());
+            GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentFinedustIVCharacter, new RequestOptions().centerCrop(), vo.getCharacter_img_path(), vo.getCharacter_img_name(), vo.getCharacter_img_url());
+//            BaseActivityFileManager.getInstance().isExistsAndSaveFile(vo.getCharacter_img_path(), vo.getCharacter_img_name(), vo.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
+
+//            GifManager.getInstance().setGifAnimate(binding.fragmentFinedustGifCharacter, vo.getCharacter_img_path()+ vo.getCharacter_img_name());
         } catch (Exception e) {
             logger.log(HLogger.LogType.ERROR, "void setIntegratedAirQualityItem", e);
+        } finally {
+            binding.fragmentFinedustSwipe.setRefreshing(false);
         }
-
     }
 
     @Override
@@ -131,10 +134,13 @@ public class FineDustFragment extends BaseFragment {
             if (integratedAirQualitySingleModel != null) {
                 setIntegratedAirQualityItem();
             }
-//            binding.executePendingBindings();
             binding.notifyChange();
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
 
+    private void end() {
+        endThread(SYNC_ID);
+        binding.fragmentFinedustSwipe.setRefreshing(false);
+    }
 }
