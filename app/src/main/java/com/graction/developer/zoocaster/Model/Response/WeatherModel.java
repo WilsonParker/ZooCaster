@@ -36,6 +36,7 @@ public class WeatherModel {
 	private FineDustModel fineDustModel;
 	private AddressItem addressModel;
 	private ImageModel imageModel;
+	private ForecastSpaceDataModel forecastSpaceDataModel;
 
 	public Coord getCoord() {
 		return coord;
@@ -165,23 +166,19 @@ public class WeatherModel {
 		this.imageModel = imageModel;
 	}
 
+	public ForecastSpaceDataModel getForecastSpaceDataModel() {
+		return forecastSpaceDataModel;
+	}
+
+	public void setForecastSpaceDataModel(ForecastSpaceDataModel forecastSpaceDataModel) {
+		this.forecastSpaceDataModel = forecastSpaceDataModel;
+	}
+
 	@Override
 	public String toString() {
-		return "WeatherModel{" +
-				"coord=" + coord +
-				", weather=" + weather +
-				", main=" + main +
-				", wind=" + wind +
-				", clouds=" + clouds +
-				", sys=" + sys +
-				", base='" + base + '\'' +
-				", name='" + name + '\'' +
-				", dt=" + dt +
-				", id=" + id +
-				", cod=" + cod +
-				", fineDustModel=" + fineDustModel +
-				", addressModel=" + addressModel +
-				", imageModel=" + imageModel +
-				'}';
+		return "WeatherModel [coord=" + coord + ", weather=" + weather + ", main=" + main + ", wind=" + wind
+				+ ", clouds=" + clouds + ", sys=" + sys + ", base=" + base + ", name=" + name + ", dt=" + dt + ", id="
+				+ id + ", cod=" + cod + ", fineDustModel=" + fineDustModel + ", addressModel=" + addressModel
+				+ ", imageModel=" + imageModel + ", forecastSpaceDataModel=" + forecastSpaceDataModel + "]";
 	}
 }
