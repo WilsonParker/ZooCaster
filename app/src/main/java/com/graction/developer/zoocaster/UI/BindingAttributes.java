@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.Resource;
+import com.graction.developer.zoocaster.UI.Layout.HareCircleProgressView;
 
 /**
  * Created by Graction06 on 2018-01-17.
@@ -39,5 +40,14 @@ public class BindingAttributes {
     public static void setTextColor(TextView textView, String color){
         if(color != null)
             textView.setTextColor(Color.parseColor(color));
+    }
+
+    /*
+    *   HareCircleProgressView
+    * */
+    @BindingAdapter("donut_finished_color")
+    public static void setFinishColor(HareCircleProgressView view, String color){
+        if(color != null)
+            view.setFinishedStrokeColor(Color.parseColor(color));
     }
 }

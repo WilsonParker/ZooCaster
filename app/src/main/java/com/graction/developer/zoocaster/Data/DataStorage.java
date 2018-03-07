@@ -27,6 +27,7 @@ public class DataStorage {
     public static WeatherModel weatherModel;
     public static IntegratedAirQualitySingleModel integratedAirQualitySingleModel;
     public static Map<Integer, Weather> weathers;
+    public static ArrayList<FineDustVO> fineDustStandard;
 
     public class OpenWeather {
         public static final String

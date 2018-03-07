@@ -79,27 +79,24 @@ public class HomeFragment extends BaseFragment {
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
                     weatherModel = response.body();
                     reloadWeatherInfo();
-                    if(integratedAirQualitySingleModel == null)
-                    callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
-                        @Override
-                        public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
-                            if (response.isSuccessful()) {
-                                integratedAirQualitySingleModel = response.body();
-                                if (integratedAirQualitySingleModel != null) {
-                                    // binding.setIntegratedAirQualityModel(integratedAirQualitySingleModel);
-                                    binding.setIntegratedAirQualityModelItem(integratedAirQualitySingleModel.getItem());
-                                    logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualitySingleModel);
-                                    end();
+                    if (integratedAirQualitySingleModel == null)
+                        callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
+                            @Override
+                            public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
+                                if (response.isSuccessful()) {
+                                    integratedAirQualitySingleModel = response.body();
+                                    setBindingIntegratedAirQualityModel();
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                            end();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call call, Throwable t) {
+                                logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
+                                end();
+                            }
+                        });
+                    else
+                        setBindingIntegratedAirQualityModel();
                 } else {
                     logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
@@ -119,6 +116,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void reloadWeatherInfo() {
+        setBindingIntegratedAirQualityModel();
 //        gifImageView.startAnimation();
         if (gpsManager.isGetLocation()) {
             googleLocationManager.getAddress(gpsManager.getLocation());
@@ -145,7 +143,7 @@ public class HomeFragment extends BaseFragment {
 
                 } catch (Exception e) {
                     logger.log(HLogger.LogType.ERROR, "reloadWeatherInfo()", "reloadWeatherInfo Error", e);
-                }finally {
+                } finally {
                     end();
                 }
             }
@@ -154,7 +152,16 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private void end(){
+    private void setBindingIntegratedAirQualityModel() {
+        if (integratedAirQualitySingleModel != null) {
+            // binding.setIntegratedAirQualityModel(integratedAirQualitySingleModel);
+            binding.setIntegratedAirQualityModelItem(integratedAirQualitySingleModel.getItem());
+            logger.log(HLogger.LogType.INFO, "void callIntegratedAirQuality()", "response body: " + integratedAirQualitySingleModel);
+            end();
+        }
+    }
+
+    private void end() {
         binding.fragmentHomeSwipe.setRefreshing(false);
         endThread(SYNC_ID);
     }

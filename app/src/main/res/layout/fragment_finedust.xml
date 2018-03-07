@@ -50,10 +50,10 @@
                     app:donut_animate_time="1500"
                     app:donut_background_color="#00efeded"
                     app:donut_circle_starting_degree="-90"
-                    app:donut_finished_color="#ead77a7a"
+                    donut_finished_color="@{modelItem.pm10Color}"
                     app:donut_finished_stroke_width="5dp"
                     app:donut_max="100"
-                    app:donut_progress="80"
+                    app:donut_progress="@{modelItem.pm10Value}"
                     app:donut_show_text="true"
                     app:donut_unfinished_stroke_width="3dp" />
 

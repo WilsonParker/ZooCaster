@@ -255,6 +255,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="100"
                                     android:gravity="bottom|right"
+                                    android:text='@{weatherModel.forecastSpaceDataModel.getPop()+"%"}'
                                     android:textColor="@color/fragment_home_TV_weather_info"
                                     android:textSize="@dimen/fragment_home_TV_weather_info_2"
                                     tools:text="20%" />
@@ -291,6 +292,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="100"
                                     android:gravity="bottom|right"
+                                    android:text='@{weatherModel.forecastSpaceDataModel.getR06()+"mm"}'
                                     android:textColor="@color/fragment_home_TV_weather_info"
                                     android:textSize="@dimen/fragment_home_TV_weather_info_2"
                                     tools:text="0.0mm" />

@@ -34,6 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.fineDustStandard;
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
@@ -41,7 +42,6 @@ public class FineDustFragment extends BaseFragment {
     private static final int SYNC_ID = 0B0100;
     private GpsManager gpsManager;
     private FragmentFinedustBinding binding;
-    private ArrayList<FineDustVO> fineDustStandard;
 
     public static Fragment getInstance() {
         Fragment fragment = new FineDustFragment();
@@ -64,7 +64,7 @@ public class FineDustFragment extends BaseFragment {
         initFineDustStandard();
     }
 
-    private void initFineDustStandard() {
+   /* private void initFineDustStandard() {
         Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
         setCall(call);
         addAction(() -> call.enqueue(new Callback<SimpleResponseModel<ArrayList<FineDustVO>>>() {
@@ -104,10 +104,36 @@ public class FineDustFragment extends BaseFragment {
             }
         }), SYNC_ID);
         startSync();
+    }*/
+
+   // 초기화 및 새로고침 시에 Call IntegratedAirQualitySingleModel
+    private void initFineDustStandard() {
+        Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
+        setCall(call);
+        addAction(() ->
+                        callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
+                            @Override
+                            public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
+                                if (response.isSuccessful()) {
+                                    integratedAirQualitySingleModel = response.body();
+                                    setIntegratedAirQualityItem();
+                                    end();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call call, Throwable t) {
+                                logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
+                                end();
+                            }
+                        })
+                , SYNC_ID);
+        startSync();
     }
 
     private void setIntegratedAirQualityItem() {
         logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem());
+        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem().getFineDustStandard());
         IntegratedAirQualityModel.IntegratedAirQualityModelItem item = integratedAirQualitySingleModel.getItem();
         item.setFineDustStandard(fineDustStandard);
         FineDustVO vo = item.getFineDustVO();

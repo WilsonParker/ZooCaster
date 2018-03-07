@@ -12,7 +12,11 @@ import android.widget.Toast;
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.DataBase.DataBaseHelper;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
+import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingleModel;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
+import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Model.Xml.Weather;
+import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.UI.UIFactory;
 import com.graction.developer.zoocaster.Util.File.BaseActivityFileManager;
@@ -22,18 +26,26 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.Util.Parser.XmlPullParserManager;
 import com.graction.developer.zoocaster.Util.System.AlarmManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.graction.developer.zoocaster.Data.DataStorage.fineDustStandard;
+import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
 
 public class Intro extends BaseActivity {
     private Context context;
     private Handler handler = new Handler();
-    private int completeState = 2, runState, errorState;
+    private GpsManager gpsManager;
+    private int completeState = 3, runState, errorState;
     // initialize Thread
     private Thread iThread = new Thread(() -> dataInitialize())
             // Check Permission
@@ -81,6 +93,11 @@ public class Intro extends BaseActivity {
     }
 
     private void dataInitialize() {
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+        gpsManager = new GpsManager(this);
+
         XmlPullParserManager xmlPullParserManager = XmlPullParserManager.getInstance();
         xmlPullParserManager.setContext(context);
 
@@ -101,15 +118,58 @@ public class Intro extends BaseActivity {
             return;
         }
         runState++;
+
+        callNetworkData();
     }
 
     private void permissionInitialize() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            GpsManager gpsManager = new GpsManager(this);
             String[] permissions = new String[]{ACCESS_FINE_LOCATION, INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE};
             gpsManager.requestPermissions(permissions, DataStorage.Request.PERMISSION_REQUEST);
-        }else
+        } else
             runState++;
+    }
+
+    private void callNetworkData() {
+        Net.getInstance().getFactoryIm().selectFineDustStandard().enqueue(new Callback<SimpleResponseModel<ArrayList<FineDustVO>>>() {
+            @Override
+            public void onResponse(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Response<SimpleResponseModel<ArrayList<FineDustVO>>> response) {
+                if (response.isSuccessful()) {
+                    fineDustStandard = response.body().getResult();
+                    logger.log(HLogger.LogType.INFO
+                            , "void callNetworkData() - void onResponse(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Response<SimpleResponseModel<ArrayList<FineDustVO>>> response)"
+                            ,"isSuccessful, is null? "+(fineDustStandard == null));
+
+                    callIntegratedAirQualitySingleModel();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Throwable t) {
+                logger.log(HLogger.LogType.ERROR, "void callNetworkData() - onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
+            }
+        });
+    }
+
+    private void callIntegratedAirQualitySingleModel(){
+        Net.getInstance().getFactoryIm().selectIntegratedAirQuality(gpsManager.getLatitude(), gpsManager.getLongitude()).enqueue(new Callback<IntegratedAirQualitySingleModel>() {
+            @Override
+            public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
+                if(response.isSuccessful()){
+                    integratedAirQualitySingleModel = response.body();
+//                    integratedAirQualitySingleModel.getItem().setFineDustStandard(fineDustStandard);
+                    logger.log(HLogger.LogType.INFO
+                            , "void callNetworkData() - void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response)"
+                            ,"isSuccessful");
+                    runState++;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IntegratedAirQualitySingleModel> call, Throwable t) {
+                logger.log(HLogger.LogType.ERROR, "void callNetworkData() - onFailure(Call<IntegratedAirQualitySingleModel> call, Throwable t)", "onFailure", t);
+            }
+        });
     }
 
     @Override

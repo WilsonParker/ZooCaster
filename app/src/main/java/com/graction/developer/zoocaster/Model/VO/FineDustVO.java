@@ -129,4 +129,22 @@ public class FineDustVO extends ImageModel {
     public String getCharacter_img_url() {
         return RESOURCE_URL+getCharacter_img_path()+getCharacter_img_name();
     }
+
+    @Override
+    public String toString() {
+        return "FineDustVO{" +
+                "fineDust_index=" + fineDust_index +
+                ", fineDust_background_ref_file_index=" + fineDust_background_ref_file_index +
+                ", fineDust_character_ref_file_index=" + fineDust_character_ref_file_index +
+                ", fineDust_min=" + fineDust_min +
+                ", fineDust_max=" + fineDust_max +
+                ", fineDust_grade='" + fineDust_grade + '\'' +
+                ", fineDust_activation='" + fineDust_activation + '\'' +
+                ", fineDustType_activation='" + fineDustType_activation + '\'' +
+                ", fineDust_color='" + fineDust_color + '\'' +
+                ", fineDust_message='" + fineDust_message + '\'' +
+                ", fineDust_type='" + fineDust_type + '\'' +
+                super.toString() +
+                '}';
+    }
 }

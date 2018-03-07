@@ -1,5 +1,7 @@
 package com.graction.developer.zoocaster.Model.Response;
 
+import com.graction.developer.zoocaster.Util.StringUtil;
+
 import java.util.ArrayList;
 
 /*
@@ -29,6 +31,22 @@ public class ForecastSpaceDataModel {
 
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    public String getPop(){
+        for(Response.Body.Items.Item item : getResponse().getBody().getItems().getItem()){
+            if(item.category.equalsIgnoreCase("POP"))
+                return item.getFcstValue();
+        }
+        return "-";
+    }
+
+    public String getR06(){
+        for(Response.Body.Items.Item item : getResponse().getBody().getItems().getItem()){
+            if(item.category.equalsIgnoreCase("R06"))
+                return item.getFcstValue();
+        }
+        return "0";
     }
 
     @Override
@@ -130,15 +148,22 @@ public class ForecastSpaceDataModel {
             }
 
             public class Items {
-                private ArrayList<Item> items;
+                private ArrayList<Item> item;
 
-                public ArrayList<Item> getItems() {
-                    return items;
+                public ArrayList<Item> getItem() {
+                    return item;
                 }
 
-                public void setItems(ArrayList<Item> items) {
-                    this.items = items;
+                public void setItems(ArrayList<Item> item) {
+                    this.item = item;
                 }
+
+
+                @Override
+                public String toString() {
+                    return "Items ["+StringUtil.createString("item", item)+ "]";
+                }
+
 
                 public class Item {
                     private String category;
