@@ -1,5 +1,6 @@
 package com.graction.developer.zoocaster.Activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -107,8 +108,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initLocation() {
+        binding.activityMainTVLocation.setOnClickListener((v)->startActivity(new Intent(this, SearchAddressActivity.class)));
         DataStorage.googleLocationManager = new GoogleLocationManager(address -> {
             logger.log(HLogger.LogType.INFO, "address : " + address);
+            DataStorage.NowAddress = address;
             binding.activityMainTVLocation.setText(address);
 //            binding.fragmentHomeTVAddress.setText(address);
         });

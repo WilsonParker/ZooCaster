@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.graction.developer.zoocaster.Activity.SearchAddressActivity" />
+
+        <variable
+            name="address"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="630">
+
+        <View
+            style="@style/Style_MarginView"
+            android:layout_weight="21.7" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="38.3"
+            android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="21.7" />
+
+            <TextView
+                style="@style/Style_TextView_es"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="295.6"
+                android:gravity="center_vertical"
+                android:text='@string/activity_search_address_TV_title'
+                android:textColor="@color/activity_search_address_TV_title"
+                android:textSize='@dimen/activity_search_address_TV_title_font_size' />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="20.7"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:weightSum="38.3">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="20.7"
+                    android:onClick="@{(view) -> activity.onBackPressed()}"
+                    app:srcCompat="@drawable/top_x_btn" />
+            </LinearLayout>
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="21.7" />
+        </LinearLayout>
+
+        <View
+            style="@style/Style_MarginView"
+            android:layout_weight="6.7" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:weightSum="@string/DEVICE_STANDARD_WIDTH">
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="22" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="316"
+                android:background="@drawable/searchbar"
+                android:weightSum="316">
+
+                <View
+                    style="@style/Style_MarginView"
+                    android:layout_weight="10" />
+
+                <EditText
+                    android:id="@+id/activity_search_address_ET_keyword"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="270"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/activity_search_address_ET_searchbar_hint"
+                    android:inputType="text"
+                    android:textColor="@color/activity_search_address_ET_searchbar"
+                    android:textColorHint="@color/activity_search_address_ET_searchbar_hint"
+                    android:textSize="@dimen/activity_search_address_ET_searchbar_hint_size">
+
+                    <requestFocus />
+                </EditText>
+
+                <View
+                    style="@style/Style_MarginView"
+                    android:layout_weight="9.7" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="16"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:weightSum="40">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="16.3"
+                        android:onClick="@{(view) -> activity.onSearch()}"
+                        app:srcCompat="@drawable/search_icon" />
+                </LinearLayout>
+
+
+                <View
+                    style="@style/Style_MarginView"
+                    android:layout_weight="10.3" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/Style_MarginView"
+                android:layout_weight="22" />
+        </LinearLayout>
+
+        <View
+            style="@style/Style_MarginView"
+            android:layout_weight="10.3" />
+
+        <!--<android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_search_address_RV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="515" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="515"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#aba7a7"
+                android:text="현재위치" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="@{address}"
+                tools:text="경기도 부천시 소사본3동 소사동로" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#aba7a7"
+                android:text="즐겨찾기" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_search_address_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#aba7a7"
+                android:text="검색결과" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_search_address_RV"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/powered_by_google_on_white" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

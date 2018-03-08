@@ -22,6 +22,7 @@ public class DataStorage {
 //    public static FragmentEventListener S_FragmentEventListener;
 
     public static boolean GpsPermissionOn = false;
+    public static String NowAddress;
 //    public static GpsManager gpsManager;
     public static GoogleLocationManager googleLocationManager;
     public static WeatherModel weatherModel;

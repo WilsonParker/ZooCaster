@@ -12,6 +12,7 @@ import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.UI.ViewAttributeManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.databinding.ActivitySearchAddress2Binding;
 import com.graction.developer.zoocaster.databinding.ActivitySearchAddressBinding;
 
 import retrofit2.Call;
@@ -19,7 +20,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchAddressActivity extends BaseActivity {
-    private ActivitySearchAddressBinding binding;
+//    private ActivitySearchAddressBinding binding;
+    private ActivitySearchAddress2Binding binding;
     private Intent intent = new Intent();
     private AddressListAdapter adapter;
     private ItemOnClickListener itemOnClickListener = item -> {
@@ -29,13 +31,16 @@ public class SearchAddressActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address2);
         binding.activitySearchAddressRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.setActivity(this);
         ViewAttributeManager.getInstance().setDoneOption(this, binding.activitySearchAddressETKeyword, (v, actionId, event) -> {
             onSearch();
             return false;
         });
+
+        binding.setAddress(DataStorage.NowAddress);
     }
 
     public void onSearch() {

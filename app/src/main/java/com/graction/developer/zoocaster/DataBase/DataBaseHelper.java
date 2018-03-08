@@ -27,6 +27,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
+            /*
+            *
+            *   Alarm Table
+            * */
             db.execSQL(
                     String.format(
                             "CREATE TABLE %s (" +
@@ -49,6 +53,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                             , DataBaseStorage.Column.COLUMN_ALARM_MINUTE
                             , DataBaseStorage.Column.COLUMN_ALARM_VOLUME
                             , DataBaseStorage.Column.COLUMN_ALARM_RUNNING_STATE
+                            , DataBaseStorage.Column.COLUMN_ALARM_IS_SPEAKER
+                    )
+            );
+
+            /*
+            *
+            *   Favorite Table
+            * */
+            db.execSQL(
+                    String.format(
+                            "CREATE TABLE %s (" +
+                                    "%s TEXT PRIMARY KEY," +    // address
+                                    "%s TEXT," +                // setTime
+                                    ");"
+                            , DataBaseStorage.Table.TABLE_ALARM
                             , DataBaseStorage.Column.COLUMN_ALARM_IS_SPEAKER
                     )
             );
