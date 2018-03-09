@@ -9,7 +9,6 @@ import android.widget.TimePicker;
 
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
-import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.AlarmTable;
 import com.graction.developer.zoocaster.Model.Item.AlarmItem;
 import com.graction.developer.zoocaster.R;
@@ -84,22 +83,22 @@ public class AddAlarmActivity extends BaseActivity {
         logger.log(HLogger.LogType.INFO, "addAlarm(view)");
         logger.log(HLogger.LogType.INFO, "addAlarm(view)", "selectedWeek : " + Arrays.toString(selectedWeek));
 //        AlarmData.AlarmItem item = alarmData.new AlarmItem(place_name, place_address, memo, selectedWeek, hourOfDay, minute);
-        if(!validCheck())
+        if (!validCheck())
             return;
         AlarmTable alarmTable = new AlarmTable(hourOfDay, minute, address, binding.activityAddAlarmETMemo.getText() + "", StringUtil.arrayToString(selectedWeek), AlarmTable.ENABLED, binding.activityAddAlarmSBVolume.getProgress(), isSpeaker ? AlarmTable.ENABLED : AlarmTable.DISABLED);
         AlarmItem item = new AlarmItem(alarmTable);
-        DataBaseStorage.alarmDataBaseHelper.insert(DataBaseStorage.Table.TABLE_ALARM, alarmTable);
+        DataBaseStorage.dataBaseHelper.insert(DataBaseStorage.Table.TABLE_ALARM, alarmTable);
         AlarmManager.getInstance().setAlarmService(item);
         DataBaseStorage.alarmList.add(item);
         onBackPressed();
     }
 
-    private boolean validCheck(){
-        if(NullChecker.getInstance().isNull(address))
+    private boolean validCheck() {
+        if (NullChecker.getInstance().isNull(address))
             return false;
-        if(hourOfDay == 0)
+        if (hourOfDay == 0)
             hourOfDay = Integer.parseInt(DateManager.getInstance().getNow(DateManager.DateType.HourOfDay));
-        if(minute == 0)
+        if (minute == 0)
             minute = Integer.parseInt(DateManager.getInstance().getNow(DateManager.DateType.Minute));
         return true;
     }
@@ -122,8 +121,9 @@ public class AddAlarmActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
-            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
-            binding.activityAddAlarmTVAddress.setText((address = item.getDescription()));
+//            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
+//            address = item != null ? item.getDescription() : data.getStringExtra(DataStorage.Key.KEY_ADDRESS);
+            binding.activityAddAlarmTVAddress.setText((address = data.getStringExtra(DataStorage.Key.KEY_ADDRESS)));
         }
     }
 }

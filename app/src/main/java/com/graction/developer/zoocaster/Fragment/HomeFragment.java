@@ -95,7 +95,6 @@ public class HomeFragment extends BaseFragment {
                                 end();
                             }
                         });
-                    else
                         setBindingIntegratedAirQualityModel();
                 } else {
                     logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");

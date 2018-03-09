@@ -46,18 +46,24 @@ public class Intro extends BaseActivity {
     private Handler handler = new Handler();
     private GpsManager gpsManager;
     private int completeState = 3, runState, errorState;
+    private static final long RUN_LIMIT_TIME = 5000;
+    private long currentTime;
     // initialize Thread
     private Thread iThread = new Thread(() -> dataInitialize())
             // Check Permission
             , pThread = new Thread(() -> permissionInitialize())
             // Check Thread
             , cThread = new Thread(() -> {
+        currentTime = System.currentTimeMillis();
         while (true) {
             if (completeState == runState) {
                 startActivity(new Intent(context, MainActivity.class));
                 finish();
                 break;
             } else if (errorState == 1) {
+                break;
+            } else if(System.currentTimeMillis() > currentTime + RUN_LIMIT_TIME){
+                errorState = 1;
                 break;
             }
             try {
@@ -69,8 +75,10 @@ public class Intro extends BaseActivity {
         }
         Looper.prepare();
         handler.post(() -> {
-            if (errorState == 1)
+            if (errorState == 1){
                 Toast.makeText(Intro.this, "초기화에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         });
     });
 
@@ -107,7 +115,7 @@ public class Intro extends BaseActivity {
         ;
         PreferenceManager.setContext(getBaseContext());
         AlarmManager.getInstance().init(getApplicationContext());
-        DataBaseStorage.alarmDataBaseHelper = new DataBaseHelper(getBaseContext(), DATABASE_NAME, null, DataBaseStorage.Version.TABLE_ALARM_VERSION);
+        DataBaseStorage.dataBaseHelper = new DataBaseHelper(getBaseContext(), DATABASE_NAME, null, DataBaseStorage.Version.TABLE_VERSION);
         try {
             DataStorage.weathers = new HashMap<>();
             for (Weather weather : xmlPullParserManager.<Weather>xmlParser(Weather.class, R.xml.weathers))

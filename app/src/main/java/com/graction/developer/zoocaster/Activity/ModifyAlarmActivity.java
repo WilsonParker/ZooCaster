@@ -111,7 +111,7 @@ public class ModifyAlarmActivity extends BaseActivity {
 
         String whereClause = DataBaseStorage.Column.COLUMN_ALARM_INDEX + " = ?";
         String[] args = {alarmItem.getIndex() + ""};
-        DataBaseStorage.alarmDataBaseHelper.update(DataBaseStorage.Table.TABLE_ALARM, values, whereClause, args);
+        DataBaseStorage.dataBaseHelper.update(DataBaseStorage.Table.TABLE_ALARM, values, whereClause, args);
         AlarmManager.getInstance().setAlarmService(alarmItem);
         DataBaseStorage.alarmList.remove(index);
         DataBaseStorage.alarmList.add(index, alarmItem);

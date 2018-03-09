@@ -1,6 +1,5 @@
 package com.graction.developer.zoocaster.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -74,7 +73,7 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.View
         public void deleteItem(AlarmItem item){
             AlarmManager.getInstance().cancelAlarm(item);
             String[] whereArgs = {item.getIndex() + ""};
-            DataBaseStorage.alarmDataBaseHelper.delete(DataBaseStorage.Table.TABLE_ALARM, DataBaseStorage.Column.COLUMN_ALARM_INDEX + "=?", whereArgs);
+            DataBaseStorage.dataBaseHelper.delete(DataBaseStorage.Table.TABLE_ALARM, DataBaseStorage.Column.COLUMN_ALARM_INDEX + "=?", whereArgs);
             items.remove(item);
             notifyDataSetChanged();
         }

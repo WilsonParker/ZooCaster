@@ -52,9 +52,8 @@ public class AlarmFragment extends BaseFragment {
     }
 
     private void initData() {
-        if (DataBaseStorage.alarmDataBaseHelper == null)
-            DataBaseStorage.alarmDataBaseHelper = new DataBaseHelper(getContext(), DATABASE_NAME, null, DataBaseStorage.Version.TABLE_ALARM_VERSION);
-        List<AlarmTable> tableList = DataBaseStorage.alarmDataBaseHelper.selectList("SELECT * FROM " + DataBaseStorage.Table.TABLE_ALARM, AlarmTable.class);
+        DataBaseHelper.createHelper(getContext());
+        List<AlarmTable> tableList = DataBaseStorage.dataBaseHelper.selectList("SELECT * FROM " + DataBaseStorage.Table.TABLE_ALARM, AlarmTable.class);
         alarmList = new ArrayList<>();
         for (AlarmTable table : tableList) {
             AlarmItem item = new AlarmItem(table);

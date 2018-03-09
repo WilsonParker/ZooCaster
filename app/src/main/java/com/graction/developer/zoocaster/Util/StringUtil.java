@@ -1,14 +1,26 @@
 package com.graction.developer.zoocaster.Util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class StringUtil {
+    public final static String ENCODING_UTF_8 = "UTF-8"
+            , ENCODING_ASCCI = "ASCCI"
+            , ENCODING_ISO_8859_1 = "ISO-8859-1"
+            ;
     public final static Charset ISO_8859_1 = Charset.forName("ISO-8859-1"), UTF_8 = Charset.forName("UTF-8"),
             DEFAULT = UTF_8;
-    ;
+    private static Map<String, String> urlEncodingMap;
+    static {
+        urlEncodingMap = new HashMap<String, String>();
+        urlEncodingMap.put(" ","%20");
+    }
 
     public static String getDefaultString(String s, String def) {
         if (nullCheck(s))
@@ -70,6 +82,22 @@ public class StringUtil {
 
     public static String requestParamEncoding(String str) {
         return requestParamEncoding(str, DEFAULT);
+    }
+
+    public static String urlEncodingRequest(String str) throws UnsupportedEncodingException {
+        String result=str;
+        for(String key : urlEncodingMap.keySet()) {
+            result = result.replace(key, urlEncodingMap.get(key));
+        }
+        return result;
+    }
+
+    public static String urlEncoding(String str) throws UnsupportedEncodingException {
+        return urlEncoding(str, ENCODING_UTF_8);
+    }
+
+    public static String urlEncoding(String str, String encode) throws UnsupportedEncodingException {
+        return URLDecoder.decode(str, encode);
     }
 
     public static boolean contains(String s1, String s2, String delim) {
@@ -155,5 +183,26 @@ public class StringUtil {
             }
         }
         return text;
+    }
+
+    public static abstract class StringArrayManager{
+        private int index;
+        private String[] srr;
+
+        public int getIndex() {
+            return index;
+        }
+
+        public int getLength() {
+            return srr.length;
+        }
+
+        public void getStringFromArray(int start, String[] srr) {
+            this.srr = srr;
+            for (int i = start; i < srr.length; index = ++i)
+                getString(srr[i]);
+        }
+
+        protected abstract void getString(String s);
     }
 }

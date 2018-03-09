@@ -11,6 +11,8 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
+
 /**
  * Created by Graction06 on 2018-01-25.
  */
@@ -64,11 +66,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             db.execSQL(
                     String.format(
                             "CREATE TABLE %s (" +
-                                    "%s TEXT PRIMARY KEY," +    // address
-                                    "%s TEXT," +                // setTime
+                                    "%s TEXT PRIMARY KEY," +    // origin address
+                                    "%s TEXT," +    // new address
+                                    "%s TEXT" +                // setTime
                                     ");"
-                            , DataBaseStorage.Table.TABLE_ALARM
-                            , DataBaseStorage.Column.COLUMN_ALARM_IS_SPEAKER
+                            , DataBaseStorage.Table.TABLE_FAVORITE
+                            , DataBaseStorage.Column.COLUMN_FAVORITE_ORIGIN_ADDRESS
+                            , DataBaseStorage.Column.COLUMN_FAVORITE_NEW_ADDRESS
+                            , DataBaseStorage.Column.COLUMN_FAVORITE_SET_TIME
                     )
             );
         } catch (Exception e) {
@@ -79,6 +84,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private void init(){
         db = getWritableDatabase();
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_ALARM));
+        db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_FAVORITE));
         onCreate(getWritableDatabase());
     }
 
@@ -116,6 +122,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public <T> T select(String query, Class cls) {
         T t = null;
         try {
+            logger.log(HLogger.LogType.INFO, "<T> T select(String query, Class cls)", query);
             db = getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
             t = DataBaseParserManager.getInstance().parseObject(cursor, cls);
@@ -129,6 +136,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public <T extends Object> List<T> selectList(String query, Class cls) {
         List<T> list = new ArrayList<>();
         try {
+            logger.log(HLogger.LogType.INFO, "<T extends Object> List<T> selectList(String query, Class cls)", query);
             db = getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
@@ -139,6 +147,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             logger.log(HLogger.LogType.ERROR, "selectList(String query, Class cls)", e);
         }
         return list;
+    }
+
+    public <T> boolean selectIsNull(String query, Class cls) {
+        T t = null;
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            t = DataBaseParserManager.getInstance().parseObject(cursor, cls);
+            db.close();
+        } catch (Exception e) {
+            logger.log(HLogger.LogType.ERROR, "selectIsNull(String query, Class cls)", e);
+        }
+        return (t == null);
     }
 
     public boolean update(String table, ContentValues contentValues, String whereClause, String[] whereArgs) {
@@ -167,5 +188,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             logger.log(HLogger.LogType.ERROR, "delete(String table, String whereClause, String[] whereArgs)", e);
         }
         return result;
+    }
+
+    public static void createHelper(Context context){
+        if (DataBaseStorage.dataBaseHelper == null)
+            DataBaseStorage.dataBaseHelper = new DataBaseHelper(context, DATABASE_NAME, null, DataBaseStorage.Version.TABLE_VERSION);
     }
 }

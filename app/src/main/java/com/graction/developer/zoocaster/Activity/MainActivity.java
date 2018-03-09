@@ -20,6 +20,7 @@ import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.Util.GPS.GoogleLocationManager;
 import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -111,8 +112,8 @@ public class MainActivity extends BaseActivity {
         binding.activityMainTVLocation.setOnClickListener((v)->startActivity(new Intent(this, SearchAddressActivity.class)));
         DataStorage.googleLocationManager = new GoogleLocationManager(address -> {
             logger.log(HLogger.LogType.INFO, "address : " + address);
-            DataStorage.NowAddress = address;
-            binding.activityMainTVLocation.setText(address);
+            DataStorage.NowAddress = AddressParser.getInstance().parseAddress(address);
+            binding.activityMainTVLocation.setText(DataStorage.NowAddress);
 //            binding.fragmentHomeTVAddress.setText(address);
         });
     }

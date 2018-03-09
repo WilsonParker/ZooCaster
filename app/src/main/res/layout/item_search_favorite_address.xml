@@ -12,12 +12,8 @@
             type="String" />
 
         <variable
-            name="item"
-            type="com.graction.developer.zoocaster.Model.Address.AddressModel.Prediction" />
-
-        <variable
             name="viewHolder"
-            type="com.graction.developer.zoocaster.Adapter.AddressListAdapter.ViewHolder" />
+            type="com.graction.developer.zoocaster.Adapter.FavoriteAddressListAdapter.ViewHolder" />
 
         <variable
             name="isLast"
@@ -28,7 +24,7 @@
         android:id="@+id/item_search_address_root"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_search_address_root_height"
-        android:onClick='@{(view) -> viewHolder.onClick(item)}'
+        android:onClick='@{(view) -> viewHolder.onClick(address)}'
         android:orientation="vertical">
 
         <ImageView
@@ -52,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="343.3"
                 android:gravity="center_vertical"
-                android:text='@{item.description}'
+                android:text='@{address}'
                 android:textColor="@color/item_search_address_text"
                 android:lines="1"
                 android:textSize="@dimen/item_search_address_text_font_size"
