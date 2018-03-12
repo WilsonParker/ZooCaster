@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
+import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.R;
@@ -24,12 +25,12 @@ import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
  */
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> {
-    private ItemOnClickListener itemOnClickListener;
+    private AddressHandleListener addressHandleListener;
     private ArrayList<AddressModel.Prediction> items;
 
-    public AddressListAdapter(ArrayList<AddressModel.Prediction> items, ItemOnClickListener itemOnClickListener) {
+    public AddressListAdapter(ArrayList<AddressModel.Prediction> items, AddressHandleListener addressHandleListener) {
         this.items = items;
-        this.itemOnClickListener = itemOnClickListener;
+        this.addressHandleListener = addressHandleListener;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
         public void onClick(AddressModel.Prediction item) {
             DataBaseStorage.dataBaseHelper.insert(DataBaseStorage.Table.TABLE_FAVORITE, favoriteTable);
-            itemOnClickListener.onClick(item);
+            addressHandleListener.setAddress(item.getDescription());
         }
     }
 }

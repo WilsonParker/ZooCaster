@@ -41,7 +41,8 @@ public class DataBaseParserManager extends ObjectParserManager {
         });
         for (int i = 0; i < cursor.getColumnCount(); i++) {
             Method method = map.get(cursor.getColumnName(i).toLowerCase());
-            method.invoke(obj, getData(cursor, i, method));
+            if(method != null)
+                method.invoke(obj, getData(cursor, i, method));
         }
         return obj;
     }

@@ -10,6 +10,7 @@ import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.DataBase.DataBaseHelper;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
+import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.Net.Net;
@@ -33,13 +34,7 @@ public class SearchAddressActivity extends BaseActivity {
     private Intent intent = new Intent();
     private AddressListAdapter searchAdapter;
     private FavoriteAddressListAdapter favoriteAdapter;
-    private ItemOnClickListener itemOnClickListener = item -> {
-//        intent.putExtra(DataStorage.Key.KEY_ADDRESS_ITEM, item);
-        intent.putExtra(DataStorage.Key.KEY_ADDRESS, ((AddressModel.Prediction)item).getDescription());
-        activityEnd(DataStorage.Request.SEARCH_ADDRESS_OK);
-    };
-
-    private FavoriteAddressListAdapter.OnFavoriteClickListener onFavoriteClickListener = address -> {
+    private AddressHandleListener addressHandleListener = address -> {
         intent.putExtra(DataStorage.Key.KEY_ADDRESS, address);
         activityEnd(DataStorage.Request.SEARCH_ADDRESS_OK);
     };
@@ -50,11 +45,14 @@ public class SearchAddressActivity extends BaseActivity {
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address2);
         binding.activitySearchAddressRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         binding.activitySearchAddressFavorite.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<FavoriteTable> tables = DataBaseStorage.dataBaseHelper.selectList("SELECT * FROM "+DataBaseStorage.Table.TABLE_FAVORITE, FavoriteTable.class);
         logger.log(HLogger.LogType.INFO, "protected void init()", "table size : "+tables.size());
-        favoriteAdapter = new FavoriteAddressListAdapter((ArrayList<FavoriteTable>) tables , onFavoriteClickListener);
+        DataBaseStorage.dataBaseHelper.select("SELECT count(*) FROM "+DataBaseStorage.Table.TABLE_FAVORITE, (cursor -> {
+            cursor.moveToFirst();
+            logger.log(HLogger.LogType.INFO, "protected void init()", "count : "+cursor.getInt(0));
+        }));
+        favoriteAdapter = new FavoriteAddressListAdapter((ArrayList<FavoriteTable>) tables , addressHandleListener);
         binding.activitySearchAddressFavorite.setAdapter(favoriteAdapter);
         favoriteAdapter.notifyDataSetChanged();
 
@@ -75,7 +73,7 @@ public class SearchAddressActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "isSuccess");
                     logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "" + response.body());
-                    searchAdapter = new AddressListAdapter(response.body().getPredictions(), itemOnClickListener);
+                    searchAdapter = new AddressListAdapter(response.body().getPredictions(), addressHandleListener);
                     binding.activitySearchAddressRV.setAdapter(searchAdapter);
                     searchAdapter.notifyDataSetChanged();
                 }

@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
+import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.UI.UIFactory;
 import com.graction.developer.zoocaster.Util.Date.DateManager;
+import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.databinding.ItemSearchAddressBinding;
 import com.graction.developer.zoocaster.databinding.ItemSearchFavoriteAddressBinding;
@@ -25,12 +27,12 @@ import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
  */
 
 public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAddressListAdapter.ViewHolder> {
-    private OnFavoriteClickListener onFavoriteClickListener;
+    private AddressHandleListener addressHandleListener;
     private ArrayList<FavoriteTable> items;
 
-    public FavoriteAddressListAdapter(ArrayList<FavoriteTable> items, OnFavoriteClickListener onFavoriteClickListener) {
+    public FavoriteAddressListAdapter(ArrayList<FavoriteTable> items, AddressHandleListener addressHandleListener) {
         this.items = items;
-        this.onFavoriteClickListener = onFavoriteClickListener;
+        this.addressHandleListener = addressHandleListener;
     }
 
     @Override
@@ -61,16 +63,13 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
             String newAddress = AddressParser.getInstance().parseAddress(table.getFavorite_origin_address());
             binding.setAddress(newAddress);
             binding.setIsLast(isLast);
+            binding.setViewHolder(this);
             binding.executePendingBindings();
         }
 
         public void onClick(String address) {
-            onFavoriteClickListener.onClick(address);
+            new HLogger(getClass()).log(HLogger.LogType.INFO, "onClick(String)","onClick");
+            addressHandleListener.setAddress(address);
         }
     }
-
-    public interface OnFavoriteClickListener{
-        void onClick(String address);
-    }
-
 }

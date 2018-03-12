@@ -5,5 +5,5 @@ package com.graction.developer.zoocaster.Listener;
  */
 
 public interface AddressHandleListener {
-    public void setAddress(String address);
+    void setAddress(String address);
 }

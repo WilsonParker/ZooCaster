@@ -147,8 +147,9 @@ public class ModifyAlarmActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
-            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
-            binding.activityAddAlarmTVAddress.setText((address = item.getDescription()));
+//            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
+//            binding.activityAddAlarmTVAddress.setText((address = item.getDescription()));
+            binding.activityAddAlarmTVAddress.setText((address = data.getStringExtra(DataStorage.Key.KEY_ADDRESS)));
         }
     }
 }

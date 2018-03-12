@@ -78,16 +78,16 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         return items == null ? 0 : items.size();
     }
 
-    @Override
+  /*  @Override
     public void finishUpdate(ViewGroup container) {
         super.finishUpdate(container);
-        /*if (!isFirst) {
+        *//*if (!isFirst) {
             for (int i = 0; i < items.size(); i++)
                 setTabItem.setTabItem(i, items.get(i));
             Log.i("FragmentAdapter", "finishUpdate(ViewGroup container) size : " + items.size());
             isFirst = true;
-        }*/
-    }
+        }*//*
+    }*/
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {

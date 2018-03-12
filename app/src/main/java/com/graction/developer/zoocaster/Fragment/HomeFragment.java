@@ -1,6 +1,9 @@
 package com.graction.developer.zoocaster.Fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +17,7 @@ import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingl
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.UI.ProgressManager;
 import com.graction.developer.zoocaster.Util.File.BaseActivityFileManager;
 import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Image.GifManager;
@@ -22,6 +26,7 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.Util.Weather.WeatherManager;
 import com.graction.developer.zoocaster.databinding.FragmentHomeBinding;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +41,7 @@ public class HomeFragment extends BaseFragment {
     private FragmentHomeBinding binding;
     private GpsManager gpsManager;
     private WeatherManager weatherManager;
+    private ProgressManager progressManager;
     private BaseActivityFileManager baseActivityFileManager = BaseActivityFileManager.getInstance();
 
     public static Fragment getInstance() {
@@ -53,7 +59,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void init(View view) {
         weatherManager = WeatherManager.getInstance();
-
+        progressManager = new ProgressManager(getActivity());
+        progressManager.alertShow();
         binding.fragmentHomeSwipe.setOnRefreshListener(() -> {
             currentWeather();
         });
@@ -95,7 +102,7 @@ public class HomeFragment extends BaseFragment {
                                 end();
                             }
                         });
-                        setBindingIntegratedAirQualityModel();
+                    setBindingIntegratedAirQualityModel();
                 } else {
                     logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
@@ -161,7 +168,20 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void end() {
+        progressManager.alertDismiss();
         binding.fragmentHomeSwipe.setRefreshing(false);
         endThread(SYNC_ID);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            new HLogger(getClass()).log(HLogger.LogType.INFO, "void setUserVisibleHint(boolean isVisibleToUser)", "HomeFragment");
+        }
+    }
+
+    public void reScan() {
+        logger.log(HLogger.LogType.INFO, "void setUserVisibleHint(boolean isVisibleToUser)", "reScan");
     }
 }

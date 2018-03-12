@@ -46,3 +46,6 @@
 # com.github.lsjwzh.RecyclerViewPager:lib:v1.1.2@aar
 -keep class com.lsjwzh.widget.recyclerviewpager.**
 -dontwarn com.lsjwzh.widget.recyclerviewpager.**
+
+# SweetAlert
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation { public <init>(...); }

@@ -2,6 +2,7 @@ package com.graction.developer.zoocaster.Activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -25,10 +26,13 @@ import com.graction.developer.zoocaster.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
     private boolean isFirst;
     private FragmentAdapter fragmentAdapter;
+    private ArrayList<FragmentAdapter.TabItem> items;
 
     @Override
     protected void init() {
@@ -41,19 +45,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViewPager() {
-        /*
-            binding.activityMainVP.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            ViewPagerTabAdapter viewPagerTabAdapter = new ViewPagerTabAdapter((index, item) -> {
-                binding.activityMainTab.getTabAt(index).setIcon(item.getResIcon());
-            });
-            viewPagerTabAdapter.addItem(viewPagerTabAdapter.new TabItem(HomeFragment.getInstance(), R.drawable.ic_home_black_24dp));
-            viewPagerTabAdapter.addItem(viewPagerTabAdapter.new TabItem(Forecast5DayFragment.getInstance(), R.drawable.ic_dashboard_black_24dp));
-            viewPagerTabAdapter.addItem(viewPagerTabAdapter.new TabItem(AlarmFragment.getInstance(), R.drawable.ic_notifications_black_24dp));
-            viewPagerTabAdapter.addItem(viewPagerTabAdapter.new TabItem(TestFragment.getInstance(), R.drawable.ic_dashboard_black_24dp));
-            TabLayoutSupport.setupWithViewPager(binding.activityMainTab, binding.activityMainVP, viewPagerTabAdapter);
-        */
-
-        ArrayList<FragmentAdapter.TabItem> items = new ArrayList<>();
+        items = new ArrayList<>();
         items.add(new FragmentAdapter.TabItem(HomeFragment.getInstance(), R.drawable.tab_home));
         items.add(new FragmentAdapter.TabItem(Test2Fragment.getInstance(), R.drawable.tab_week));
         items.add(new FragmentAdapter.TabItem(FineDustFragment.getInstance(), R.drawable.tab_dust));
@@ -82,8 +74,6 @@ public class MainActivity extends BaseActivity {
         binding.activityMainTab.setupWithViewPager(binding.activityMainVP);
         binding.activityMainVP.setAdapter(fragmentAdapter);
         binding.activityMainVP.setOffscreenPageLimit(items.size() - 1);
-
-        logger.log(HLogger.LogType.INFO, "initViewPager()", "initViewPager()");
     }
 
     private void initNavigation() {
@@ -109,21 +99,19 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initLocation() {
-        binding.activityMainTVLocation.setOnClickListener((v)->startActivity(new Intent(this, SearchAddressActivity.class)));
+        binding.activityMainTVLocation.setOnClickListener((v)->startActivityForResult(new Intent(this, SearchAddressActivity.class), DataStorage.Request.SEARCH_ADDRESS_REQUEST));
         DataStorage.googleLocationManager = new GoogleLocationManager(address -> {
             logger.log(HLogger.LogType.INFO, "address : " + address);
             DataStorage.NowAddress = AddressParser.getInstance().parseAddress(address);
             binding.activityMainTVLocation.setText(DataStorage.NowAddress);
-//            binding.fragmentHomeTVAddress.setText(address);
         });
     }
 
-    private void replaceContent() {
-//        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_FL, fragment).commit();
-    }
-
-    private void replaceContent(Fragment fragment) {
-//        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_FL, fragment).commit();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        logger.log(HLogger.LogType.INFO, "void onActivityResult(int requestCode, int resultCode, Intent data)","MainActivity");
+        ((HomeFragment)items.get(0).getFragment()).reScan();
     }
 
 }

@@ -119,6 +119,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void select(String query, OnRawQuery onRawQuery) {
+        try {
+            logger.log(HLogger.LogType.INFO, "void select(String query, OnRawQuery onRawQuery)", query);
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            onRawQuery.getData(cursor);
+            db.close();
+        } catch (Exception e) {
+            logger.log(HLogger.LogType.ERROR, "void select(String query, OnRawQuery onRawQuery)", e);
+        }
+    }
+
     public <T> T select(String query, Class cls) {
         T t = null;
         try {
@@ -193,5 +205,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static void createHelper(Context context){
         if (DataBaseStorage.dataBaseHelper == null)
             DataBaseStorage.dataBaseHelper = new DataBaseHelper(context, DATABASE_NAME, null, DataBaseStorage.Version.TABLE_VERSION);
+    }
+
+    public interface OnRawQuery{
+        void getData(Cursor cursor);
     }
 }
