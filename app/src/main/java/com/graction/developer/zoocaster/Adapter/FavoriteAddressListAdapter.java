@@ -2,6 +2,7 @@ package com.graction.developer.zoocaster.Adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -37,7 +38,7 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_search_favorite_address, parent, false));
+        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_search_address, parent, false));
     }
 
     @Override
@@ -51,9 +52,9 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ItemSearchFavoriteAddressBinding binding;
+        private ItemSearchAddressBinding binding;
 
-        public ViewHolder(ItemSearchFavoriteAddressBinding binding) {
+        public ViewHolder(ItemSearchAddressBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             UIFactory.setViewWithRateParams(binding.itemSearchAddressRoot, TYPE_BASIC);
@@ -61,9 +62,15 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
 
         public void onBind(FavoriteTable table, boolean isLast) {
             String newAddress = AddressParser.getInstance().parseAddress(table.getFavorite_origin_address());
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> onClick(newAddress));
+            binding.itemSearchAddressIVStar.setSelected(true);
+            binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
+                Log.i("Address","itemSearchAddressIVStar onClick");
+                binding.itemSearchAddressIVStar.setSelected(false);
+                // Delete Query
+            });
             binding.setAddress(newAddress);
             binding.setIsLast(isLast);
-            binding.setViewHolder(this);
             binding.executePendingBindings();
         }
 

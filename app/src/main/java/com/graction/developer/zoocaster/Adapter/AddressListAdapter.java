@@ -2,6 +2,7 @@ package com.graction.developer.zoocaster.Adapter;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -63,15 +64,19 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             String newAddress = AddressParser.getInstance().parseAddress(item.getDescription());
             favoriteTable = new FavoriteTable(item.getDescription(), newAddress, DateManager.getInstance().getDate(FavoriteTable.TIME_FORMAT));
             item.setDescription(newAddress);
-            binding.setItem(item);
-            binding.setViewHolder(this);
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> onClick(item.getDescription()));
+            binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
+                Log.i("Address","itemSearchAddressIVStar onClick");
+                binding.itemSearchAddressIVStar.setSelected(!binding.itemSearchAddressIVStar.isSelected());
+            });
+            binding.setAddress(item.getDescription());
             binding.setIsLast(isLast);
             binding.executePendingBindings();
         }
 
-        public void onClick(AddressModel.Prediction item) {
+        public void onClick(String address) {
             DataBaseStorage.dataBaseHelper.insert(DataBaseStorage.Table.TABLE_FAVORITE, favoriteTable);
-            addressHandleListener.setAddress(item.getDescription());
+            addressHandleListener.setAddress(address);
         }
     }
 }
