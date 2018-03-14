@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
 import com.graction.developer.zoocaster.Listener.AddressHandleListener;
+import com.graction.developer.zoocaster.Listener.FavoriteItemOnClickListener;
+import com.graction.developer.zoocaster.Method.CommonMethodManager;
 import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.R;
@@ -18,6 +20,8 @@ import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.databinding.ItemSearchAddressBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
 
@@ -26,12 +30,26 @@ import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
  */
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.ViewHolder> {
+    private FavoriteItemOnClickListener favoriteItemOnClickListener;
     private AddressHandleListener addressHandleListener;
     private ArrayList<AddressModel.Prediction> items;
 
     public AddressListAdapter(ArrayList<AddressModel.Prediction> items, AddressHandleListener addressHandleListener) {
         this.items = items;
         this.addressHandleListener = addressHandleListener;
+    }
+
+    public AddressListAdapter(ArrayList<AddressModel.Prediction> items, AddressHandleListener addressHandleListener, FavoriteItemOnClickListener favoriteItemOnClickListener) {
+        this(items, addressHandleListener);
+        this.favoriteItemOnClickListener = favoriteItemOnClickListener;
+    }
+
+    public void setItems(ArrayList<AddressModel.Prediction> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
+    public void setItemSelected() {
     }
 
     @Override
@@ -42,7 +60,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBind(items.get(position), position+1 == getItemCount());
+        holder.onBind(items.get(position), position + 1 == getItemCount());
     }
 
     @Override
@@ -63,20 +81,24 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         public void onBind(AddressModel.Prediction item, boolean isLast) {
             String newAddress = AddressParser.getInstance().parseAddress(item.getDescription());
             favoriteTable = new FavoriteTable(item.getDescription(), newAddress, DateManager.getInstance().getDate(FavoriteTable.TIME_FORMAT));
-            item.setDescription(newAddress);
-            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> onClick(item.getDescription()));
+
+            String[] args = {item.getDescription()};
+            binding.itemSearchAddressIVStar.setSelected(!DataBaseStorage.dataBaseHelper.selectIsNull(DataBaseStorage.Table.TABLE_FAVORITE, DataBaseStorage.Column.COLUMN_FAVORITE_ORIGIN_ADDRESS + "=?", args));
             binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
-                Log.i("Address","itemSearchAddressIVStar onClick");
-                binding.itemSearchAddressIVStar.setSelected(!binding.itemSearchAddressIVStar.isSelected());
+                boolean isSelected = binding.itemSearchAddressIVStar.isSelected();
+                if (isSelected)
+                    CommonMethodManager.getInstance().favoriteRemove(newAddress);
+                else
+                    CommonMethodManager.getInstance().favoriteAdd(favoriteTable);
+                if (favoriteItemOnClickListener != null)
+                    favoriteItemOnClickListener.favoriteOnClick(favoriteTable, !isSelected);
+                binding.itemSearchAddressIVStar.setSelected(!isSelected);
             });
-            binding.setAddress(item.getDescription());
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress));
+
+            binding.setAddress(newAddress);
             binding.setIsLast(isLast);
             binding.executePendingBindings();
-        }
-
-        public void onClick(String address) {
-            DataBaseStorage.dataBaseHelper.insert(DataBaseStorage.Table.TABLE_FAVORITE, favoriteTable);
-            addressHandleListener.setAddress(address);
         }
     }
 }

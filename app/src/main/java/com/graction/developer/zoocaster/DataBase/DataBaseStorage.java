@@ -1,8 +1,10 @@
 package com.graction.developer.zoocaster.DataBase;
 
+import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.Model.Item.AlarmItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Graction06 on 2018-01-25.
@@ -13,6 +15,7 @@ public class DataBaseStorage {
     public static DataBaseHelper dataBaseHelper, favoriteDatabaseHelper;
 
     public static ArrayList<AlarmItem> alarmList;
+    public static List<FavoriteTable> favoriteTables;
 
     public static final String DATABASE_NAME = "caster.db";
 

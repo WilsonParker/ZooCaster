@@ -18,6 +18,7 @@ import java.util.Map;
 
 public class ObjectParserManager {
     private static final ObjectParserManager instance = new ObjectParserManager();
+    private static final String DEF_DELIMITER = "&";
 
     public static ObjectParserManager getInstance() {
         return instance;
@@ -72,8 +73,6 @@ public class ObjectParserManager {
         result[1] = r2;
         return result;
     }*/
-
-
     public String[] fieldValueToString(Object obj, boolean containField) throws InvocationTargetException, IllegalAccessException {
         List<MethodModel> methods = parserDefaultGetMethodModelList(obj);
         MethodModel model = methods.get(0);
@@ -90,7 +89,7 @@ public class ObjectParserManager {
         return result;
     }
 
-    public List<MethodModel> parserDefaultGetMethodModelList(Object obj){
+    public List<MethodModel> parserDefaultGetMethodModelList(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         LinkedList<Field> fieldList = new LinkedList<>();
         for (Field field : fields)
@@ -186,6 +185,21 @@ public class ObjectParserManager {
             default:
                 return obj;
         }
+    }
+
+    public String mapToString(Map map, String delimiter) throws InvocationTargetException, IllegalAccessException {
+        String result = "";
+        int i = 0;
+        for (Object key : map.keySet()) {
+            if (i++ != 0)
+                result += delimiter;
+            result += key + "=" + attachData(map.get(key));
+        }
+        return result;
+    }
+
+    public String mapToString(Map map) throws InvocationTargetException, IllegalAccessException {
+        return mapToString(map, DEF_DELIMITER);
     }
 
     public interface ParserCompareAction {

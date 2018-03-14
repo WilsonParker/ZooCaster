@@ -1,5 +1,7 @@
 package com.graction.developer.zoocaster.Adapter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,9 +11,12 @@ import android.view.ViewGroup;
 import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
 import com.graction.developer.zoocaster.Listener.AddressHandleListener;
+import com.graction.developer.zoocaster.Listener.FavoriteItemOnClickListener;
+import com.graction.developer.zoocaster.Method.CommonMethodManager;
 import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.UI.HandlerManager;
 import com.graction.developer.zoocaster.UI.UIFactory;
 import com.graction.developer.zoocaster.Util.Date.DateManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
@@ -28,12 +33,18 @@ import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
  */
 
 public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAddressListAdapter.ViewHolder> {
+    private FavoriteItemOnClickListener favoriteItemOnClickListener;
     private AddressHandleListener addressHandleListener;
     private ArrayList<FavoriteTable> items;
 
     public FavoriteAddressListAdapter(ArrayList<FavoriteTable> items, AddressHandleListener addressHandleListener) {
         this.items = items;
         this.addressHandleListener = addressHandleListener;
+    }
+
+    public FavoriteAddressListAdapter(ArrayList<FavoriteTable> items, AddressHandleListener addressHandleListener, FavoriteItemOnClickListener favoriteItemOnClickListener) {
+        this(items, addressHandleListener);
+        this.favoriteItemOnClickListener = favoriteItemOnClickListener;
     }
 
     @Override
@@ -43,7 +54,11 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.onBind(items.get(position), position+1 == getItemCount());
+        holder.onBind(items.get(position), position + 1 == getItemCount());
+    }
+
+    public ArrayList<FavoriteTable> getItems() {
+        return items;
     }
 
     @Override
@@ -62,21 +77,20 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
 
         public void onBind(FavoriteTable table, boolean isLast) {
             String newAddress = AddressParser.getInstance().parseAddress(table.getFavorite_origin_address());
-            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> onClick(newAddress));
             binding.itemSearchAddressIVStar.setSelected(true);
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress));
             binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
-                Log.i("Address","itemSearchAddressIVStar onClick");
-                binding.itemSearchAddressIVStar.setSelected(false);
-                // Delete Query
+                if (binding.itemSearchAddressIVStar.isSelected()) {
+                    CommonMethodManager.getInstance().favoriteRemove(table.getFavorite_origin_address());
+                    items.remove(table);
+                    if (favoriteItemOnClickListener != null)
+                        favoriteItemOnClickListener.favoriteOnClick(table, false);
+                    notifyDataSetChanged();
+                }
             });
             binding.setAddress(newAddress);
             binding.setIsLast(isLast);
             binding.executePendingBindings();
-        }
-
-        public void onClick(String address) {
-            new HLogger(getClass()).log(HLogger.LogType.INFO, "onClick(String)","onClick");
-            addressHandleListener.setAddress(address);
         }
     }
 }

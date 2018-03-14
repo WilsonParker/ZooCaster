@@ -15,6 +15,7 @@ import com.graction.developer.zoocaster.Model.Address.AddressModel;
 import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.UI.HandlerManager;
 import com.graction.developer.zoocaster.UI.ViewAttributeManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.databinding.ActivitySearchAddress2Binding;
@@ -32,6 +33,7 @@ public class SearchAddressActivity extends BaseActivity {
 //    private ActivitySearchAddressBinding binding;
     private ActivitySearchAddress2Binding binding;
     private Intent intent = new Intent();
+    private ArrayList<AddressModel.Prediction> addressItems;
     private AddressListAdapter searchAdapter;
     private FavoriteAddressListAdapter favoriteAdapter;
     private AddressHandleListener addressHandleListener = address -> {
@@ -45,16 +47,19 @@ public class SearchAddressActivity extends BaseActivity {
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address2);
         binding.activitySearchAddressRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        searchAdapter = new AddressListAdapter(addressItems, addressHandleListener, (table, isAdd) -> {
+            if(isAdd)
+                favoriteAdapter.getItems().add(table);
+            else
+                favoriteAdapter.getItems().remove(table);
+            favoriteAdapter.notifyDataSetChanged();
+        });
+        binding.activitySearchAddressRV.setAdapter(searchAdapter);
+
         binding.activitySearchAddressFavorite.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        List<FavoriteTable> tables = DataBaseStorage.dataBaseHelper.selectList("SELECT * FROM "+DataBaseStorage.Table.TABLE_FAVORITE, FavoriteTable.class);
-        logger.log(HLogger.LogType.INFO, "protected void init()", "table size : "+tables.size());
-        DataBaseStorage.dataBaseHelper.select("SELECT count(*) FROM "+DataBaseStorage.Table.TABLE_FAVORITE, (cursor -> {
-            cursor.moveToFirst();
-            logger.log(HLogger.LogType.INFO, "protected void init()", "count : "+cursor.getInt(0));
-        }));
-        favoriteAdapter = new FavoriteAddressListAdapter((ArrayList<FavoriteTable>) tables , addressHandleListener);
+        DataBaseStorage.favoriteTables = DataBaseStorage.dataBaseHelper.selectList("SELECT * FROM "+DataBaseStorage.Table.TABLE_FAVORITE, FavoriteTable.class);
+        favoriteAdapter = new FavoriteAddressListAdapter((ArrayList<FavoriteTable>) DataBaseStorage.favoriteTables, addressHandleListener, (table, isAdd) -> searchAdapter.notifyDataSetChanged());
         binding.activitySearchAddressFavorite.setAdapter(favoriteAdapter);
-        favoriteAdapter.notifyDataSetChanged();
 
         binding.setActivity(this);
         ViewAttributeManager.getInstance().setDoneOption(this, binding.activitySearchAddressETKeyword, (v, actionId, event) -> {
@@ -66,16 +71,16 @@ public class SearchAddressActivity extends BaseActivity {
     }
 
     public void onSearch() {
-        logger.log(HLogger.LogType.INFO, "onSearch(View view)", "onSearch");
         Net.getInstance().getAddressFactoryIm().searchAddress(AddressModel.getParameter(binding.activitySearchAddressETKeyword.getText() + "")).enqueue(new Callback<AddressModel>() {
             @Override
             public void onResponse(Call<AddressModel> call, Response<AddressModel> response) {
                 if (response.isSuccessful()) {
                     logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "isSuccess");
                     logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "" + response.body());
-                    searchAdapter = new AddressListAdapter(response.body().getPredictions(), addressHandleListener);
-                    binding.activitySearchAddressRV.setAdapter(searchAdapter);
-                    searchAdapter.notifyDataSetChanged();
+                    addressItems = response.body().getPredictions();
+                    searchAdapter.setItems(response.body().getPredictions());
+                    runOnUiThread(()->searchAdapter.notifyDataSetChanged());
+                    HandlerManager.getInstance().post(()->searchAdapter.notifyDataSetChanged());
                 }
             }
 

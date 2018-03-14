@@ -18,4 +18,12 @@ public class HandlerManager {
     public Handler getHandler() {
         return handler;
     }
+
+    public void post(Runnable runnable){
+        handler.post(runnable);
+    }
+
+    public void postDelayed(Runnable runnable, long delayMillis){
+        handler.postDelayed(runnable, delayMillis);
+    }
 }

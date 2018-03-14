@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.Util.Parser.ObjectParserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
 
@@ -81,7 +83,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void init(){
+    private void init() {
         db = getWritableDatabase();
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_ALARM));
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_FAVORITE));
@@ -116,6 +118,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             db.close();
         } catch (Exception e) {
             logger.log(HLogger.LogType.ERROR, "insert(String, Object)", e);
+        }
+    }
+
+    public void insertIFNull(String table, Map selectWhereCause, Object obj) {
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(String.format("SELECT count(*) FROM %s where %s", table, ObjectParserManager.getInstance().mapToString(selectWhereCause)), null);
+            cursor.moveToFirst();
+            int count = cursor.getInt(0);
+            if (count == 0)
+                insert(table, obj);
+            db.close();
+        } catch (Exception e) {
+            logger.log(HLogger.LogType.ERROR, "void insertIFNull(String table, String selectWhereCause, Object obj)", e);
         }
     }
 
@@ -174,6 +190,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return (t == null);
     }
 
+    public boolean selectIsNull(String table, String selection, String[] selectionArgs) {
+        boolean result = false;
+        try {
+            db = getReadableDatabase();
+            Cursor cursor = db.query(table, new String[]{"count(*)"}, selection, selectionArgs, null, null, null);
+            cursor.moveToFirst();
+            int count = cursor.getInt(0);
+            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, String selection, String[] selectionArgs)", "count : " + count);
+
+            db.close();
+            if (count == 0)
+                result = true;
+        } catch (Exception e) {
+            logger.log(HLogger.LogType.ERROR, "boolean selectIsNull(String table, String selection, String[] selectionArgs)", e);
+        }
+        return result;
+    }
+
+    public boolean selectIsNull(String table, Map map) {
+        boolean result = false;
+        try {
+            String query = String.format("SELECT count(*) FROM %s WHERE %s", table, ObjectParserManager.getInstance().mapToString(map));
+            db = getReadableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+            cursor.moveToFirst();
+            int count = cursor.getInt(0);
+            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, Map map)", query);
+            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, Map map)", "count : " + count);
+
+            db.close();
+            if (count == 0)
+                result = true;
+        } catch (Exception e) {
+            logger.log(HLogger.LogType.ERROR, "boolean selectIsNull(String table, Map map)", e);
+        }
+        return result;
+    }
+
     public boolean update(String table, ContentValues contentValues, String whereClause, String[] whereArgs) {
         boolean result = false;
         try {
@@ -202,12 +256,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public static void createHelper(Context context){
+    public static void createHelper(Context context) {
         if (DataBaseStorage.dataBaseHelper == null)
             DataBaseStorage.dataBaseHelper = new DataBaseHelper(context, DATABASE_NAME, null, DataBaseStorage.Version.TABLE_VERSION);
     }
 
-    public interface OnRawQuery{
+    public interface OnRawQuery {
         void getData(Cursor cursor);
     }
 }
