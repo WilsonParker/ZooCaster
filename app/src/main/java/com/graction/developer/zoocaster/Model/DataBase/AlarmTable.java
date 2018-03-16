@@ -11,16 +11,17 @@ public class AlarmTable {
     @SqlIgnore
     private int alarm_index;
     private int alarm_hourofday, alarm_minute, alarm_volume, alarm_running_state, alarm_isSpeaker;
-    private String alarm_address, alarm_memo, alarm_days;
+    private String alarm_new_address, alarm_origin_address, alarm_memo, alarm_days;
 
     public AlarmTable() {
     }
 
-    public AlarmTable(int alarm_hourOfDay, int alarm_minute, String alarm_address, String alarm_memo, String alarm_days, int alarm_running_state, int alarm_volume, int isSpeaker) {
+    public AlarmTable(int alarm_hourOfDay, int alarm_minute, String alarm_new_address, String alarm_origin_address, String alarm_memo, String alarm_days, int alarm_running_state, int alarm_volume, int isSpeaker) {
         this.alarm_running_state = alarm_running_state;
         this.alarm_hourofday = alarm_hourOfDay;
         this.alarm_minute = alarm_minute;
-        this.alarm_address = alarm_address;
+        this.alarm_new_address = alarm_new_address;
+        this.alarm_origin_address = alarm_origin_address;
         this.alarm_memo = alarm_memo;
         this.alarm_days = alarm_days;
         this.alarm_volume = alarm_volume;
@@ -83,12 +84,20 @@ public class AlarmTable {
         this.alarm_running_state = alarm_running_state;
     }
 
-    public String getAlarm_address() {
-        return alarm_address;
+    public String getAlarm_new_address() {
+        return alarm_new_address;
     }
 
-    public void setAlarm_address(String alarm_address) {
-        this.alarm_address = alarm_address;
+    public void setAlarm_new_address(String alarm_new_address) {
+        this.alarm_new_address = alarm_new_address;
+    }
+
+    public String getAlarm_origin_address() {
+        return alarm_origin_address;
+    }
+
+    public void setAlarm_origin_address(String alarm_origin_address) {
+        this.alarm_origin_address = alarm_origin_address;
     }
 
     public int getAlarm_isSpeaker() {
@@ -108,7 +117,8 @@ public class AlarmTable {
                 ", alarm_volume=" + alarm_volume +
                 ", alarm_running_state=" + alarm_running_state +
                 ", alarm_isSpeaker=" + alarm_isSpeaker +
-                ", alarm_address='" + alarm_address + '\'' +
+                ", alarm_new_address='" + alarm_new_address + '\'' +
+                ", alarm_origin_address='" + alarm_origin_address + '\'' +
                 ", alarm_memo='" + alarm_memo + '\'' +
                 ", alarm_days='" + alarm_days + '\'' +
                 '}';

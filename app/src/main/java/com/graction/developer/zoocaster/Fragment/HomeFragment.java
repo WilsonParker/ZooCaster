@@ -12,17 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.Model.ImageModel;
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualitySingleModel;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.Response.WeatherModel;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.UI.ProgressManager;
 import com.graction.developer.zoocaster.Util.File.BaseActivityFileManager;
+import com.graction.developer.zoocaster.Util.GPS.AddressManager;
 import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Image.GifManager;
 import com.graction.developer.zoocaster.Util.Image.GlideImageManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.Util.Weather.WeatherManager;
 import com.graction.developer.zoocaster.databinding.FragmentHomeBinding;
 
@@ -31,6 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.Latitude;
+import static com.graction.developer.zoocaster.Data.DataStorage.Longitude;
 import static com.graction.developer.zoocaster.Data.DataStorage.googleLocationManager;
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
@@ -38,9 +44,8 @@ import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 public class HomeFragment extends BaseFragment {
     private static final HomeFragment instance = new HomeFragment();
     private static final int SYNC_ID = 0B0001;
-    private FragmentHomeBinding binding;
     private GpsManager gpsManager;
-    private WeatherManager weatherManager;
+    private FragmentHomeBinding binding;
     private ProgressManager progressManager;
     private BaseActivityFileManager baseActivityFileManager = BaseActivityFileManager.getInstance();
 
@@ -58,7 +63,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(View view) {
-        weatherManager = WeatherManager.getInstance();
+        gpsManager = new GpsManager(getActivity());
         progressManager = new ProgressManager(getActivity());
         progressManager.alertShow();
         binding.fragmentHomeSwipe.setOnRefreshListener(() -> {
@@ -74,9 +79,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void currentWeather() {
-        gpsManager = new GpsManager(getActivity());
-
-        Call call = Net.getInstance().getFactoryIm().selectWeather(gpsManager.getLatitude(), gpsManager.getLongitude());
+        Call call = Net.getInstance().getFactoryIm().selectWeather(Latitude, Longitude);
         setCall(call);
         addAction(() -> call.enqueue(new Callback<WeatherModel>() {
             @Override
@@ -87,7 +90,7 @@ public class HomeFragment extends BaseFragment {
                     weatherModel = response.body();
                     reloadWeatherInfo();
                     if (integratedAirQualitySingleModel == null)
-                        callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
+                        callIntegratedAirQuality(Latitude, Longitude, new Callback<IntegratedAirQualitySingleModel>() {
                             @Override
                             public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
                                 if (response.isSuccessful()) {
@@ -125,7 +128,23 @@ public class HomeFragment extends BaseFragment {
         setBindingIntegratedAirQualityModel();
 //        gifImageView.startAnimation();
         if (gpsManager.isGetLocation()) {
-            googleLocationManager.getAddress(gpsManager.getLocation());
+//            googleLocationManager.getAddress(gpsManager.getLocation());
+            Net.getInstance().getFactoryIm().getAddressFromLocation(Latitude, Longitude).enqueue(new Callback<SimpleResponseModel<String>>() {
+                @Override
+                public void onResponse(Call<SimpleResponseModel<String>> call, Response<SimpleResponseModel<String>> response) {
+                    if(response.isSuccessful()){
+                        String address = response.body().getResult();
+                        DataStorage.addressHandleListener.setAddress(AddressParser.getInstance().parseAddress(address), address);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SimpleResponseModel<String>> call, Throwable t) {
+                    logger.log(HLogger.LogType.ERROR, "onFailure(Call<SimpleResponseModel<String>> call, Throwable t)", "getAddressFromLocation onFailure", t);
+                    end();
+                }
+            });
+
 //            googleLocationManager.getAlarm_address(gpsManager.getLocation());
             if (weatherModel != null) {
                 binding.setWeatherModel(weatherModel);
@@ -133,6 +152,7 @@ public class HomeFragment extends BaseFragment {
                 try {
                     // Background Image
                     GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeIVBackground, new RequestOptions().centerCrop(), imageModel.getBackground_img_path(), imageModel.getBackground_img_name(), weatherModel.getBackground_img_url());
+                    GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentHomeIVIconWeather, new RequestOptions().centerCrop(), weatherModel.getWeatherCategoryVO().getWeatherCategory_icon_path(), weatherModel.getWeatherCategoryVO().getWeatherCategory_icon_name(), weatherModel.getWeatherIcon_img_url());
                     // Character Image
 //                    String character_path = "/assets/images/character/", character_img = "test2.gif";
                     String character_path = imageModel.getCharacter_img_path(), character_img = imageModel.getCharacter_img_name(),
@@ -181,7 +201,9 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    @Override
     public void reScan() {
         logger.log(HLogger.LogType.INFO, "void setUserVisibleHint(boolean isVisibleToUser)", "reScan");
+        currentWeather();
     }
 }

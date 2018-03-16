@@ -41,12 +41,9 @@ public class ForecastDailyFragment extends BaseFragment {
         weatherManager = WeatherManager.getInstance();
         gpsManager = new GpsManager(getActivity());
 
-        googleLocationManager = new GoogleLocationManager(new AddressHandleListener() {
-            @Override
-            public void setAddress(String address) {
-                logger.log(HLogger.LogType.INFO, "address : " + address);
-                // binding.fragmentHomeTVAddress.setText(address);
-            }
+        googleLocationManager = new GoogleLocationManager((newAddress, originAddress) -> {
+            logger.log(HLogger.LogType.INFO, "address : " + newAddress);
+            // binding.fragmentHomeTVAddress.setText(address);
         });
     }
 

@@ -137,7 +137,8 @@ public class TestFragment extends BaseFragment {
 
     public void test3(boolean isSpeaker) {
         Context context = getActivity();
-        AlarmItem item = new AlarmItem(3, "address", "memo", new int[]{1, 1, 1, 1, 1, 1, 1, 1}, 0, 0, 5, 1, isSpeaker);
+//        AlarmItem item = new AlarmItem(3, "address", "memo", new int[]{1, 1, 1, 1, 1, 1, 1, 1}, 0, 0, 5, 1, isSpeaker);
+        AlarmItem item = null;
         AlarmManager alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(DataStorage.Action.RECEIVE_ACTION_ALARM_START);
 //        Intent alarmIntent = new Intent(context, AlarmReceiver.class);

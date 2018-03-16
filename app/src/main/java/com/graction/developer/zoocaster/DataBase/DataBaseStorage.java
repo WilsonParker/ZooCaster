@@ -31,7 +31,8 @@ public class DataBaseStorage {
                                     , COLUMN_FAVORITE = Table.TABLE_FAVORITE+COLUMN_SEPARATE
                                     ;
         public static final String COLUMN_ALARM_INDEX = COLUMN_ALARM+"INDEX"
-                                    , COLUMN_ALARM_ADDRESS = COLUMN_ALARM+"ADDRESS"
+                                    , COLUMN_ALARM_NEW_ADDRESS = COLUMN_ALARM+"NEW_ADDRESS"
+                                    , COLUMN_ALARM_ORIGIN_ADDRESS = COLUMN_ALARM+"ORIGIN_ADDRESS"
 //                                    , COLUMN_ALARM_PLACE_NAME= COLUMN_ALARM+"PLACE_NAME"
 //                                    , COLUMN_ALARM_PLACE_ADDRESS = COLUMN_ALARM+"PLACE_ADDRESS"
                                     , COLUMN_ALARM_MEMO = COLUMN_ALARM+"MEMO"

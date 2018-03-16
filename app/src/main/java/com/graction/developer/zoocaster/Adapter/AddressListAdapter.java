@@ -94,7 +94,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
                     favoriteItemOnClickListener.favoriteOnClick(favoriteTable, !isSelected);
                 binding.itemSearchAddressIVStar.setSelected(!isSelected);
             });
-            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress));
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress, item.getDescription()));
 
             binding.setAddress(newAddress);
             binding.setIsLast(isLast);

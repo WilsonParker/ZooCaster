@@ -7,6 +7,7 @@ import android.location.Location;
 
 import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Locale;
  */
 
 public class LocationManager {
+    private static final String ADDRESS_NOT_FOUND = "주소 결과가 없습니다", ADDRESS_CONVERT_FAIL = "주소 변환 실패";
     private HLogger logger;
     private Context context;
     private AddressHandleListener addressHandleListener;
@@ -46,14 +48,15 @@ public class LocationManager {
                     logger.log(HLogger.LogType.INFO, "getAlarm_address(final Location location)", "Address line : " + address.getAddressLine(0));
                 }
 //                addressHandleListener.setAlarm_address(AddressManager.getInstance().getTransferAddr(addresses.get(0)));
-                addressHandleListener.setAddress(addresses.get(0).getAddressLine(0));
+                String resultAddr = addresses.get(0).getAddressLine(0);
+                addressHandleListener.setAddress(AddressParser.getInstance().parseAddress(resultAddr), resultAddr);
             } else {
                 logger.log(HLogger.LogType.INFO, "getAlarm_address(final Location location)", "Address is empty");
-                addressHandleListener.setAddress("주소 결과가 없습니다");
+                addressHandleListener.setAddress(ADDRESS_NOT_FOUND, ADDRESS_NOT_FOUND);
             }
         } catch (IOException e) {
             logger.log(HLogger.LogType.ERROR, "getAlarm_address(final Location location)", "getAlarm_address Error", e);
-            addressHandleListener.setAddress("주소 변환 실패");
+            addressHandleListener.setAddress(ADDRESS_CONVERT_FAIL, ADDRESS_CONVERT_FAIL);
         }
 
     }

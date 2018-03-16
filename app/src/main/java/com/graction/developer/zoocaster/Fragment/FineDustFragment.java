@@ -34,13 +34,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.graction.developer.zoocaster.Data.DataStorage.Latitude;
+import static com.graction.developer.zoocaster.Data.DataStorage.Longitude;
 import static com.graction.developer.zoocaster.Data.DataStorage.fineDustStandard;
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
 public class FineDustFragment extends BaseFragment {
     private static final int SYNC_ID = 0B0100;
-    private GpsManager gpsManager;
     private FragmentFinedustBinding binding;
 
     public static Fragment getInstance() {
@@ -59,8 +60,6 @@ public class FineDustFragment extends BaseFragment {
     protected void init(View view) {
         binding.setActivity(this);
         binding.fragmentFinedustSwipe.setOnRefreshListener(() -> initFineDustStandard());
-        gpsManager = new GpsManager(getActivity());
-
         initFineDustStandard();
     }
 
@@ -106,15 +105,17 @@ public class FineDustFragment extends BaseFragment {
         startSync();
     }*/
 
-   // 초기화 및 새로고침 시에 Call IntegratedAirQualitySingleModel
+    // 초기화 및 새로고침 시에 Call IntegratedAirQualitySingleModel
     private void initFineDustStandard() {
         Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
         setCall(call);
         addAction(() ->
-                        callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
+                        callIntegratedAirQuality(Latitude, Longitude, new Callback<IntegratedAirQualitySingleModel>() {
                             @Override
                             public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
                                 if (response.isSuccessful()) {
+                                    logger.log(HLogger.LogType.INFO, "onResponse is Successful", "lat %s, lon %s: ", Latitude, Longitude);
+                                    logger.log(HLogger.LogType.INFO, "onResponse is Successful", "integratedAirQualitySingleModel " + integratedAirQualitySingleModel);
                                     integratedAirQualitySingleModel = response.body();
                                     setIntegratedAirQualityItem();
                                     end();
@@ -132,8 +133,11 @@ public class FineDustFragment extends BaseFragment {
     }
 
     private void setIntegratedAirQualityItem() {
+        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + (integratedAirQualitySingleModel == null));
+        if(integratedAirQualitySingleModel == null)
+            return;
         logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem());
-        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem().getFineDustStandard());
+//        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem().getFineDustStandard());
         IntegratedAirQualityModel.IntegratedAirQualityModelItem item = integratedAirQualitySingleModel.getItem();
         item.setFineDustStandard(fineDustStandard);
         FineDustVO vo = item.getFineDustVO();
@@ -157,9 +161,7 @@ public class FineDustFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             binding.donutProgress.drawWithAnimate();
-            if (integratedAirQualitySingleModel != null) {
-                setIntegratedAirQualityItem();
-            }
+            setIntegratedAirQualityItem();
             binding.notifyChange();
         }
         super.setUserVisibleHint(isVisibleToUser);
@@ -168,5 +170,10 @@ public class FineDustFragment extends BaseFragment {
     private void end() {
         endThread(SYNC_ID);
         binding.fragmentFinedustSwipe.setRefreshing(false);
+    }
+
+    @Override
+    public void reScan() {
+        initFineDustStandard();
     }
 }

@@ -210,6 +210,7 @@
                             android:gravity="top|center_horizontal"
                             android:textColor="@color/fragment_home_TV_weather_info"
                             android:textSize="@dimen/fragment_home_TV_message"
+                            android:text="@{weatherModel.weatherCategoryVO.weatherCategory_message}"
                             tools:text="햇빛이 따끈따끈~\n 포근한 니트를 입고 싶은 날!" />
                     </LinearLayout>
 

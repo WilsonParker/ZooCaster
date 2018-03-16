@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class AlarmItem implements Serializable {
     private static final String[] DayOfTheWeek = {"", "일", "월", "화", "수", "목", "금", "토"};
-    private String memo, address;
+    private String memo, new_address, origin_address;
     private int[] days;
     private boolean isMorning = true, isSpeaker;
     private int index, hour, minute, volume, isRunning, img_phone = R.drawable.phone_icon_on, img_speaker = R.drawable.sound_icon_off;
@@ -23,7 +23,8 @@ public class AlarmItem implements Serializable {
     public AlarmItem(AlarmTable table) {
         this.isRunning = table.getAlarm_running_state();
         this.index = table.getAlarm_index();
-        this.address = table.getAlarm_address();
+        this.new_address = table.getAlarm_new_address();
+        this.origin_address = table.getAlarm_origin_address();
         this.memo = table.getAlarm_memo();
         this.isSpeaker = table.getAlarm_isSpeaker() == 1 ? true : false;
 //            this.days = Arrays.stream(table.getAlarm_days().split(",")).mapToInt(Integer::parseInt).toArray();
@@ -44,13 +45,14 @@ public class AlarmItem implements Serializable {
         this.index = index;
     }
 
-    public AlarmItem(int index, String address, String memo, int[] days, int hour, int minute, int volume, int isRunning, boolean isSpeaker) {
-        this(address, memo, days, hour, minute, volume, isRunning, isSpeaker);
+    public AlarmItem(int index, String new_address, String origin_address, String memo, int[] days, int hour, int minute, int volume, int isRunning, boolean isSpeaker) {
+        this(new_address, origin_address, memo, days, hour, minute, volume, isRunning, isSpeaker);
         this.index = index;
     }
 
-    public AlarmItem(String address, String memo, int[] days, int hour, int minute, int volume, int isRunning, boolean isSpeaker) {
-        this.address = address;
+    public AlarmItem(String new_address, String origin_address, String memo, int[] days, int hour, int minute, int volume, int isRunning, boolean isSpeaker) {
+        this.new_address = origin_address;
+        this.origin_address = origin_address;
         this.memo = memo;
         this.days = days;
         this.minute = minute;
@@ -170,12 +172,20 @@ public class AlarmItem implements Serializable {
         this.img_speaker = img_speaker;
     }
 
-    public String getAddress() {
-        return address;
+    public String getNew_address() {
+        return new_address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setNew_address(String new_address) {
+        this.new_address = new_address;
+    }
+
+    public String getOrigin_address() {
+        return origin_address;
+    }
+
+    public void setOrigin_address(String origin_address) {
+        this.origin_address = origin_address;
     }
 
     public boolean getIsRunning() {
@@ -190,7 +200,8 @@ public class AlarmItem implements Serializable {
     public String toString() {
         return "AlarmItem{" +
                 "memo='" + memo + '\'' +
-                ", address ='" + address + '\'' +
+                ", new_address ='" + new_address + '\'' +
+                ", origin_address ='" + origin_address + '\'' +
                 ", days=" + Arrays.toString(days) +
                 ", isMorning=" + isMorning +
                 ", isSpeaker=" + isSpeaker +

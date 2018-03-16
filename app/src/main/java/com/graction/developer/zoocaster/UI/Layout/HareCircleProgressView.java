@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.icu.lang.UCharacter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -20,6 +21,9 @@ import android.view.View;
 
 import com.github.lzyzsd.circleprogress.Utils;
 import com.graction.developer.zoocaster.Util.Parser.MathematicsManager;
+import com.graction.developer.zoocaster.Util.StringUtil;
+
+import java.text.NumberFormat;
 
 /**
  * Created by Graction06 on 2018-02-06.
@@ -494,11 +498,10 @@ public class HareCircleProgressView extends View {
     }
 
     public void setDonut_progress(String percent) {
-        if (!TextUtils.isEmpty(percent)) {
+        if (StringUtil.isStrictlyNumeric(percent) && !TextUtils.isEmpty(percent)) {
             this.setProgress((float) Integer.parseInt(percent));
         }
-
-    }
+     }
 
     /*
      * Customizing

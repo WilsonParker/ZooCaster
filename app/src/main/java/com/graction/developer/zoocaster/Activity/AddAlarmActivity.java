@@ -28,7 +28,7 @@ public class AddAlarmActivity extends BaseActivity {
     private int hourOfDay, minute;
     private int[] selectedWeek = new int[8];
     private boolean isSpeaker = true;
-    private String address;
+    private String new_address, origin_address;
 
     @Override
     protected void init() {
@@ -85,7 +85,7 @@ public class AddAlarmActivity extends BaseActivity {
 //        AlarmData.AlarmItem item = alarmData.new AlarmItem(place_name, place_address, memo, selectedWeek, hourOfDay, minute);
         if (!validCheck())
             return;
-        AlarmTable alarmTable = new AlarmTable(hourOfDay, minute, address, binding.activityAddAlarmETMemo.getText() + "", StringUtil.arrayToString(selectedWeek), AlarmTable.ENABLED, binding.activityAddAlarmSBVolume.getProgress(), isSpeaker ? AlarmTable.ENABLED : AlarmTable.DISABLED);
+        AlarmTable alarmTable = new AlarmTable(hourOfDay, minute, new_address, origin_address, binding.activityAddAlarmETMemo.getText() + "", StringUtil.arrayToString(selectedWeek), AlarmTable.ENABLED, binding.activityAddAlarmSBVolume.getProgress(), isSpeaker ? AlarmTable.ENABLED : AlarmTable.DISABLED);
         AlarmItem item = new AlarmItem(alarmTable);
         DataBaseStorage.dataBaseHelper.insert(DataBaseStorage.Table.TABLE_ALARM, alarmTable);
         AlarmManager.getInstance().setAlarmService(item);
@@ -94,7 +94,7 @@ public class AddAlarmActivity extends BaseActivity {
     }
 
     private boolean validCheck() {
-        if (NullChecker.getInstance().isNull(address))
+        if (NullChecker.getInstance().isNull(new_address))
             return false;
         if (hourOfDay == 0)
             hourOfDay = Integer.parseInt(DateManager.getInstance().getNow(DateManager.DateType.HourOfDay));
@@ -121,9 +121,9 @@ public class AddAlarmActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
-//            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
-//            address = item != null ? item.getDescription() : data.getStringExtra(DataStorage.Key.KEY_ADDRESS);
-            binding.activityAddAlarmTVAddress.setText((address = data.getStringExtra(DataStorage.Key.KEY_ADDRESS)));
+            new_address = data.getStringExtra(DataStorage.Key.KEY_NEW_ADDRESS);
+            origin_address = data.getStringExtra(DataStorage.Key.KEY_ORIGIN_ADDRESS);
+            binding.activityAddAlarmTVAddress.setText(new_address);
         }
     }
 }

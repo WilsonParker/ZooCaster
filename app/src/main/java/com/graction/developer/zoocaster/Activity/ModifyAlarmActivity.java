@@ -30,7 +30,7 @@ public class ModifyAlarmActivity extends BaseActivity {
     private int hourOfDay = -1, minute = -1, index;
     private int[] selectedWeek = new int[8];
     private boolean isSpeaker = true;
-    private String address;
+    private String new_address, origin_address;
 
     @Override
     protected void init() {
@@ -68,7 +68,7 @@ public class ModifyAlarmActivity extends BaseActivity {
     private void initView() {
         binding.activityAddAlarmETMemo.setText(item.getMemo());
         binding.activityAddAlarmSBVolume.setProgress(item.getVolume());
-        binding.activityAddAlarmTVAddress.setText(item.getAddress());
+        binding.activityAddAlarmTVAddress.setText(item.getNew_address());
 
         binding.activityAddAlarmTimePicker.setCurrentHour(item.getRealHour());
         binding.activityAddAlarmTimePicker.setCurrentMinute(item.getMinute());
@@ -99,7 +99,7 @@ public class ModifyAlarmActivity extends BaseActivity {
 //        AlarmData.AlarmItem item = alarmData.new AlarmItem(place_name, place_address, memo, selectedWeek, hourOfDay, minute);
         if (!validCheck())
             return;
-        AlarmTable table = new AlarmTable(hourOfDay, minute, address, binding.activityAddAlarmETMemo.getText() + "", StringUtil.arrayToString(selectedWeek), AlarmTable.ENABLED, binding.activityAddAlarmSBVolume.getProgress(), isSpeaker ? AlarmTable.ENABLED : AlarmTable.DISABLED);
+        AlarmTable table = new AlarmTable(hourOfDay, minute, new_address, origin_address, binding.activityAddAlarmETMemo.getText() + "", StringUtil.arrayToString(selectedWeek), AlarmTable.ENABLED, binding.activityAddAlarmSBVolume.getProgress(), isSpeaker ? AlarmTable.ENABLED : AlarmTable.DISABLED);
         AlarmItem alarmItem = new AlarmItem(table, item.getIndex());
         ContentValues values = null;
         try {
@@ -119,8 +119,8 @@ public class ModifyAlarmActivity extends BaseActivity {
     }
 
     private boolean validCheck() {
-        address = binding.activityAddAlarmTVAddress.getText() + "";
-        if (NullChecker.getInstance().isNull(address))
+        new_address = binding.activityAddAlarmTVAddress.getText() + "";
+        if (NullChecker.getInstance().isNull(new_address))
             return false;
 //            hourOfDay = Integer.parseInt(DateManager.getInstance().getNow(DateManager.DateType.HourOfDay));
 //            minute = Integer.parseInt(DateManager.getInstance().getNow(DateManager.DateType.Minute));
@@ -147,9 +147,9 @@ public class ModifyAlarmActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
-//            AddressModel.Prediction item = (AddressModel.Prediction) data.getSerializableExtra(DataStorage.Key.KEY_ADDRESS_ITEM);
-//            binding.activityAddAlarmTVAddress.setText((address = item.getDescription()));
-            binding.activityAddAlarmTVAddress.setText((address = data.getStringExtra(DataStorage.Key.KEY_ADDRESS)));
+            new_address = data.getStringExtra(DataStorage.Key.KEY_NEW_ADDRESS);
+            origin_address = data.getStringExtra(DataStorage.Key.KEY_ORIGIN_ADDRESS);
+            binding.activityAddAlarmTVAddress.setText(new_address);
         }
     }
 }

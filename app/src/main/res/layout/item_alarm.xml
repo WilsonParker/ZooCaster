@@ -97,7 +97,7 @@
                             android:layout_gravity="top"
                             android:layout_weight="110"
                             android:gravity="bottom"
-                            android:text='@{item.address}'
+                            android:text='@{item.new_address}'
                             android:textColor="@color/item_alarm_address"
                             android:textSize='@dimen/item_alarm_address_font_size'
                             tools:text="영등포구 당산동" />

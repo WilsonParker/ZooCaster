@@ -4,6 +4,7 @@ package com.graction.developer.zoocaster.Model.Response;
 import com.graction.developer.zoocaster.Model.Item.AddressItem;
 import com.graction.developer.zoocaster.Model.FineDustModel;
 import com.graction.developer.zoocaster.Model.ImageModel;
+import com.graction.developer.zoocaster.Model.VO.WeatherCategoryVO;
 import com.graction.developer.zoocaster.Model.Weather.Clouds;
 import com.graction.developer.zoocaster.Model.Weather.Coord;
 import com.graction.developer.zoocaster.Model.Weather.Main;
@@ -37,6 +38,7 @@ public class WeatherModel {
 	private AddressItem addressModel;
 	private ImageModel imageModel;
 	private ForecastSpaceDataModel forecastSpaceDataModel;
+	private WeatherCategoryVO weatherCategoryVO;
 
 	public Coord getCoord() {
 		return coord;
@@ -130,6 +132,10 @@ public class WeatherModel {
 		this.cod = cod;
 	}
 
+    public String getWeatherIcon_img_url() {
+        return RESOURCE_URL+weatherCategoryVO.getWeatherCategory_icon_path()+weatherCategoryVO.getWeatherCategory_icon_name();
+    }
+
 	public String getBackground_img_url() {
 		return RESOURCE_URL+imageModel.getBackground_img_path()+imageModel.getBackground_img_name();
 	}
@@ -174,11 +180,33 @@ public class WeatherModel {
 		this.forecastSpaceDataModel = forecastSpaceDataModel;
 	}
 
+	public WeatherCategoryVO getWeatherCategoryVO() {
+		return weatherCategoryVO;
+	}
+
+	public void setWeatherCategoryVO(WeatherCategoryVO weatherCategoryVO) {
+		this.weatherCategoryVO = weatherCategoryVO;
+	}
+
 	@Override
 	public String toString() {
-		return "WeatherModel [coord=" + coord + ", weather=" + weather + ", main=" + main + ", wind=" + wind
-				+ ", clouds=" + clouds + ", sys=" + sys + ", base=" + base + ", name=" + name + ", dt=" + dt + ", id="
-				+ id + ", cod=" + cod + ", fineDustModel=" + fineDustModel + ", addressModel=" + addressModel
-				+ ", imageModel=" + imageModel + ", forecastSpaceDataModel=" + forecastSpaceDataModel + "]";
+		return "WeatherModel{" +
+				"coord=" + coord +
+				", weather=" + weather +
+				", main=" + main +
+				", wind=" + wind +
+				", clouds=" + clouds +
+				", sys=" + sys +
+				", base='" + base + '\'' +
+				", name='" + name + '\'' +
+				", dt=" + dt +
+				", id=" + id +
+				", cod=" + cod +
+				", fineDustModel=" + fineDustModel +
+				", addressModel=" + addressModel +
+				", imageModel=" + imageModel +
+				", forecastSpaceDataModel=" + forecastSpaceDataModel +
+				", weatherCategoryVO=" + weatherCategoryVO +
+				'}';
 	}
 }

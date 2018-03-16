@@ -77,5 +77,4 @@ public class AlarmFragment extends BaseFragment {
         if(alarmList == null || alarmList.size() == 0)
             initData();
     }
-
 }

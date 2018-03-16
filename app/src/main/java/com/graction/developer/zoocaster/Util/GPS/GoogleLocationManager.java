@@ -11,6 +11,7 @@ import com.google.code.geocoder.model.LatLng;
 import com.graction.developer.zoocaster.Listener.AddressHandleListener;
 import com.graction.developer.zoocaster.UI.HandlerManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
+import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 
 import java.io.IOException;
 
@@ -19,7 +20,8 @@ import java.io.IOException;
  * Updated by Hare on 2017-09-27.
  */
 public class GoogleLocationManager {
-    private static final String APP_KEY = "AIzaSyDEp2qM4c-J2IjdDlBPobIEaig_x7lHuKw";
+    private static final String APP_KEY = "AIzaSyDEp2qM4c-J2IjdDlBPobIEaig_x7lHuKw"
+                                , ADDRESS_NOT_FOUND = "주소 결과가 없습니다";
     private static String LANGUAGE = "ko";
     private final HLogger logger;
     private Thread thread;
@@ -31,11 +33,11 @@ public class GoogleLocationManager {
         logger = new HLogger(getClass());
     }
 
-    public void getAddress(Location location) {
+    /*public void getAddress(Location location) {
         getAddress(location.getLatitude() + "", location.getLongitude() + "");
-    }
+    }*/
 
-    public void getAddress(final String lat, final String lon) {
+    /*public void getAddress(final String lat, final String lon) {
         thread = new Thread(() -> {
             Geocoder geocoder = new Geocoder();
             LatLng latlng = new LatLng(lat, lon);
@@ -47,15 +49,16 @@ public class GoogleLocationManager {
                 geocoder.geocode(geocoderRequest);
                 final GeocoderResult geocoderResult = geocoderResponse.getResults().iterator().next();
                 logger.log(HLogger.LogType.INFO, "getAlarm_address(final String lat, final String lon)", geocoderResult.getFormattedAddress());
-                handlerManager.getHandler().post(() -> addressHandleListener.setAddress(geocoderResult.getFormattedAddress()));
-            } catch (IOException e) {
+                String address = geocoderResult.getFormattedAddress();
+                handlerManager.getHandler().post(() -> addressHandleListener.setAddress(AddressParser.getInstance().parseAddress(address), address));
+            } catch (Exception e) {
                 e.printStackTrace();
                 logger.log(HLogger.LogType.ERROR, "getAlarm_address(final String lat, final String lon)", e);
-                addressHandleListener.setAddress("주소 결과가 없습니다");
+                addressHandleListener.setAddress(ADDRESS_NOT_FOUND, ADDRESS_NOT_FOUND);
             }
         });
         thread.start();
-    }
+    }*/
 }
 
 /*

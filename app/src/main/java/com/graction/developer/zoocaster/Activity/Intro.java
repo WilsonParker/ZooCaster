@@ -37,6 +37,8 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.graction.developer.zoocaster.Data.DataStorage.Latitude;
+import static com.graction.developer.zoocaster.Data.DataStorage.Longitude;
 import static com.graction.developer.zoocaster.Data.DataStorage.fineDustStandard;
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
@@ -105,6 +107,8 @@ public class Intro extends BaseActivity {
             Looper.prepare();
         }
         gpsManager = new GpsManager(this);
+        Latitude = gpsManager.getLatitude();
+        Longitude = gpsManager.getLongitude();
 
         XmlPullParserManager xmlPullParserManager = XmlPullParserManager.getInstance();
         xmlPullParserManager.setContext(context);

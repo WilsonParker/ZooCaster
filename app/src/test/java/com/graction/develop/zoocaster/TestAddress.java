@@ -1,5 +1,6 @@
 package com.graction.develop.zoocaster;
 
+import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.Util.Parser.MathematicsManager;
 
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class TestAddress {
     @Test
     public void addition_isCorrect() throws Exception {
 //        assertEquals(4, 2 + 2);
-        test2();
+        test4();
     }
 
     String address = "대한민국 경기도 안양시 동안구 비산동 389-10";
@@ -70,6 +71,37 @@ public class TestAddress {
         System.out.println(result);
     }
 
+    private void test3(){
+        String testAddr = "안양시 관양동 인덕원사거리";
+        String newAddress = AddressParser.getInstance().parseAddress(testAddr);
+        System.out.println(newAddress);
+    }
+
+    private void test4(){
+        String[] addresses = {
+                "대한민국 경기도 안양시 동안구 비산동 389-10"
+                , "대한민국 경기도 안양시 동안구 389-10"
+                , "대한민국 경기도 안양시 비산동 389-10"
+                , "대한민국 경기도 안양시 비산동"
+                , "경기도 안양시 비산동"
+                , "안양시 비산동"
+                , "안양시 관양동 인덕원사거리"
+                , "대한민국 광주광역시 북구 일곡동 일곡동 주민센터"
+                , "대한민국 광주광역시 북구 일곡동 ８４９−５"
+                , "대한민국 광주광역시 북구 일곡동 849−5"
+                , "대한민국 광주광역시 북구 일곡동 일곡동 주민센터"
+                , "대한민국 광주광역시 북구 일곡동 주민센터 849-5"
+                , "대한민국 광주광역시 북구 일곡동 ８４９−５"
+                , "대한민국 강원도 고성군"
+                , "대한민국 강원도 화천군 화천읍 화천새싹길 강원도 화천군청"
+                , "대한민국 전라남도 무안군 삼향읍 오룡길 전라남도청"
+        };
+        for(String address : addresses){
+            String newAddress = AddressParser.getInstance().parseAddress(address);
+            System.out.println(newAddress);
+        }
+    }
+
     public abstract class RefStringFromArray {
         private int index;
         private String[] srr;
@@ -90,4 +122,5 @@ public class TestAddress {
 
         abstract void getString(String s);
     }
+
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.graction.developer.zoocaster.Adapter.AddressListAdapter;
 import com.graction.developer.zoocaster.Adapter.FavoriteAddressListAdapter;
-import com.graction.developer.zoocaster.Adapter.Listener.ItemOnClickListener;
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.DataBase.DataBaseHelper;
 import com.graction.developer.zoocaster.DataBase.DataBaseStorage;
@@ -21,13 +20,10 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.databinding.ActivitySearchAddress2Binding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
 
 public class SearchAddressActivity extends BaseActivity {
 //    private ActivitySearchAddressBinding binding;
@@ -36,8 +32,9 @@ public class SearchAddressActivity extends BaseActivity {
     private ArrayList<AddressModel.Prediction> addressItems;
     private AddressListAdapter searchAdapter;
     private FavoriteAddressListAdapter favoriteAdapter;
-    private AddressHandleListener addressHandleListener = address -> {
-        intent.putExtra(DataStorage.Key.KEY_ADDRESS, address);
+    private AddressHandleListener addressHandleListener = (newAddress, originAddress)-> {
+        intent.putExtra(DataStorage.Key.KEY_NEW_ADDRESS, newAddress);
+        intent.putExtra(DataStorage.Key.KEY_ORIGIN_ADDRESS, originAddress);
         activityEnd(DataStorage.Request.SEARCH_ADDRESS_OK);
     };
 
@@ -67,7 +64,7 @@ public class SearchAddressActivity extends BaseActivity {
             return false;
         });
 
-        binding.setAddress(DataStorage.NowAddress);
+        binding.setAddress(DataStorage.NowNewAddress);
     }
 
     public void onSearch() {

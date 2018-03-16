@@ -1,0 +1,6 @@
+lat 37.8228, lon : 128.1555
+IntegratedAirQualityModel [list=[], parm=IntegratedAirQualityModelItem{_returnType='json', dateTerm='null', dataTime='', mangName='', resultCode='', resultMsg='', sidoName='', stationName='홍천군', coValue='', khaiValue='', no2Value='', o3Value='', pm10Value='', pm10Value24='', pm25Value='', pm25Value24='', so2Value='', coGrade='', khaiGrade='', no2Grade='', o3Grade='', pm10Grade='', pm10Grade1h='', pm25Grade='', pm25Grade1h='', so2Grade='', stationCode='', totalCount='', rnum='0', pageNo='1'}, ArpltnInforInqireSvcVo=IntegratedAirQualityModelItem{_returnType='json', dateTerm='null', dataTime='', mangName='', resultCode='', resultMsg='', sidoName='', stationName='홍천군', coValue='', khaiValue='', no2Value='', o3Value='', pm10Value='', pm10Value24='', pm25Value='', pm25Value24='', so2Value='', coGrade='', khaiGrade='', no2Grade='', o3Grade='', pm10Grade='', pm10Grade1h='', pm25Grade='', pm25Grade1h='', so2Grade='', stationCode='', totalCount='', rnum='0', pageNo='1'}, totalCount=0]
+
+lat 35.2060406, lon : 126.8972624
+lat 37.8228, lon : 128.1555 두암동
+lat 37.4020549, lon : 126.9767243 동안구

@@ -486,7 +486,7 @@ public class IntegratedAirQualityModel {
         @Override
         public String toString() {
             return "IntegratedAirQualityModelItem{" +
-                    "fineDustStandard=" + fineDustStandard +
+//                    "fineDustStandard=" + fineDustStandard +
                     ", _returnType='" + _returnType + '\'' +
                     ", dateTerm='" + dateTerm + '\'' +
                     ", dataTime='" + dataTime + '\'' +

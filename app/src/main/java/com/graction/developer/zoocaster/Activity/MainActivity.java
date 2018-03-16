@@ -2,31 +2,28 @@ package com.graction.developer.zoocaster.Activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.view.MenuItem;
 
 import com.graction.developer.zoocaster.Adapter.FragmentAdapter;
 import com.graction.developer.zoocaster.Data.DataStorage;
 import com.graction.developer.zoocaster.Fragment.AlarmFragment;
+import com.graction.developer.zoocaster.Fragment.BaseFragment;
 import com.graction.developer.zoocaster.Fragment.FineDustFragment;
-import com.graction.developer.zoocaster.Fragment.Forecast5DayFragment;
 import com.graction.developer.zoocaster.Fragment.HomeFragment;
 import com.graction.developer.zoocaster.Fragment.Test2Fragment;
-import com.graction.developer.zoocaster.Fragment.TestFragment;
-import com.graction.developer.zoocaster.Listener.AddressHandleListener;
+import com.graction.developer.zoocaster.Model.Location;
+import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
+import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.Util.GPS.GoogleLocationManager;
-import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.Util.Parser.AddressParser;
 import com.graction.developer.zoocaster.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
@@ -99,19 +96,50 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initLocation() {
-        binding.activityMainTVLocation.setOnClickListener((v)->startActivityForResult(new Intent(this, SearchAddressActivity.class), DataStorage.Request.SEARCH_ADDRESS_REQUEST));
-        DataStorage.googleLocationManager = new GoogleLocationManager(address -> {
-            logger.log(HLogger.LogType.INFO, "address : " + address);
-            DataStorage.NowAddress = AddressParser.getInstance().parseAddress(address);
-            binding.activityMainTVLocation.setText(DataStorage.NowAddress);
+        binding.activityMainTVLocation.setOnClickListener((v) -> startActivityForResult(new Intent(this, SearchAddressActivity.class), DataStorage.Request.SEARCH_ADDRESS_REQUEST));
+        DataStorage.addressHandleListener = (newAddress, originAddress) -> {
+            DataStorage.NowNewAddress = newAddress;
+            DataStorage.NowOriginAddress = originAddress;
+            binding.activityMainTVLocation.setText(DataStorage.NowNewAddress);
+        };
+
+        DataStorage.googleLocationManager = new GoogleLocationManager((newAddress, originAddress) -> {
+            setLocation(newAddress, originAddress);
         });
+    }
+
+    private void setLocation(String newAddress, String originAddress){
+        DataStorage.NowNewAddress = newAddress;
+        DataStorage.NowOriginAddress = originAddress;
+        binding.activityMainTVLocation.setText(DataStorage.NowNewAddress);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        logger.log(HLogger.LogType.INFO, "void onActivityResult(int requestCode, int resultCode, Intent data)","MainActivity");
-        ((HomeFragment)items.get(0).getFragment()).reScan();
+//        super.onActivityResult(requestCode, resultCode, data);
+        logger.log(HLogger.LogType.INFO, "void onActivityResult(int requestCode, int resultCode, Intent data)", "MainActivity");
+        if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
+            setLocation(data.getStringExtra(DataStorage.Key.KEY_NEW_ADDRESS), data.getStringExtra(DataStorage.Key.KEY_ORIGIN_ADDRESS));
+            Net.getInstance().getFactoryIm().getLocationFromAddress(DataStorage.NowOriginAddress).enqueue(new Callback<SimpleResponseModel<Location>>() {
+                @Override
+                public void onResponse(Call<SimpleResponseModel<Location>> call, Response<SimpleResponseModel<Location>> response) {
+                    if(response.isSuccessful()){
+                        Location location = response.body().getResult();
+                        logger.log(HLogger.LogType.INFO, "onResponse", "lat %s, lon %s", location.getLat(), location.getLng());
+                        DataStorage.Latitude = Double.parseDouble(location.getLat());
+                        DataStorage.Longitude = Double.parseDouble(location.getLng());
+                        ((BaseFragment) items.get(0).getFragment()).reScan();   // HomeFragment
+                        ((BaseFragment) items.get(2).getFragment()).reScan();   // FineDustFragment
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SimpleResponseModel<Location>> call, Throwable t) {
+                    logger.log(HLogger.LogType.ERROR, "onFailure(Call<SimpleResponseModel<Location>> call, Throwable t)", "onActivityResult onFailure", t);
+                }
+            });
+
+        }
     }
 
 }

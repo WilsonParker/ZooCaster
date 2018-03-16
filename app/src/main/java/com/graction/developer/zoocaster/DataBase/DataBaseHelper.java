@@ -42,6 +42,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                                     "%s TEXT," +
                                     "%s TEXT," +
                                     "%s TEXT," +
+                                    "%s TEXT," +
                                     "%s INTEGER UNSIGNED," +
                                     "%s INTEGER UNSIGNED," +
                                     "%s INTEGER UNSIGNED," +
@@ -50,7 +51,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                                     ");"
                             , DataBaseStorage.Table.TABLE_ALARM
                             , DataBaseStorage.Column.COLUMN_ALARM_INDEX
-                            , DataBaseStorage.Column.COLUMN_ALARM_ADDRESS
+                            , DataBaseStorage.Column.COLUMN_ALARM_NEW_ADDRESS
+                            , DataBaseStorage.Column.COLUMN_ALARM_ORIGIN_ADDRESS
                             , DataBaseStorage.Column.COLUMN_ALARM_MEMO
                             , DataBaseStorage.Column.COLUMN_ALARM_DAYS
                             , DataBaseStorage.Column.COLUMN_ALARM_HOUROFDAY

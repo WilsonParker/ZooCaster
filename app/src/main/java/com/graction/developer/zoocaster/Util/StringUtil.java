@@ -185,6 +185,18 @@ public class StringUtil {
         return text;
     }
 
+    public static boolean isStrictlyNumeric(CharSequence cs) {
+        if (cs == null || cs.length() == 0) {
+            return false;
+        }
+        for (int i = 0; i < cs.length(); i++) {
+            if (!Character.isDigit(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static abstract class StringArrayManager{
         private int index;
         private String[] srr;
@@ -200,9 +212,14 @@ public class StringUtil {
         public void getStringFromArray(int start, String[] srr) {
             this.srr = srr;
             for (int i = start; i < srr.length; index = ++i)
-                getString(srr[i]);
+                if(!getString(srr[i]))
+                    break;
         }
-
-        protected abstract void getString(String s);
+        /*
+         * return boolean to
+         * Continue : true
+         * Break : false
+         */
+        protected abstract boolean getString(String s);
     }
 }

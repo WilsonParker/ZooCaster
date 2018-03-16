@@ -46,12 +46,9 @@ public class Forecast5DayFragment extends BaseFragment {
     protected void init(View view) {
         gpsManager = new GpsManager(getActivity());
 
-        googleLocationManager = new GoogleLocationManager(new AddressHandleListener() {
-            @Override
-            public void setAddress(String address) {
-                logger.log(HLogger.LogType.INFO, "address : " + address);
-                // binding.fragmentHomeTVAddress.setText(address);
-            }
+        googleLocationManager = new GoogleLocationManager((newAddress, originAddress) -> {
+            logger.log(HLogger.LogType.INFO, "address : " + newAddress);
+            // binding.fragmentHomeTVAddress.setText(address);
         });
     }
 
@@ -104,4 +101,5 @@ public class Forecast5DayFragment extends BaseFragment {
             logger.log(HLogger.LogType.ERROR, "endThread()", "endThread InterruptedException", e);
         }
     }
+
 }

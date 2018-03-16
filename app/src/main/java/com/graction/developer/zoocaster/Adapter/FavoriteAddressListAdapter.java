@@ -78,7 +78,7 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
         public void onBind(FavoriteTable table, boolean isLast) {
             String newAddress = AddressParser.getInstance().parseAddress(table.getFavorite_origin_address());
             binding.itemSearchAddressIVStar.setSelected(true);
-            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress));
+            binding.itemSearchAddressTVAddress.setOnClickListener((view) -> addressHandleListener.setAddress(newAddress, table.getFavorite_origin_address()));
             binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
                 if (binding.itemSearchAddressIVStar.isSelected()) {
                     CommonMethodManager.getInstance().favoriteRemove(table.getFavorite_origin_address());
