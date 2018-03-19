@@ -49,9 +49,6 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         notifyDataSetChanged();
     }
 
-    public void setItemSelected() {
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_search_address, parent, false));
@@ -87,7 +84,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             binding.itemSearchAddressIVStar.setOnClickListener((view) -> {
                 boolean isSelected = binding.itemSearchAddressIVStar.isSelected();
                 if (isSelected)
-                    CommonMethodManager.getInstance().favoriteRemove(newAddress);
+                    CommonMethodManager.getInstance().favoriteRemove(item.getDescription());
                 else
                     CommonMethodManager.getInstance().favoriteAdd(favoriteTable);
                 if (favoriteItemOnClickListener != null)

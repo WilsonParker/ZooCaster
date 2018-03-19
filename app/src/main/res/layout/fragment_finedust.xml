@@ -42,7 +42,7 @@
                 android:orientation="vertical">
 
                 <com.graction.developer.zoocaster.UI.Layout.HareCircleProgressView
-                    android:id="@+id/donut_progress"
+                    android:id="@+id/fragment_finedust_CP"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"

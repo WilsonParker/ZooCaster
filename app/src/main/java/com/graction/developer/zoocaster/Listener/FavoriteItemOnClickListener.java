@@ -7,5 +7,5 @@ import com.graction.developer.zoocaster.Model.DataBase.FavoriteTable;
  */
 
 public interface FavoriteItemOnClickListener {
-    void favoriteOnClick(FavoriteTable table, boolean isAdd);
+    void favoriteOnClick(FavoriteTable table, boolean add);
 }

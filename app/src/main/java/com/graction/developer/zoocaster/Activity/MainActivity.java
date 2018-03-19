@@ -117,9 +117,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-        logger.log(HLogger.LogType.INFO, "void onActivityResult(int requestCode, int resultCode, Intent data)", "MainActivity");
         if (requestCode == DataStorage.Request.SEARCH_ADDRESS_REQUEST && resultCode == DataStorage.Request.SEARCH_ADDRESS_OK) {
             setLocation(data.getStringExtra(DataStorage.Key.KEY_NEW_ADDRESS), data.getStringExtra(DataStorage.Key.KEY_ORIGIN_ADDRESS));
+            logger.log(HLogger.LogType.INFO, "void onActivityResult(int requestCode, int resultCode, Intent data)", "originAddress  :"+DataStorage.NowOriginAddress);
             Net.getInstance().getFactoryIm().getLocationFromAddress(DataStorage.NowOriginAddress).enqueue(new Callback<SimpleResponseModel<Location>>() {
                 @Override
                 public void onResponse(Call<SimpleResponseModel<Location>> call, Response<SimpleResponseModel<Location>> response) {

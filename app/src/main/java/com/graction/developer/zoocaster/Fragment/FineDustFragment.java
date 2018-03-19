@@ -1,5 +1,6 @@
 package com.graction.developer.zoocaster.Fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.graction.developer.zoocaster.Model.Response.SimpleResponseModel;
 import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import com.graction.developer.zoocaster.Net.Net;
 import com.graction.developer.zoocaster.R;
+import com.graction.developer.zoocaster.UI.ProgressManager;
 import com.graction.developer.zoocaster.Util.File.BaseActivityFileManager;
 import com.graction.developer.zoocaster.Util.GPS.GpsManager;
 import com.graction.developer.zoocaster.Util.Image.GifManager;
@@ -42,6 +44,7 @@ import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
 public class FineDustFragment extends BaseFragment {
     private static final int SYNC_ID = 0B0100;
+    private ProgressManager progressManager;
     private FragmentFinedustBinding binding;
 
     public static Fragment getInstance() {
@@ -59,6 +62,7 @@ public class FineDustFragment extends BaseFragment {
     @Override
     protected void init(View view) {
         binding.setActivity(this);
+        progressManager = new ProgressManager(getActivity());
         binding.fragmentFinedustSwipe.setOnRefreshListener(() -> initFineDustStandard());
         initFineDustStandard();
     }
@@ -107,6 +111,8 @@ public class FineDustFragment extends BaseFragment {
 
     // 초기화 및 새로고침 시에 Call IntegratedAirQualitySingleModel
     private void initFineDustStandard() {
+        binding.fragmentFinedustSwipe.setRefreshing(false);
+        progressManager.alertShow();
         Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
         setCall(call);
         addAction(() ->
@@ -133,6 +139,7 @@ public class FineDustFragment extends BaseFragment {
     }
 
     private void setIntegratedAirQualityItem() {
+        binding.fragmentFinedustCP.drawWithAnimate();
         logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + (integratedAirQualitySingleModel == null));
         if(integratedAirQualitySingleModel == null)
             return;
@@ -160,7 +167,6 @@ public class FineDustFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
-            binding.donutProgress.drawWithAnimate();
             setIntegratedAirQualityItem();
             binding.notifyChange();
         }
@@ -169,6 +175,7 @@ public class FineDustFragment extends BaseFragment {
 
     private void end() {
         endThread(SYNC_ID);
+        progressManager.alertDismiss();
         binding.fragmentFinedustSwipe.setRefreshing(false);
     }
 

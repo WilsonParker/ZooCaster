@@ -247,6 +247,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public boolean delete(String table, String whereClause, String[] whereArgs) {
         boolean result = false;
         try {
+            logger.log(HLogger.LogType.INFO, "delete(String table, String whereClause, String[] whereArgs)", "%s, %s, %s", table, whereClause, whereArgs);
             db = getWritableDatabase();
             db.delete(table, whereClause, whereArgs);
             db.close();

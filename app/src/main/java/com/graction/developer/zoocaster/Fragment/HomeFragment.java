@@ -65,7 +65,6 @@ public class HomeFragment extends BaseFragment {
     protected void init(View view) {
         gpsManager = new GpsManager(getActivity());
         progressManager = new ProgressManager(getActivity());
-        progressManager.alertShow();
         binding.fragmentHomeSwipe.setOnRefreshListener(() -> {
             currentWeather();
         });
@@ -79,6 +78,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void currentWeather() {
+        binding.fragmentHomeSwipe.setRefreshing(false);
+        progressManager.alertShow();
         Call call = Net.getInstance().getFactoryIm().selectWeather(Latitude, Longitude);
         setCall(call);
         addAction(() -> call.enqueue(new Callback<WeatherModel>() {
@@ -108,8 +109,6 @@ public class HomeFragment extends BaseFragment {
                     setBindingIntegratedAirQualityModel();
                 } else {
                     logger.log(HLogger.LogType.WARN, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "is not Successful");
-                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.body());
-                    logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.message());
                     logger.log(HLogger.LogType.INFO, "onResponse(Call<WeatherModel> call, Response<WeatherModel> response)", "response : " + response.toString());
                     end();
                 }
@@ -159,6 +158,7 @@ public class HomeFragment extends BaseFragment {
                             effect_path = imageModel.getEffect_img_path(), effect_img = imageModel.getEffect_img_name();
 //                    baseActivityFileManager.saveImage(imageModel.getCharacter_img_path(), imageModel.getCharacter_img_name(), weatherModel.getCharacter_img_url());
 //                    baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, "http://192.168.0.8:8101/lumi" + character_path + character_img);
+                    logger.log(HLogger.LogType.INFO, "reloadWeatherInfo()", "%s : %s : %s", imageModel.getBackground_img_path(), imageModel.getBackground_img_name(), weatherModel.getBackground_img_url());
                     logger.log(HLogger.LogType.INFO, "reloadWeatherInfo()", "%s : %s : %s", character_path, character_img, weatherModel.getCharacter_img_url());
                     baseActivityFileManager.isExistsAndSaveFile(character_path, character_img, weatherModel.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
                     GifManager.getInstance().setGifAnimate(binding.fragmentHomeIVCharacter, character_path + character_img);

@@ -46,9 +46,9 @@ public class SearchAddressActivity extends BaseActivity {
         binding.activitySearchAddressRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         searchAdapter = new AddressListAdapter(addressItems, addressHandleListener, (table, isAdd) -> {
             if(isAdd)
-                favoriteAdapter.getItems().add(table);
+                favoriteAdapter.addItem(table);
             else
-                favoriteAdapter.getItems().remove(table);
+                favoriteAdapter.deleteItem(table);
             favoriteAdapter.notifyDataSetChanged();
         });
         binding.activitySearchAddressRV.setAdapter(searchAdapter);

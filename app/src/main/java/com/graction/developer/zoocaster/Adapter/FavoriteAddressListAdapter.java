@@ -66,6 +66,20 @@ public class FavoriteAddressListAdapter extends RecyclerView.Adapter<FavoriteAdd
         return items != null ? items.size() : 0;
     }
 
+    public boolean deleteItem(FavoriteTable item){
+        for(FavoriteTable table  :items){
+            if(table.getFavorite_origin_address().equals(item.getFavorite_origin_address())){
+                items.remove(table);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addItem(FavoriteTable item){
+        items.add(item);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ItemSearchAddressBinding binding;
 
