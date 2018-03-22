@@ -7,7 +7,11 @@ import android.support.v4.app.NotificationCompat;
 import java.io.Serializable;
 
 /**
- * Created by Graction06 on 2018-02-08.
+ * Created by JeongTaehyun on 2018-02-08.
+ */
+
+/*
+ * Notification 설정
  */
 
 public class NotificationManager {
@@ -19,21 +23,6 @@ public class NotificationManager {
     }
 
     public void noti(Context context, NotificationItem item) {
-       /* Notification notification = new Notification.Builder(getBaseContext())
-                // Show controls on lock screen even when user hides sensitive content.
-//                .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .setSmallIcon(R.drawable.ic_stat_player)
-                // Add media control buttons that invoke intents in your media service
-                .addAction(R.drawable.ic_prev, "Previous", prevPendingIntent) // #0
-                // Apply the media style template
-                .setstyle(new Notification.MediaStyle()
-                        .setShowActionsInCompactView(1 *//* #1: pause button *//*)
-                        .setMediaSession(mMediaSession.getSessionToken())
-                        .setContentTitle("Wonderful music")
-                        .setContentText("My Awesome Band")
-                        .setLargeIcon(albumArtBitmap)
-                        .build();*/
-
         notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification =
                 new NotificationCompat.Builder(context, item.getChannelId())

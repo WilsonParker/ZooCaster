@@ -13,6 +13,9 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+/**
+ * Created by JeongTaehyun
+ */
 abstract public class BaseFragment extends Fragment {
     protected HLogger logger;
     private SyncObject syncObject = SyncObject.getInstance();
@@ -42,6 +45,9 @@ abstract public class BaseFragment extends Fragment {
         this.call = call;
     }
 
+    /*
+     * Sync 실행
+     */
     protected void startSync() {
         try {
             syncObject.start();
@@ -50,6 +56,9 @@ abstract public class BaseFragment extends Fragment {
         }
     }
 
+    /*
+     * Sync - Action 추가
+     */
     protected void addAction(SyncObject.OnSyncAction action, int id) {
         try {
             syncObject.addAction(action, id);
@@ -58,6 +67,9 @@ abstract public class BaseFragment extends Fragment {
         }
     }
 
+    /*
+     * Thread 종료
+     */
     protected void endThread(int id) {
         try {
             syncObject.end(id);
@@ -66,11 +78,17 @@ abstract public class BaseFragment extends Fragment {
         }
     }
 
+    /*
+     * 통합대기지수 데이터 불러오기
+     */
     protected void callIntegratedAirQuality(double latitude, double longitude, Callback callback) {
         call = Net.getInstance().getFactoryIm().selectIntegratedAirQuality(latitude, longitude);
         call.enqueue(callback);
     }
 
+    /*
+     * 새로고침
+     */
     public void reScan(){
 
     }

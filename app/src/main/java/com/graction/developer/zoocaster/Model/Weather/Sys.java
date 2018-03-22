@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Sys {
 	private double message;	// Internal parameter
 	private long sunrise	// Sunrise time, unix, UTC

@@ -1,5 +1,13 @@
 package com.graction.developer.zoocaster.Model;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 미세먼지 Model
+ */
+
 public class FineDustModel {
 	private Double value;
 	private String grade;

@@ -4,7 +4,13 @@ import com.graction.developer.zoocaster.Util.StringUtil;
 
 import java.util.ArrayList;
 
+/**
+ * Created by JeongTaehyun
+ */
+
 /*
+
+강수확률, 강수량 Model
 
 POP 강수확률
 PTY 강수형태
@@ -158,12 +164,12 @@ public class ForecastSpaceDataModel {
                     this.item = item;
                 }
 
-
                 @Override
                 public String toString() {
-                    return "Items ["+StringUtil.createString("item", item)+ "]";
+                    return "Items{" +
+                            "item=" + item +
+                            '}';
                 }
-
 
                 public class Item {
                     private String category;

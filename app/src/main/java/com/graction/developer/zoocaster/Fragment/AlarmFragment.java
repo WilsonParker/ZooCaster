@@ -26,6 +26,14 @@ import java.util.List;
 
 import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 알람 페이지
+ */
+
 public class AlarmFragment extends BaseFragment {
     private static final AlarmFragment instance = new AlarmFragment();
     private AlarmListAdapter alarmListAdapter;
@@ -39,11 +47,13 @@ public class AlarmFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        binding = FragmentAlarmBinding.inflate(inflater, container, false);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm, null, false);
         return binding.getRoot();
     }
 
+    /*
+     * 초기 설정
+     */
     @Override
     protected void init(View view) {
         binding.setActivity(this);
@@ -51,6 +61,10 @@ public class AlarmFragment extends BaseFragment {
         initData();
     }
 
+    /*
+     * 데이터 초기 설정
+     * 데이터 베이스 정보를 읽어온다
+     */
     private void initData() {
         DataBaseHelper.createHelper(getContext());
         List<AlarmTable> tableList = DataBaseStorage.dataBaseHelper.selectList("SELECT * FROM " + DataBaseStorage.Table.TABLE_ALARM, AlarmTable.class);
@@ -65,8 +79,10 @@ public class AlarmFragment extends BaseFragment {
         binding.fragmentAlarmRV.setAdapter(alarmListAdapter);
     }
 
+    /*
+     * 알람 추가 페이지 이동
+     */
     public void addAlarm(View view) {
-        logger.log(HLogger.LogType.INFO, "addAlarm()", "addAlarm");
         startActivity(new Intent(getContext(), AddAlarmActivity.class));
     }
 

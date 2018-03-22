@@ -5,16 +5,20 @@ import android.os.Handler;
 import java.util.LinkedList;
 
 /**
- * Created by Graction06 on 2018-01-19.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 서버 통신할 때 충돌 방지
  */
 
 public class SyncObject {
     private static final SyncObject instance = new SyncObject();
-    private static final int THREAD_SLEEP = 200;
-    private boolean isRunning;
-    private LinkedList<SyncItem> list = new LinkedList<>();
-    private SyncItem nowSync;
-    private Thread nowThread;
+    private static final int THREAD_SLEEP = 200;                        // Thread 대기 시간
+    private boolean isRunning;                                          // 현재 Thread 실행 여부
+    private LinkedList<SyncItem> list = new LinkedList<>();             // 저장된 Thread List
+    private SyncItem nowSync;                                           // 현재 SyncItem
+    private Thread nowThread;                                           // 현재 Thread
 
     public static SyncObject getInstance() {
         return instance;
@@ -24,7 +28,14 @@ public class SyncObject {
         list.offer(new SyncItem(action, id));
     }
 
+    /*
+     * Thread 실행
+     */
     public synchronized void start() throws InterruptedException {
+        /*
+         * 실행 중이 아니고
+         * List 에 다른 Item 이 존재 할 경우
+         */
         if (!isRunning && list.size() > 0) {
             nowSync = list.poll();
             Handler handler = new Handler();
@@ -44,32 +55,13 @@ public class SyncObject {
         }
     }
 
-    /*public void start() throws InterruptedException {
-        nowSync = list.poll();
-        if (nowSync != null) {
-            Log.i(getClass().getName(), "#################### id : " + nowSync.getId());
-            if (nowSync.isThread()) {
-                Thread thread = nowSync.getThread();
-                thread.start();
-                while (thread.isAlive()) {
-                    Thread.sleep(200);
-                    Log.i(getClass().getName(), "#################### loading id : " + nowSync.getId() + " : " + thread.isAlive());
-                    Log.i(getClass().getName(), "#################### loading getState : "  + (thread.getState() == Thread.State.TERMINATED));
-                }
-                thread.join();
-            } else {
-                Call call = nowSync.getCall();
-                Log.i(getClass().getName(), "#################### loading id : " + nowSync.getId());
-                Log.i(getClass().getName(), "#################### loading isExecuted : " + call.isExecuted());
-                Log.i(getClass().getName(), "#################### loading isCanceled : " + call.isCanceled());
-            }
-
-            start();
-        }
-    }*/
-
+    /*
+     * 종료
+     */
     public void end(int id) throws InterruptedException {
+        // 현재 실행되는 SyncItem 과 id 가 같을 경우
         if (nowSync.getId() == id) {
+            // 다음 SyncItem 실행
             isRunning = false;
             start();
         }

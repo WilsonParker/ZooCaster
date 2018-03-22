@@ -9,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidplot.Plot;
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
@@ -22,14 +20,20 @@ import com.androidplot.xy.XYSeries;
 import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.UI.Item.AnimatedSeries;
 import com.graction.developer.zoocaster.UI.Layout.CustomPointLabelFormatter;
-import com.graction.developer.zoocaster.UI.Layout.CustomXYPlot2;
-import com.graction.developer.zoocaster.Util.Log.HLogger;
 import com.graction.developer.zoocaster.databinding.FragmentForecast5dayBinding;
 
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Arrays;
+
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 주간 날씨 그래프 테스트 중
+ */
 
 public class Test2Fragment extends BaseFragment {
     private FragmentForecast5dayBinding binding;
@@ -48,46 +52,10 @@ public class Test2Fragment extends BaseFragment {
 
     @Override
     protected void init(View view) {
-        // initialize our XYPlot reference:
         binding.setActivity(this);
-
         initXYPlot(binding.xyplot);
-//        initXYPlot(binding.xyplot2);
-        // reduce the number of range labels
-//        initXYPlotWithAnimation(plot);
-//        initXYPlot(binding.xyplot2);
-
     }
 
-    /*
-    *
-    * plot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
-
-// nums is an array holding different numbers, where some are 0.
-
-Number Nullnumber = null;
-
-SimpleXYSeries series1test;
-series1test = new SimpleXYSeries("title");
-
-for (int j = 0; j < nums.length; j++){
-
-    if(nums[j]==0){
-        series1test.addLast(j, Nullnumber); // Does not display points for 0 values
-        //series1test.addLast(j, nums[j]);  // Displays points for 0 values
-    } else {
-        series1test.addLast(j, nums[j]);
-    }
-}
-
-LineAndPointFormatter series1Format = new LineAndPointFormatter();
-series1Format.setPointLabelFormatter(new PointLabelFormatter());
-series1Format.configure(getApplicationContext(),
-R.xml.line_point_formatter_with_plf1);
-
-plot.addSeries(series1test, series1Format);
-    *
-    * */
     private void initXYPlot(XYPlot plot) {
         // create a couple arrays of y-values to plot:
         final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
@@ -146,24 +114,8 @@ plot.addSeries(series1test, series1Format);
 
         plot.setRangeBoundaries(1, 30, BoundaryMode.FIXED);
 
-        /*plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
-            @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                int i = Math.round(((Number) obj).floatValue());
-                return toAppendTo.append("");
-            }
-            @Override
-            public Object parseObject(String source, ParsePosition pos) {
-                return null;
-            }
-        });*/
-
-//        plot.setTicksPerRangeLabel(3);
-//        plot.getGraphWidget().setDomainLabelOrientation(-45);
-
     }
 
-    // https://stackoverflow.com/questions/22528618/androidplot-barchart-adding-transition-animations-in-plots/23140549#23140549?newreg=6a4c7ed086dd4d059ba24d87d165ae25
     private void initXYPlotWithAnimation(XYPlot plot) {
         // Create a couple arrays of y-values to plot:
         Number[] series1Numbers = {-1, 1, 8, 5, 2, 7, 10};
@@ -194,37 +146,18 @@ plot.addSeries(series1test, series1Format);
 
         // same as above:
         LineAndPointFormatter series2Format = new LineAndPointFormatter();
-//        series2Format.setPointLabelFormatter(new PointLabelFormatter());
         series2Format.setPointLabelFormatter(new CustomPointLabelFormatter());
         series2Format.configure(getContext(),
                 R.xml.line_point_formatter_with_labels_2);
-//        plot.addSeries(series2, series2Format);
         plot.addSeries(as2, series2Format);
 
-        // reduce the number of range labels
-//        plot.setTicksPerRangeLabel(3);
-//        plot.getGraphWidget().setDomainLabelOrientation(-45);
-
-//        plot.getGraph().setLineLabelEdges(XYGraphWidget.Edge.LEFT, XYGraphWidget.Edge.BOTTOM);
         plot.setRangeBoundaries(1, 30, BoundaryMode.FIXED);
         new Thread(as1).start();
         new Thread(as2).start();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        logger.log(HLogger.LogType.INFO, "onResume()", "onResume");
-    }
-
     public void reLoad() {
 //        initXYPlot(binding.xyplot);
         initXYPlotWithAnimation(binding.xyplot);
-//        CustomXYPlot2 xyPlot2 = new CustomXYPlot2(getContext(), binding.xyplot);
-        logger.log(HLogger.LogType.INFO, "reLoad()", "reLoad");
     }
-
-    /**
-     * A primitive example of applying an animation to a series
-     */
 }

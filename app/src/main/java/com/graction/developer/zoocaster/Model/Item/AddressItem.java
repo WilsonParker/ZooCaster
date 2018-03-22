@@ -1,5 +1,12 @@
 package com.graction.developer.zoocaster.Model.Item;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 주소 Item
+ */
 public class AddressItem {
     public AddressItem() {
     }

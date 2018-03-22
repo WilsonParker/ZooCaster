@@ -7,7 +7,11 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * Created by Graction06 on 2018-01-26.
+ * Created by JeongTaehyun on 2018-01-26.
+ */
+
+/*
+ * 알람 Item
  */
 
 public class AlarmItem implements Serializable {

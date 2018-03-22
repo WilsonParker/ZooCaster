@@ -13,7 +13,12 @@ import com.graction.developer.zoocaster.Util.Parser.MathematicsManager;
 import com.graction.developer.zoocaster.Util.Parser.SizeManager;
 
 /**
- * Modify by Hare on 2018-01-17
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 해상도별 사이즈 적용
+ * 해당 View 단위 px 로 설정 필요
  */
 
 public class UIFactory {
@@ -24,7 +29,6 @@ public class UIFactory {
     private static final int BASE_DIGIT = 3, BASE_WIDTH = 360, BASE_HEIGHT = 640;
     private static double RAT_DEVICE_WIDTH, RAT_DEVICE_HEIGHT;
     private static final MathematicsManager math = MathematicsManager.getInstance();
-    private static final HLogger logger = new HLogger(UIFactory.class);
     private Activity activity;
     private View e;
 
@@ -44,13 +48,8 @@ public class UIFactory {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-//        RAT_DEVICE_WIDTH = Math.round(((double) size.x / BASE_WIDTH) * DIGIT) / DIGIT;
-//        RAT_DEVICE_HEIGHT = Math.round(((double) size.y / BASE_HEIGHT) * DIGIT) / DIGIT;
         RAT_DEVICE_WIDTH = math.rounds(size.x / BASE_WIDTH, BASE_DIGIT);
         RAT_DEVICE_HEIGHT = math.rounds(size.y / BASE_HEIGHT, BASE_DIGIT);
-
-//        logger.log(HLogger.LogType.INFO, "init", "%d : %d", size.x, size.y);
-
     }
 
     public <E extends View> E createView(int id) {
@@ -60,10 +59,6 @@ public class UIFactory {
         else
             e = this.e.findViewById(id);
         return e;
-    }
-
-    public <E extends View> E createViewWithRateParams(int id) {
-        return createViewWithRateParams(id, TYPE_BASIC_MARGIN);
     }
 
     public <E extends View> E createViewWithRateParams(int id, int type) {
@@ -88,8 +83,6 @@ public class UIFactory {
         }
 
         if ((type & TYPE_RADIUS) != 0) {
-//            GradientDrawable gradientDrawable = (GradientDrawable) e.getBackground();
-//            gradientDrawable.setCornerRadius(math.rounds(SizeManager.getInstance().convertDpToPixels(gradientDrawable.getCornerRadius()), RAT_DEVICE_HEIGHT, DIGIT));
             RoundedBitmapDrawable gradientDrawable = ((RoundedBitmapDrawable) e.getBackground());
             gradientDrawable.setCornerRadius(math.rounds(SizeManager.getInstance().convertDpToPixels(gradientDrawable.getCornerRadius()) * RAT_DEVICE_HEIGHT, BASE_DIGIT));
         }
@@ -98,9 +91,6 @@ public class UIFactory {
             ((TextView) e).setTextSize(math.rounds(((TextView) e).getTextSize() * RAT_DEVICE_WIDTH, BASE_DIGIT));
         }
         e.setLayoutParams(mLayoutParams);
-
-//        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%,2f : %,2f", RAT_DEVICE_WIDTH, RAT_DEVICE_HEIGHT);
-//        logger.log(HLogger.LogType.INFO, "setViewWithRateParams", "%d : %d", mLayoutParams.width, mLayoutParams.height);
         return e;
     }
 

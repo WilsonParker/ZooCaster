@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Wind {
 	private double speed	// Wind speed, Unit Default: meter/sec, Metricr: meer/sec, Imperial: miles/hour
 				, deg;		 // Wind direction, degrees (meteorological)

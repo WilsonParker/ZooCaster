@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Coord {
 	private double lon		// City geo location, longitude
 				, lat;		// City geo location, latitude

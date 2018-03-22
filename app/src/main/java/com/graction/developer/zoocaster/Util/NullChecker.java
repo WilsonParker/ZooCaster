@@ -1,7 +1,11 @@
 package com.graction.developer.zoocaster.Util;
 
 /**
- * Created by Graction06 on 2018-02-02.
+ * Created by JeongTaehyun on 2018-02-02.
+ */
+
+/*
+ * Null Check
  */
 
 public class NullChecker {

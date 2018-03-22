@@ -24,55 +24,6 @@ public class ObjectParserManager {
         return instance;
     }
 
-    public List<String> getFieldList(Class cls) {
-        List<String> list = new ArrayList<>();
-        for (Field field : cls.getDeclaredFields())
-            list.add(field.getName().toLowerCase());
-        return list;
-    }
-
-    /**
-     * boolean containField : contain fields in String[]
-     */
-    /*public String[] fieldValueToString(Object obj, boolean containField) throws InvocationTargetException, IllegalAccessException {
-        Field[] fields = obj.getClass().getDeclaredFields();
-        LinkedList<Field> fieldList = new LinkedList<>();
-        for (Field field : fields)
-            fieldList.add(field);
-
-        List<MethodModel> methods = getMethods(obj.getClass(), new ParserCompareActionList() {
-            @Override
-            public void add(List<MethodModel> list, Method method) {
-                Field field = null;
-                for (int i = 0; i < fieldList.size(); i++) {
-                    field = fieldList.get(i);
-                    if (method.getName().toLowerCase().contains(field.getName().toLowerCase()))
-                        break;
-                }
-                list.add(new MethodModel(StringUtil.convertFirstUpperOrLower(method.getName().replace("get", ""), false), field, method));
-            }
-
-            @Override
-            public boolean compare(String s) {
-                return s.toUpperCase().contains("GET");
-            }
-        });
-        MethodModel model = methods.get(0);
-        String r1 = model.getName(), r2 = containField ? attachData(model.getMethod().invoke(obj, null)).toString() : "";
-        Loop1 : for (int i = 1; i < methods.size(); i++) {
-            model = methods.get(i);
-            for (Annotation annotation : model.getField().getDeclaredAnnotations())
-                if(annotation instanceof SqlIgnore)
-                    continue Loop1;
-            r1 += "," + model.getName();
-            if (containField)
-                r2 += "," + attachData(model.getMethod().invoke(obj, null));
-        }
-        String[] result = new String[2];
-        result[0] = r1;
-        result[1] = r2;
-        return result;
-    }*/
     public String[] fieldValueToString(Object obj, boolean containField) throws InvocationTargetException, IllegalAccessException {
         List<MethodModel> methods = parserDefaultGetMethodModelList(obj);
         MethodModel model = methods.get(0);
@@ -135,39 +86,6 @@ public class ObjectParserManager {
         return list;
     }
 
-    public Object invoke(Method method, Object obj, Object... value) throws InvocationTargetException, IllegalAccessException {
-        Object result;
-        Type[] types = method.getParameterTypes();
-        Object[] o = new Object[types.length];
-        for (int i = 0; i < types.length; i++) {
-            String t = types[i].toString().toLowerCase();
-            String v = String.valueOf(value[i]);
-            if (t.equals(value[i].getClass().toString())) {
-                o[i] = value[i];
-            } else if (t.contains("string")) {
-                o[i] = String.valueOf(value[i]);
-            } else if (t.contains("double")) {
-                o[i] = Double.parseDouble(v);
-            } else if (t.contains("long")) {
-                o[i] = Long.parseLong(v);
-            } else if (t.contains("float")) {
-                o[i] = Float.parseFloat(v);
-            } else if (t.contains("int")) {
-                o[i] = Integer.parseInt(v);
-            } else if (t.contains("boolean")) {
-                o[i] = Boolean.parseBoolean(v);
-            } else if (t.contains("string")) {
-                o[i] = v;
-            } else if (t.contains("byte")) {
-                o[i] = Byte.parseByte(v);
-            } else if (t.contains("char")) {
-                o[i] = v.charAt(0);
-            }
-        }
-        result = method.invoke(obj, o);
-        return result;
-    }
-
     public Object attachData(Object obj) throws InvocationTargetException, IllegalAccessException {
         if (obj == null)
             return "\"null\"";
@@ -213,8 +131,6 @@ public class ObjectParserManager {
 
     public interface ParserCompareActionList extends ParserCompareAction {
         void add(List<MethodModel> list, Method method);
-
-//        String setName(Method method);
     }
 
     public class MethodModel {

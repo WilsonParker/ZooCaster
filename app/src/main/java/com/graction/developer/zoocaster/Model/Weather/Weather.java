@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Weather {
 	private int id;				// Weather condition id
 	private String main			// Group of weather parameters (Rain, Snow, Extreme etc)

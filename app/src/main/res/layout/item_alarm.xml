@@ -15,9 +15,6 @@
 
     </data>
 
-    <!--
-        android:layout_width="@dimen/item_alarm_root_width"
-    -->
     <LinearLayout
         android:id="@+id/item_alarm_root"
         android:layout_width="match_parent"

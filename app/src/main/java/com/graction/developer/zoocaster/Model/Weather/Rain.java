@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Rain {
 	private long _3h; // Rain volume for the last 3 hours
 

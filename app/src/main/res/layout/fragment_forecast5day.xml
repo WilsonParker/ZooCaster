@@ -11,13 +11,6 @@
             type="com.graction.developer.zoocaster.Fragment.Test2Fragment" />
 
     </data>
-
-    <!--<FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/weekly">
-
-    </FrameLayout>-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -47,11 +40,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                            <!--style="@style/Custom_APDefacto2.Dark2"-->
-                        <!--<com.graction.developer.zoocaster.UI.Layout.CustomXYPlot-->
                         <com.androidplot.xy.XYPlot
                             android:id="@+id/xyplot"
-                            style="@style/Custom_APDefacto2.Dark2"
+                            style="@style/APDefacto.Dark"
                             android:layout_width="1200dp"
                             android:layout_height="250dp"
                             ap:lineLabesRotationBottom="-45"

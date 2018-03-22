@@ -5,9 +5,12 @@ import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 
 /**
- * Created by Graction06 on 2018-02-13.
+ * Created by JeongTaehyun on 2018-02-13.
  */
 
+/*
+ * Graph Animation
+ */
 public class AnimatedSeries implements XYSeries, Runnable {
 
     private final Plot plot;

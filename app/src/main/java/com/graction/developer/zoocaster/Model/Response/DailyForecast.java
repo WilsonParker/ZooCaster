@@ -5,6 +5,10 @@ import com.graction.developer.zoocaster.Util.StringUtil;
 
 import java.util.ArrayList;
 
+/**
+ * Created by JeongTaehyun
+ */
+
 /*
  * 16 day weather model
  */
@@ -45,10 +49,14 @@ public class DailyForecast {
         this.list = list;
     }
 
-
     @Override
     public String toString() {
-        return "DailyForecastModel [cod=" + cod + ", cnt=" + cnt + ", message=" + message + ", " + StringUtil.createString("list", list) + "]";
+        return "DailyForecast{" +
+                "cod=" + cod +
+                ", cnt=" + cnt +
+                ", message='" + message + '\'' +
+                ", list=" + list +
+                '}';
     }
 
     public class DailyForecastItem {
@@ -199,10 +207,18 @@ public class DailyForecast {
 
         @Override
         public String toString() {
-            return "DailyForecastItem [dt=" + dt + ", pressure=" + pressure + ", speed=" + speed + ", humidity="
-                    + humidity + ", deg=" + deg + ", clouds=" + clouds + ", rain=" + rain + ", snow=" + snow + ", temp="
-                    + temp + ", " + StringUtil.createString("weather", weather) + "]";
+            return "DailyForecastItem{" +
+                    "dt=" + dt +
+                    ", humidity=" + humidity +
+                    ", deg=" + deg +
+                    ", pressure=" + pressure +
+                    ", speed=" + speed +
+                    ", clouds=" + clouds +
+                    ", rain=" + rain +
+                    ", snow=" + snow +
+                    ", temp=" + temp +
+                    ", weather=" + weather +
+                    '}';
         }
-
     }
 }

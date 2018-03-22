@@ -6,7 +6,7 @@ import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.PointLabelFormatter;
 
 /**
- * Created by Graction06 on 2018-02-21.
+ * Created by JeongTaehyun on 2018-02-21.
  */
 
 public class CustomPointLabelFormatter extends PointLabelFormatter {

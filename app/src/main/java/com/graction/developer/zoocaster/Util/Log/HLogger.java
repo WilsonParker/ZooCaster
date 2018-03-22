@@ -3,14 +3,17 @@ package com.graction.developer.zoocaster.Util.Log;
 import android.util.Log;
 
 /**
- * Created by graction03 on 2017-09-27.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * Log 출력 용
  */
 
 public class HLogger {
     private static final String TAG = "LUMI";
     private static final String NOTI = "############################################################";
     private static final boolean isDebug = true, onError = true;
-//    private static final HLogger instance = new HLogger();
     private Class<?> cls;
     private StringBuilder builder;
 
@@ -60,14 +63,6 @@ public class HLogger {
         builder.append(NOTI + "\n");
     }
 
-    /*
-     * builder.append(NOTI+"\n");
-     * builder.append("# Class : " + cls.getCanonicalName() + "\n");
-     * builder.append("# Method : " + method + "\n");
-     * builder.append("# Message : " + message + "\n");
-     * builder.append("# Error: " + t.getMessage() + "\n");
-     * builder.append(NOTI+"\n");
-     */
     public void log(LogType logType, String message) {
         log(logType, "", message);
     }

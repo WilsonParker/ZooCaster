@@ -7,18 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Graction06 on 2018-01-25.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * Database 관련 정적 데이터 모음
  */
 
 public class DataBaseStorage {
-//    public static AlarmData alarmData;
-    public static DataBaseHelper dataBaseHelper, favoriteDatabaseHelper;
+    public static DataBaseHelper dataBaseHelper;
 
     public static ArrayList<AlarmItem> alarmList;
     public static List<FavoriteTable> favoriteTables;
 
     public static final String DATABASE_NAME = "caster.db";
 
+    /*
+     * Table 이름
+     */
     public class Table{
         public static final String TABLE_ALARM = "ALARM"
                                     , TABLE_FAVORITE = "FAVORITE"
@@ -30,26 +36,26 @@ public class DataBaseStorage {
                                     , COLUMN_ALARM = Table.TABLE_ALARM+COLUMN_SEPARATE
                                     , COLUMN_FAVORITE = Table.TABLE_FAVORITE+COLUMN_SEPARATE
                                     ;
-        public static final String COLUMN_ALARM_INDEX = COLUMN_ALARM+"INDEX"
-                                    , COLUMN_ALARM_NEW_ADDRESS = COLUMN_ALARM+"NEW_ADDRESS"
-                                    , COLUMN_ALARM_ORIGIN_ADDRESS = COLUMN_ALARM+"ORIGIN_ADDRESS"
-//                                    , COLUMN_ALARM_PLACE_NAME= COLUMN_ALARM+"PLACE_NAME"
-//                                    , COLUMN_ALARM_PLACE_ADDRESS = COLUMN_ALARM+"PLACE_ADDRESS"
-                                    , COLUMN_ALARM_MEMO = COLUMN_ALARM+"MEMO"
-                                    , COLUMN_ALARM_DAYS = COLUMN_ALARM+"DAYS"
-                                    , COLUMN_ALARM_HOUROFDAY = COLUMN_ALARM+"HOUROFDAY"
-                                    , COLUMN_ALARM_MINUTE= COLUMN_ALARM+"MINUTE"
-                                    , COLUMN_ALARM_VOLUME = COLUMN_ALARM+"VOLUME"
-                                    , COLUMN_ALARM_RUNNING_STATE = COLUMN_ALARM+"RUNNING_STATE"
-                                    , COLUMN_ALARM_IS_SPEAKER = COLUMN_ALARM+"ISSPEAKER"
+        public static final String COLUMN_ALARM_INDEX = COLUMN_ALARM+"INDEX"                                // 알람 Index
+                                    , COLUMN_ALARM_NEW_ADDRESS = COLUMN_ALARM+"NEW_ADDRESS"                 // 알람 변환 후 주소
+                                    , COLUMN_ALARM_ORIGIN_ADDRESS = COLUMN_ALARM+"ORIGIN_ADDRESS"           // 알람 변환 전 주소
+                                    , COLUMN_ALARM_MEMO = COLUMN_ALARM+"MEMO"                               // 알람 메모
+                                    , COLUMN_ALARM_DAYS = COLUMN_ALARM+"DAYS"                               // 알람 요일
+                                    , COLUMN_ALARM_HOUROFDAY = COLUMN_ALARM+"HOUROFDAY"                     // 알람 시간
+                                    , COLUMN_ALARM_MINUTE= COLUMN_ALARM+"MINUTE"                            // 알람 분
+                                    , COLUMN_ALARM_VOLUME = COLUMN_ALARM+"VOLUME"                           // 알람 볼륨
+                                    , COLUMN_ALARM_RUNNING_STATE = COLUMN_ALARM+"RUNNING_STATE"             // 알람 On/Off
+                                    , COLUMN_ALARM_IS_SPEAKER = COLUMN_ALARM+"ISSPEAKER"                    // 알람 스피커 여부
 
-                                    , COLUMN_FAVORITE_ORIGIN_ADDRESS = COLUMN_FAVORITE+"ORIGIN_ADDRESS"
-                                    , COLUMN_FAVORITE_NEW_ADDRESS = COLUMN_FAVORITE+"NEW_ADDRESS"
-                                    , COLUMN_FAVORITE_SET_TIME = COLUMN_FAVORITE+"SET_TIME"
-
+                                    , COLUMN_FAVORITE_ORIGIN_ADDRESS = COLUMN_FAVORITE+"ORIGIN_ADDRESS"     // 즐겨찾기 변환 전 주소
+                                    , COLUMN_FAVORITE_NEW_ADDRESS = COLUMN_FAVORITE+"NEW_ADDRESS"           // 즐겨찾기 변환 후 주소
+                                    , COLUMN_FAVORITE_SET_TIME = COLUMN_FAVORITE+"SET_TIME"                 // 즐겨찾기 설정 시간
                                     ;
     }
 
+    /*
+     * Database Version
+     */
     public class Version{
         public static final int TABLE_VERSION = 4
                                     ;

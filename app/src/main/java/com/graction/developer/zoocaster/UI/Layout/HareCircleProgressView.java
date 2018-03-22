@@ -26,7 +26,7 @@ import com.graction.developer.zoocaster.Util.StringUtil;
 import java.text.NumberFormat;
 
 /**
- * Created by Graction06 on 2018-02-06.
+ * Created by JeongTaehyun
  */
 
 public class HareCircleProgressView extends View {

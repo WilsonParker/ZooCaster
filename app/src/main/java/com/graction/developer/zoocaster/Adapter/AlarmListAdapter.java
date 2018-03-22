@@ -22,7 +22,11 @@ import java.util.ArrayList;
 import static com.graction.developer.zoocaster.UI.UIFactory.TYPE_BASIC;
 
 /**
- * Created by Graction06 on 2018-01-16.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 알람 List Adapter
  */
 
 public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.ViewHolder> {
@@ -34,8 +38,6 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_alarm, null));
-//        return new ViewHolder(DataBindingUtil.setContentView((Activity) parent.getContext(), R.layout.item_alarm));
         return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_alarm, parent, false));
     }
 
@@ -56,11 +58,13 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.View
 
         public ViewHolder(ItemAlarmBinding binding) {
             super(binding.getRoot());
-//            binding = DataBindingUtil.bind(itemView);
             this.binding = binding;
             UIFactory.setViewWithRateParams(binding.itemAlarmRoot, TYPE_BASIC);
         }
 
+        /*
+         * 각각의 데이터 별로 View 설정
+         */
         public void onBind(AlarmItem item, int index){
             this.index = index;
             binding.setItem(item);
@@ -70,6 +74,9 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.View
                 binding.itemAlarmSBVolume.setOnTouchListener((v, e)->true);
         }
 
+        /*
+         * 알람 삭제
+         */
         public void deleteItem(AlarmItem item){
             AlarmManager.getInstance().cancelAlarm(item);
             String[] whereArgs = {item.getIndex() + ""};
@@ -78,6 +85,10 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListAdapter.View
             notifyDataSetChanged();
         }
 
+        /*
+         * 알람 선택 시
+         * 상세보기, 수정 페이지 이동
+         */
         public void onItemClick(View view, AlarmItem item){
             Context context = view.getContext();
             Intent intent = new Intent(context, ModifyAlarmActivity.class);

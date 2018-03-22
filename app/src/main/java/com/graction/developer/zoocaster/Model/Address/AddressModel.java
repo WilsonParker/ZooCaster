@@ -9,10 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Graction06 on 2018-02-07.
+ * Created by JeongTaehyun on 2018-02-07.
  * Powered by Google
  *
  * @url : https://developers.google.com/places/web-service/policies#logo_requirements
+ */
+
+/*
+ * 구글 주소 검색 Model
  */
 
 public class AddressModel {

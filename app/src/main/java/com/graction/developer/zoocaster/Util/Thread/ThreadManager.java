@@ -1,7 +1,12 @@
 package com.graction.developer.zoocaster.Util.Thread;
 
 /**
- * Created by Graction06 on 2018-01-11.
+ * Created by JeongTaehyun on 2018-01-11.
+ */
+
+/*
+ * Thread 설정
+ * Thread 를 이용하여 return 하고자 할 때 사용
  */
 
 public class ThreadManager<T> {
@@ -28,7 +33,6 @@ public class ThreadManager<T> {
         while(!isComplete){
             Thread.sleep(sleepTime);
         }
-//        return threadComplete.complete();
         return data;
     }
 

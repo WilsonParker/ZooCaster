@@ -1,16 +1,10 @@
 package com.graction.developer.zoocaster.Util.Parser;
 
 /**
- * Created by Graction06 on 2018-01-17.
+ * Created by JeongTaehyun on 2018-01-17.
  */
-
 public class MathematicsManager {
     private static final MathematicsManager instance = new MathematicsManager();
-
-    enum Operator {
-        ADD, MINUS, MULTIPLY, DIVISION
-    }
-
 
     public static MathematicsManager getInstance() {
         return instance;

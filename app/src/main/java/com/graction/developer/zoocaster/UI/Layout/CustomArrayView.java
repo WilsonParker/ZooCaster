@@ -14,7 +14,7 @@ import com.graction.developer.zoocaster.R;
 import com.graction.developer.zoocaster.databinding.ItemArrayViewBinding;
 
 /**
- * Created by Graction06 on 2018-01-23.
+ * Created by JeongTaehyun on 2018-01-23.
  */
 
 public class CustomArrayView extends HareArrayView2<CustomArrayView.CustomItemView, CustomArrayView.CustomItemViewModel> {

@@ -42,6 +42,14 @@ import static com.graction.developer.zoocaster.Data.DataStorage.fineDustStandard
 import static com.graction.developer.zoocaster.Data.DataStorage.integratedAirQualitySingleModel;
 import static com.graction.developer.zoocaster.Data.DataStorage.weatherModel;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 미세먼지 페이지
+ */
+
 public class FineDustFragment extends BaseFragment {
     private static final int SYNC_ID = 0B0100;
     private ProgressManager progressManager;
@@ -67,49 +75,9 @@ public class FineDustFragment extends BaseFragment {
         initFineDustStandard();
     }
 
-   /* private void initFineDustStandard() {
-        Call<SimpleResponseModel<ArrayList<FineDustVO>>> call = Net.getInstance().getFactoryIm().selectFineDustStandard();
-        setCall(call);
-        addAction(() -> call.enqueue(new Callback<SimpleResponseModel<ArrayList<FineDustVO>>>() {
-            @Override
-            public void onResponse(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Response<SimpleResponseModel<ArrayList<FineDustVO>>> response) {
-                if (response.isSuccessful()) {
-                    fineDustStandard = response.body().getResult();
-                    if (integratedAirQualitySingleModel == null) {
-                        callIntegratedAirQuality(gpsManager, new Callback<IntegratedAirQualitySingleModel>() {
-                            @Override
-                            public void onResponse(Call<IntegratedAirQualitySingleModel> call, Response<IntegratedAirQualitySingleModel> response) {
-                                if (response.isSuccessful()) {
-                                    integratedAirQualitySingleModel = response.body();
-                                    setIntegratedAirQualityItem();
-                                    end();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call call, Throwable t) {
-                                logger.log(HLogger.LogType.ERROR, "callIntegratedAirQuality()", "callIntegratedAirQuality onFailure", t);
-                                end();
-                            }
-                        });
-                    } else {
-                        setIntegratedAirQualityItem();
-                    }
-                } else {
-                    end();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SimpleResponseModel<ArrayList<FineDustVO>>> call, Throwable t) {
-                logger.log(HLogger.LogType.ERROR, "onFailure(Call<WeatherModel> call, Throwable t)", "onFailure", t);
-                end();
-            }
-        }), SYNC_ID);
-        startSync();
-    }*/
-
-    // 초기화 및 새로고침 시에 Call IntegratedAirQualitySingleModel
+    /*
+     * 초기화 및 새로고침 시에 실행
+     */
     private void initFineDustStandard() {
         binding.fragmentFinedustSwipe.setRefreshing(false);
         progressManager.alertShow();
@@ -138,13 +106,13 @@ public class FineDustFragment extends BaseFragment {
         startSync();
     }
 
+    /*
+     * 통합대기지수 정보를 이용하여 View 설정
+     */
     private void setIntegratedAirQualityItem() {
         binding.fragmentFinedustCP.drawWithAnimate();
-        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + (integratedAirQualitySingleModel == null));
         if(integratedAirQualitySingleModel == null)
             return;
-        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem());
-//        logger.log(HLogger.LogType.INFO, "void setIntegratedAirQualityItem", "IntegratedAirQualityModelItem : " + integratedAirQualitySingleModel.getItem().getFineDustStandard());
         IntegratedAirQualityModel.IntegratedAirQualityModelItem item = integratedAirQualitySingleModel.getItem();
         item.setFineDustStandard(fineDustStandard);
         FineDustVO vo = item.getFineDustVO();
@@ -154,9 +122,6 @@ public class FineDustFragment extends BaseFragment {
         try {
             GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentFinedustBackground, new RequestOptions().centerCrop(), vo.getBackground_img_path(), vo.getBackground_img_name(), vo.getBackground_img_url());
             GlideImageManager.getInstance().bindImage(getContext(), binding.fragmentFinedustIVCharacter, new RequestOptions().centerCrop(), vo.getCharacter_img_path(), vo.getCharacter_img_name(), vo.getCharacter_img_url());
-//            BaseActivityFileManager.getInstance().isExistsAndSaveFile(vo.getCharacter_img_path(), vo.getCharacter_img_name(), vo.getCharacter_img_url(), BaseActivityFileManager.FileType.ByteArray);
-
-//            GifManager.getInstance().setGifAnimate(binding.fragmentFinedustGifCharacter, vo.getCharacter_img_path()+ vo.getCharacter_img_name());
         } catch (Exception e) {
             logger.log(HLogger.LogType.ERROR, "void setIntegratedAirQualityItem", e);
         } finally {

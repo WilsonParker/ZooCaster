@@ -5,7 +5,12 @@ import com.graction.developer.zoocaster.Model.VO.FineDustVO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by JeongTaehyun
+ */
+
 /*
+    통합대기지수 Model
     Open Data API
 	등급	좋음	보통	나쁨	매우나쁨
 	Grade 값	1	2	3	4

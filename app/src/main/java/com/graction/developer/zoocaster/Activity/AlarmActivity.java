@@ -14,13 +14,25 @@ import com.graction.developer.zoocaster.databinding.ActivityAlarmBinding;
 
 import java.io.IOException;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 알람 실행 Activity
+ */
+
 public class AlarmActivity extends BaseActivity {
-    private static boolean isRunning;
+    private static boolean isRunning;       // 알람이 울리고 있는가
     private ActivityAlarmBinding binding;
     private VSManager vsManager;
     private AlarmItem alarmItem;
     private NotificationManager.NotificationItem notificationItem;
 
+    /*
+     * 초기 설정
+     */
+    @Override
     protected void init() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -33,11 +45,13 @@ public class AlarmActivity extends BaseActivity {
         notificationItem = (NotificationManager.NotificationItem) bundle.getSerializable(DataStorage.Key.KEY_NOTIFICATION_ITEM);
         vsManager = VSManager.getInstance();
         isRunning = true;
-        logger.log(HLogger.LogType.INFO, "AlarmReceiver", "AlarmActivity init"); // com.graction.developer.zoocaster.ALARM_START
         noti(notificationItem);
         runAlarm();
     }
 
+    /*
+     * 알람 실행
+     */
     private void runAlarm() {
         try {
             if (alarmItem.getIsSpeaker()) {
@@ -50,29 +64,11 @@ public class AlarmActivity extends BaseActivity {
         }
     }
 
+    /*
+     * Notification 실행
+     */
     private void noti(NotificationManager.NotificationItem item) {
-       /* Notification notification =
-                new NotificationCompat.Builder(this, "Alarm ID")
-                        .setSmallIcon(R.mipmap.ic_launcher_round)
-                        .setContentTitle(alarmItem.getMemo())
-                        .setContentText(alarmItem.getAddress())
-                        .build();
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);*/
         NotificationManager.getInstance().noti(this, item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        logger.log(HLogger.LogType.INFO, "onResume()", "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        logger.log(HLogger.LogType.INFO, "onPause()", "onPause");
     }
 
     @Override
@@ -86,7 +82,6 @@ public class AlarmActivity extends BaseActivity {
             }
         }
         isRunning = false;
-        logger.log(HLogger.LogType.INFO, "onDestroy()", "onDestroy");
     }
 
 }

@@ -1,5 +1,13 @@
 package com.graction.developer.zoocaster.Model;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * Background, Character, Effect Image Model
+ */
+
 public class ImageModel {
 	private String background_img_path
 		, background_img_name

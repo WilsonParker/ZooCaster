@@ -15,11 +15,14 @@ import com.graction.developer.zoocaster.Util.Date.DateManager;
 import com.graction.developer.zoocaster.Util.Log.HLogger;
 
 /**
- * Created by Graction06 on 2018-01-05.
+ * Created by JeongTaehyun on 2018-01-05.
+ */
+
+/*
+ * 알람 실행 Service
  */
 
 public class AlarmStartService extends Service {
-    private HLogger logger = new HLogger(AlarmStartService.class);
     private final IBinder binder = new AlarmBinder();
     private PowerManager.WakeLock sCpuWakeLock;
 
@@ -32,8 +35,6 @@ public class AlarmStartService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         AlarmItem item = (AlarmItem) intent.getBundleExtra(DataStorage.Key.KEY_BUNDLE).getSerializable(DataStorage.Key.KEY_ALARM_ITEM);
-        logger.log(HLogger.LogType.INFO, "AlarmStartService", "Service Ring Ring Ring");
-        logger.log(HLogger.LogType.INFO, "AlarmStartService", "item : "+item);
         int[] week = item.getDays();
         if (week != null && DateManager.getInstance().isDayInWeek(week)) {
             intent.setClass(this, AlarmActivity.class);

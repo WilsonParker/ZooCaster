@@ -1,5 +1,12 @@
 package com.graction.developer.zoocaster.Model.VO;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 날씨 카테고리 Object
+ */
 public class WeatherCategoryVO {
 	private int weatherCategory_index				// WeatherCategory primary code
 				, weatherCategory_icon_ref_index	// Reference FileInformation_index

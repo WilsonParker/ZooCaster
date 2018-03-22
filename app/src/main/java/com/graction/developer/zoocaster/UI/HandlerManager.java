@@ -4,7 +4,11 @@ package com.graction.developer.zoocaster.UI;
 import android.os.Handler;
 
 /**
- * Created by Hare on 2017-07-21.
+ * Created by JeongTaehyun on 2017-07-21.
+ */
+
+/*
+ * Handler 설정
  */
 
 public class HandlerManager {

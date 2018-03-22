@@ -11,7 +11,7 @@ import com.bumptech.glide.load.engine.Resource;
 import com.graction.developer.zoocaster.UI.Layout.HareCircleProgressView;
 
 /**
- * Created by Graction06 on 2018-01-17.
+ * Created by JeongTaehyun on 2018-01-17.
  */
 
 public class BindingAttributes {

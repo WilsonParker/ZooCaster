@@ -16,6 +16,10 @@ import java.util.ArrayList;
 
 import static com.graction.developer.zoocaster.Data.DataStorage.Path.RESOURCE_URL;
 
+/**
+ * Created by JeongTaehyun
+ */
+
 /*
  * Current weather model
  */

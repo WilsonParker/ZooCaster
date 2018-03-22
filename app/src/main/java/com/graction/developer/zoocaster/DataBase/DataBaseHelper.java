@@ -16,7 +16,11 @@ import java.util.Map;
 import static com.graction.developer.zoocaster.DataBase.DataBaseStorage.DATABASE_NAME;
 
 /**
- * Created by Graction06 on 2018-01-25.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * Database Helper
  */
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -27,14 +31,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
-    // DB를 새로 생성할 때 호출되는 함수
+    /*
+     * DB를 새로 생성할 때 호출
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
             /*
-            *
-            *   Alarm Table
-            * */
+             *   Alarm Table
+             */
             db.execSQL(
                     String.format(
                             "CREATE TABLE %s (" +
@@ -64,9 +69,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             );
 
             /*
-            *
-            *   Favorite Table
-            * */
+             *   Favorite Table
+             */
             db.execSQL(
                     String.format(
                             "CREATE TABLE %s (" +
@@ -87,19 +91,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private void init() {
         db = getWritableDatabase();
-        db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_ALARM));
-        db.execSQL(String.format("DROP TABLE IF EXISTS %s", DataBaseStorage.Table.TABLE_FAVORITE));
         onCreate(getWritableDatabase());
     }
 
     // DB 업그레이드를 위해 Version 이 변경될 때 호출되는 함수
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        /*logger.log(HLogger.LogType.ERROR, "onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)", "Database Upgrade");
-        String sql = String.format("ALTER TABLE %s ADD %s", DataBaseStorage.Table.TABLE_ALARM, DataBaseStorage.Column.COLUMN_ALARM_RUNNING_STATE + " INTEGER UNSIGNED DEFAULT 0");
-        db.execSQL(sql);*/
     }
 
+    /*
+     * Insert query 실행
+     */
     public void insert(String query) {
         try {
             db = getWritableDatabase();
@@ -115,7 +117,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
             String[] val = DataBaseParserManager.getInstance().fieldValueToString(obj, true);
             String query = String.format("INSERT INTO %s(%s) values(%s)", table, val[0], val[1]);
-            logger.log(HLogger.LogType.INFO, "insert(String, Object)", query);
             insert(query);
             db.close();
         } catch (Exception e) {
@@ -123,50 +124,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertIFNull(String table, Map selectWhereCause, Object obj) {
-        try {
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery(String.format("SELECT count(*) FROM %s where %s", table, ObjectParserManager.getInstance().mapToString(selectWhereCause)), null);
-            cursor.moveToFirst();
-            int count = cursor.getInt(0);
-            if (count == 0)
-                insert(table, obj);
-            db.close();
-        } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "void insertIFNull(String table, String selectWhereCause, Object obj)", e);
-        }
-    }
-
-    public void select(String query, OnRawQuery onRawQuery) {
-        try {
-            logger.log(HLogger.LogType.INFO, "void select(String query, OnRawQuery onRawQuery)", query);
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            onRawQuery.getData(cursor);
-            db.close();
-        } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "void select(String query, OnRawQuery onRawQuery)", e);
-        }
-    }
-
-    public <T> T select(String query, Class cls) {
-        T t = null;
-        try {
-            logger.log(HLogger.LogType.INFO, "<T> T select(String query, Class cls)", query);
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            t = DataBaseParserManager.getInstance().parseObject(cursor, cls);
-            db.close();
-        } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "selectList(String query, Class cls)", e);
-        }
-        return t;
-    }
-
+    /*
+     * Select query 실행
+     * List 형태로 return
+     */
     public <T extends Object> List<T> selectList(String query, Class cls) {
         List<T> list = new ArrayList<>();
         try {
-            logger.log(HLogger.LogType.INFO, "<T extends Object> List<T> selectList(String query, Class cls)", query);
             db = getReadableDatabase();
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
@@ -179,19 +143,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
-    public <T> boolean selectIsNull(String query, Class cls) {
-        T t = null;
-        try {
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            t = DataBaseParserManager.getInstance().parseObject(cursor, cls);
-            db.close();
-        } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "selectIsNull(String query, Class cls)", e);
-        }
-        return (t == null);
-    }
-
+    /*
+     * Select 실행
+     * Null 여부 return
+     */
     public boolean selectIsNull(String table, String selection, String[] selectionArgs) {
         boolean result = false;
         try {
@@ -199,8 +154,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             Cursor cursor = db.query(table, new String[]{"count(*)"}, selection, selectionArgs, null, null, null);
             cursor.moveToFirst();
             int count = cursor.getInt(0);
-            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, String selection, String[] selectionArgs)", "count : " + count);
-
             db.close();
             if (count == 0)
                 result = true;
@@ -210,30 +163,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean selectIsNull(String table, Map map) {
-        boolean result = false;
-        try {
-            String query = String.format("SELECT count(*) FROM %s WHERE %s", table, ObjectParserManager.getInstance().mapToString(map));
-            db = getReadableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
-            cursor.moveToFirst();
-            int count = cursor.getInt(0);
-            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, Map map)", query);
-            logger.log(HLogger.LogType.INFO, "boolean selectIsNull(String table, Map map)", "count : " + count);
-
-            db.close();
-            if (count == 0)
-                result = true;
-        } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "boolean selectIsNull(String table, Map map)", e);
-        }
-        return result;
-    }
-
+    /*
+     * Update query 실행
+     */
     public boolean update(String table, ContentValues contentValues, String whereClause, String[] whereArgs) {
         boolean result = false;
         try {
-//             contentValues.put("age", 11);
             db = getWritableDatabase();
             db.update(table, contentValues, whereClause, whereArgs);
             db.close();
@@ -244,27 +179,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    /*
+     * Delete query 실행
+     */
     public boolean delete(String table, String whereClause, String[] whereArgs) {
         boolean result = false;
         try {
-            logger.log(HLogger.LogType.INFO, "delete(String table, String whereClause, String[] whereArgs)", "%s, %s, %s", table, whereClause, whereArgs);
             db = getWritableDatabase();
             db.delete(table, whereClause, whereArgs);
             db.close();
             result = true;
-//        db.delete("tablename","id=? and name=?",new String[]{"1","jack"});
         } catch (Exception e) {
             logger.log(HLogger.LogType.ERROR, "delete(String table, String whereClause, String[] whereArgs)", e);
         }
         return result;
     }
 
+    /*
+     * Helper 생성
+     */
     public static void createHelper(Context context) {
         if (DataBaseStorage.dataBaseHelper == null)
             DataBaseStorage.dataBaseHelper = new DataBaseHelper(context, DATABASE_NAME, null, DataBaseStorage.Version.TABLE_VERSION);
-    }
-
-    public interface OnRawQuery {
-        void getData(Cursor cursor);
     }
 }

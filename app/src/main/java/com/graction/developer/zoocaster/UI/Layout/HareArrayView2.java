@@ -13,7 +13,7 @@ import com.graction.developer.zoocaster.R;
 import java.util.ArrayList;
 
 /**
- * Created by Hare on 2018-01-23.
+ * Created by JeongTaehyun on 2018-01-23.
  */
 
 public abstract class HareArrayView2<V extends HareArrayView2.ItemView, M extends HareArrayView2.ItemViewModel> extends LinearLayout {

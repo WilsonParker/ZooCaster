@@ -5,7 +5,12 @@ import com.graction.developer.zoocaster.Model.ImageModel;
 
 import static com.graction.developer.zoocaster.Data.DataStorage.Path.RESOURCE_URL;
 
+/**
+ * Created by JeongTaehyun
+ */
+
 /*
+    미세먼지 Object
     Open Data API
 	등급	좋음	보통	나쁨	매우나쁨
 	Grade 값	1	2	3	4

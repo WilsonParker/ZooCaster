@@ -240,7 +240,6 @@
                                     android:id="@+id/activity_add_alarm_TimePicker"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:onTimeChanged="@{activity::onTimeChange}"
                                     android:timePickerMode="spinner" />
                             </LinearLayout>
 

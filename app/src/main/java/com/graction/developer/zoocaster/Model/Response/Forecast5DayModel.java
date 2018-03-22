@@ -12,6 +12,13 @@ import com.graction.developer.zoocaster.Util.StringUtil;
 
 import java.util.ArrayList;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * Forecast5Day Model
+ */
 public class Forecast5DayModel {
 	private int cod // Internal parameter
 			, cnt; // Number of lines returned by this API call
@@ -100,10 +107,17 @@ public class Forecast5DayModel {
 
 		@Override
 		public String toString() {
-			return "ForecasttDayItem [dt=" + dt + ", dt_txt=" + dt_txt + ", main=" + main + ", clouds=" + clouds
-					+ ", wind=" + wind + ", rain=" + rain + ", sys=" + sys + ", "+ StringUtil.createString("weather", weather) + "]";
+			return "ForecasttDayItem{" +
+					"dt=" + dt +
+					", dt_txt='" + dt_txt + '\'' +
+					", main=" + main +
+					", clouds=" + clouds +
+					", wind=" + wind +
+					", rain=" + rain +
+					", sys=" + sys +
+					", weather=" + weather +
+					'}';
 		}
-
 	}
 
 	public City getCity() {
@@ -148,7 +162,12 @@ public class Forecast5DayModel {
 
 	@Override
 	public String toString() {
-		return "Forecast5DayModel [cod=" + cod + ", cnt=" + cnt + ", message=" + message + ", " + StringUtil.createString("list", list) + ", city="
-				+ city + "]";
+		return "Forecast5DayModel{" +
+				"cod=" + cod +
+				", cnt=" + cnt +
+				", message='" + message + '\'' +
+				", list=" + list +
+				", city=" + city +
+				'}';
 	}
 }

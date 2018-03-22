@@ -6,9 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Graction06 on 2018-01-25.
+ * Created by JeongTaehyun
  */
 
+/*
+ * Query 생성 시 무시 할 Field 설정
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface SqlIgnore {

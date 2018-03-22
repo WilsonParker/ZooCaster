@@ -15,14 +15,17 @@ import com.graction.developer.zoocaster.R;
 import java.util.ArrayList;
 
 /**
- * Created by Graction06 on 2018-01-18.
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 메뉴 (Tab & ViewPager) List Adapter
  */
 
 public class FragmentAdapter extends FragmentPagerAdapter {
     private ArrayList<TabItem> items;
     private OnTabSelected onTabSelected;
     private SetTabItem setTabItem;
-    private static boolean isFirst;
 
     public FragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -54,6 +57,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         this.setTabItem = setTabItem;
     }
 
+    /*
+     * 데이터 설정
+     */
     public void setItems(ArrayList<TabItem> items) {
         this.items = items;
         if (setTabItem != null)
@@ -61,6 +67,9 @@ public class FragmentAdapter extends FragmentPagerAdapter {
                 setTabItem.setTabItem(i, items.get(i));
     }
 
+    /*
+     * 데이터 추가
+     */
     public void addItem(TabItem tabItem) {
         this.items.add(tabItem);
     }
@@ -78,30 +87,15 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         return items == null ? 0 : items.size();
     }
 
-  /*  @Override
-    public void finishUpdate(ViewGroup container) {
-        super.finishUpdate(container);
-        *//*if (!isFirst) {
-            for (int i = 0; i < items.size(); i++)
-                setTabItem.setTabItem(i, items.get(i));
-            Log.i("FragmentAdapter", "finishUpdate(ViewGroup container) size : " + items.size());
-            isFirst = true;
-        }*//*
-    }*/
-
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
     }
 
-    public View getDefaultView(Context context, int resId) {
-        ImageView view = new ImageView(context);
-        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        view.setImageResource(resId);
-        return view;
-    }
-
-    // ImageView id must be icon
+    /*
+     * Tab 설정
+     * ImageView id must be icon
+     */
     public View getView(Context context, int layout, int resId) {
         View view = LayoutInflater.from(context).inflate(layout, null);
         ((ImageView) view.findViewById(R.id.icon)).setImageResource(resId);
@@ -109,8 +103,8 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     }
 
     public static class TabItem {
-        private Fragment fragment;
-        private int resIcon;
+        private Fragment fragment;  // Tab 의 Fragment
+        private int resIcon;        // Tab 의 icon id
 
         public TabItem(Fragment fragment, int resIcon) {
             this.fragment = fragment;

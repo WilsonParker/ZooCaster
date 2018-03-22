@@ -10,8 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Hare on 2017-08-14.
- * Updated by Hare on 2108-01-19
+ * Created by JeongTaehyun on 2017-08-14.
+ * Updated by JeongTaehyun on 2018-01-19
+ */
+
+/*
+ * TextView Font 설정
  */
 
 public class FontManager {

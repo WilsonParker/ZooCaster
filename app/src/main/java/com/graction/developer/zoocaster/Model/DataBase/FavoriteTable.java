@@ -3,7 +3,11 @@ package com.graction.developer.zoocaster.Model.DataBase;
 import com.graction.developer.zoocaster.DataBase.SqlIgnore;
 
 /**
- * Created by Graction06 on 2018-01-25.
+ * Created by JeongTaehyun on 2018-01-25.
+ */
+
+/*
+ * 즐겨찾기 Table
  */
 
 public class FavoriteTable {

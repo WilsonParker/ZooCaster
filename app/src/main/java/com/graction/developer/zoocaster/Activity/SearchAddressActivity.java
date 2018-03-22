@@ -25,8 +25,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 주소 검색 Activity
+ */
+
 public class SearchAddressActivity extends BaseActivity {
-//    private ActivitySearchAddressBinding binding;
     private ActivitySearchAddress2Binding binding;
     private Intent intent = new Intent();
     private ArrayList<AddressModel.Prediction> addressItems;
@@ -38,10 +45,12 @@ public class SearchAddressActivity extends BaseActivity {
         activityEnd(DataStorage.Request.SEARCH_ADDRESS_OK);
     };
 
+    /*
+     * 초기 설정
+     */
     @Override
     protected void init() {
         DataBaseHelper.createHelper(getBaseContext());
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search_address2);
         binding.activitySearchAddressRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         searchAdapter = new AddressListAdapter(addressItems, addressHandleListener, (table, isAdd) -> {
@@ -67,13 +76,15 @@ public class SearchAddressActivity extends BaseActivity {
         binding.setAddress(DataStorage.NowNewAddress);
     }
 
+    /*
+     * 검색
+     */
     public void onSearch() {
         Net.getInstance().getAddressFactoryIm().searchAddress(AddressModel.getParameter(binding.activitySearchAddressETKeyword.getText() + "")).enqueue(new Callback<AddressModel>() {
             @Override
             public void onResponse(Call<AddressModel> call, Response<AddressModel> response) {
                 if (response.isSuccessful()) {
                     logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "isSuccess");
-                    logger.log(HLogger.LogType.INFO, "onSearch(View view) - onResponse(Call<AddressModel> call, Response<AddressModel> response)", "" + response.body());
                     addressItems = response.body().getPredictions();
                     searchAdapter.setItems(response.body().getPredictions());
                     runOnUiThread(()->searchAdapter.notifyDataSetChanged());
@@ -94,6 +105,9 @@ public class SearchAddressActivity extends BaseActivity {
         activityEnd(DataStorage.Request.SEARCH_ADDRESS_NONE_SELECTED);
     }
 
+    /*
+     * 검색 결과 설정
+     */
     private void activityEnd(int code) {
         setResult(code, intent);
         finish();

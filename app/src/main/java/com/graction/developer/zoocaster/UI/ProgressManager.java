@@ -12,26 +12,21 @@ import com.graction.developer.zoocaster.R;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
- * Created by Hare on 2017-08-10.
+ * Created by JeongTaehyun on 2017-08-10.
  */
 
 /*
-        compile 'cn.pedant.sweetalert:library:1.3'
+ * Progress 설정
+ * ex) Loading
  */
 public class ProgressManager {
-    private static final int THREAD_SLEEP = 150;
-
     private Activity activity;
-    private ProgressBar progressBar;
     private AlertDialog alertDialog;
     private AlertDialog.Builder alertDialogBuilder;
     private SweetAlertDialog sweetAlertDialog;
     private View view;
 
-    private Handler handler;
-    private Thread checkThread, runThread, stateThread;
     private int layout;
-    private boolean state = false;
     private boolean isDialog;
 
     public ProgressManager(Activity activity) {
@@ -52,22 +47,26 @@ public class ProgressManager {
         initCustom();
     }
 
+    /*
+     * AlertDialogBuilder 로 생성
+     */
     private void initCustom() {
         isDialog = false;
-
-        handler = HandlerManager.getInstance().getHandler();
         alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setView(view);
         alertDialogBuilder.setCancelable(false);
         alertDialog = alertDialogBuilder.create();
     }
 
+    /*
+     * AlertManager 로 생성
+     */
     private void initDialog() {
         isDialog = true;
-        handler = HandlerManager.getInstance().getHandler();
         sweetAlertDialog = AlertManager.getInstance().createLoadingDialog(activity);
     }
 
+    // Show
     public void alertShow() {
         if (isDialog) {
             if (sweetAlertDialog != null && !sweetAlertDialog.isShowing())
@@ -78,6 +77,7 @@ public class ProgressManager {
         }
     }
 
+    // Dismiss
     public void alertDismiss() {
         if (isDialog) {
             if (sweetAlertDialog != null && sweetAlertDialog.isShowing())
@@ -88,45 +88,4 @@ public class ProgressManager {
         }
     }
 
-    public void action(OnProgressAction action) {
-        runThread = new Thread(() -> action.run());
-        checkThread = new Thread(() -> {
-            try {
-                handler.post(() -> alertShow());
-                runThread.start();
-                while (!(runThread.getState() == Thread.State.TERMINATED)) {
-                    Thread.sleep(THREAD_SLEEP);
-                }
-                handler.post(() -> alertDismiss());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        checkThread.start();
-    }
-
-    public void actionWithState(OnProgressAction action) {
-        state = false;
-        stateThread = new Thread(() -> {
-            try {
-                handler.post(() -> alertShow());
-                action.run();
-                while (!state) {
-                    Thread.sleep(THREAD_SLEEP);
-                }
-                handler.post(() -> alertDismiss());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        stateThread.start();
-    }
-
-    public void endRunning() {
-        this.state = true;
-    }
-
-    public interface OnProgressAction {
-        void run();
-    }
 }

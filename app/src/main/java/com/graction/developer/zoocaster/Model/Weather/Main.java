@@ -1,5 +1,8 @@
 package com.graction.developer.zoocaster.Model.Weather;
 
+/**
+ * Created by JeongTaehyun
+ */
 public class Main {
 	private double temp			// Temperature, Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit
 				, pressure		// Atmospheric pressure (on the sea level, if there is no sea_level or grnd_level data), hPa

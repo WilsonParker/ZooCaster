@@ -2,21 +2,17 @@ package com.graction.developer.zoocaster.Model.Response;
 
 import com.graction.developer.zoocaster.Model.Response.IntegratedAirQualityModel.IntegratedAirQualityModelItem;
 
+/**
+ * Created by JeongTaehyun
+ */
+
+/*
+ * 통합대기지수 SingleModel
+ */
+
 public class IntegratedAirQualitySingleModel {
 	private IntegratedAirQualityModelItem item;
 	private IntegratedAirQualityModelItem parm, ArpltnInforInqireSvcVo;
-
-	public IntegratedAirQualitySingleModel(IntegratedAirQualityModelItem item, IntegratedAirQualityModelItem parm, IntegratedAirQualityModelItem arpltnInforInqireSvcVo) {
-		this.item = item;
-		this.parm = parm;
-		ArpltnInforInqireSvcVo = arpltnInforInqireSvcVo;
-	}
-	
-	public IntegratedAirQualitySingleModel(IntegratedAirQualityModel model, IntegratedAirQualityModelItem item) {
-		this.item = item;
-		this.ArpltnInforInqireSvcVo = model.getArpltnInforInqireSvcVo();
-		this.parm = model.getParm();
-	}
 
 	public IntegratedAirQualityModelItem getItem() {
 		return item;

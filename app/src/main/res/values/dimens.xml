@@ -45,6 +45,4 @@
     <dimen name="item_search_address_root_height">72px</dimen> <!-- Scalable -->
     <dimen name="item_search_address_text_font_size">14sp</dimen>
 
-
-
 </resources>

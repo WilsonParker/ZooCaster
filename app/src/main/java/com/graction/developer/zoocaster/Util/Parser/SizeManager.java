@@ -5,7 +5,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 /**
- * Created by Hare on 2017-08-14.
+ * Created by JeongTaehyun on 2017-08-14.
  */
 
 public class SizeManager {

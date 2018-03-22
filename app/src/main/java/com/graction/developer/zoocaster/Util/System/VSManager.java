@@ -10,10 +10,13 @@ import android.os.Vibrator;
 import java.io.IOException;
 
 /**
- * Created by Graction06 on 2018-02-08.
+ * Created by JeongTaehyun on 2018-02-08.
  * Vibrate & Speaker Manager
  */
 
+/*
+ * Vibrator & Speaker 설정
+ */
 public class VSManager {
     private static final VSManager instance = new VSManager();
     private Vibrator vibrator;
@@ -77,8 +80,6 @@ public class VSManager {
 
     public void speak(Context context,int volume) throws IOException {
         initSpeaker(context);
-//            mediaPlayer = MediaPlayer.create(this, R.raw.kt);
-//            AssetFileDescriptor assetFileDescriptor = getResources().openRawResourceFd(R.raw.kt);
         mediaPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(), assetFileDescriptor.getStartOffset(), assetFileDescriptor.getLength());
         mediaPlayer.setVolume(volume, volume);
         assetFileDescriptor.close();

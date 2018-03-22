@@ -1,7 +1,7 @@
 package com.graction.developer.zoocaster.Model;
 
 /**
- * Created by Graction06 on 2018-03-16.
+ * Created by JeongTaehyun on 2018-03-16.
  */
 
 public class Location {

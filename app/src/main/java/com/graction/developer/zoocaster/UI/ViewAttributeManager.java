@@ -9,9 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by Graction06 on 2018-02-06.
+ * Created by JeongTaehyun
  */
 
+/*
+ * View Attribute 설정
+ * EditText 다음, 완료 버튼 구현
+ */
 public class ViewAttributeManager {
     private final static ViewAttributeManager instance = new ViewAttributeManager();
     private InputMethodManager inputMethodManager;
@@ -22,18 +26,15 @@ public class ViewAttributeManager {
 
     public EditText setDoneOption(Context context, EditText editText, TextView.OnEditorActionListener listener) {
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean result = false;
-                switch (actionId) {
-                    case EditorInfo.IME_ACTION_DONE:
-                    case EditorInfo.IME_ACTION_NEXT:
-                        result = listener.onEditorAction(v, actionId, event);
-                        break;
-                }
-                return result;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            boolean result = false;
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_DONE:
+                case EditorInfo.IME_ACTION_NEXT:
+                    result = listener.onEditorAction(v, actionId, event);
+                    break;
             }
+            return result;
         });
         return editText;
     }

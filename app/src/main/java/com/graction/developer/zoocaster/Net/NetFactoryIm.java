@@ -16,6 +16,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+/**
+ * Created by JeongTaehyun
+ */
 public interface NetFactoryIm {
 
 	// Current weather
@@ -30,17 +33,29 @@ public interface NetFactoryIm {
 	@GET("app/forecast_5day")
 	Call<Forecast5DayModel> selectForecast5Day(@Query(DataStorage.Key.KEY_LATITUDE) double lat, @Query(DataStorage.Key.KEY_LONGITUDE) double lon);
 
-	// call Integrated Air Quality
+	/*
+	 * call Integrated Air Quality
+	 * 통합대기지수 API
+	 */
 	@GET("app/integratedAirQuality")
 	Call<IntegratedAirQualitySingleModel> selectIntegratedAirQuality(@Query(DataStorage.Key.KEY_LATITUDE) double lat, @Query(DataStorage.Key.KEY_LONGITUDE) double lon);
 
-	// get activated fineDustType list
+	/*
+	 * get activated fineDustType list
+	 * 미세먼지 규격 API
+	 */
 	@GET("app/fine_dust_standard")
 	Call<SimpleResponseModel<ArrayList<FineDustVO>>> selectFineDustStandard();
 
+	/*
+	 * 주소 -> 위도경도 변환 API
+	 */
 	@GET("app/getAddressFromLocation")
 	Call<SimpleResponseModel<String>> getAddressFromLocation(@Query(DataStorage.Key.KEY_LATITUDE) double lat, @Query(DataStorage.Key.KEY_LONGITUDE) double lon);
 
+	/*
+	 * 위도경도 -> 주소 변환 API
+	 */
 	@GET("app/getLocationFromAddress")
 	Call<SimpleResponseModel<Location>> getLocationFromAddress(@Query(DataStorage.Key.KEY_ADDRESS) String address);
 }

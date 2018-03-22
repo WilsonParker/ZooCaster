@@ -33,9 +33,8 @@ import java.net.URL;
 import retrofit2.http.Url;
 
 /**
- * Created by graction03 on 2017-09-29.
+ * Created by JeongTaehyun
  */
-
 public class BaseActivityFileManager {
     public enum FileType {
         File, Image, ByteArray
@@ -62,18 +61,6 @@ public class BaseActivityFileManager {
         assetManager = activity.getAssets();
     }
 
-    public Bitmap encodeFileToBitmap(File file) throws FileNotFoundException {
-        Bitmap bitmap = null;
-        bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-        return bitmap;
-    }
-
-    public byte[] encodeBitmapToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        return bytes.toByteArray();
-    }
-
     public byte[] getByteFromURL(String url) throws InterruptedException {
         threadManager = new ThreadManager<byte[]>(
                 () -> {
@@ -81,28 +68,19 @@ public class BaseActivityFileManager {
                         URL u = new URL(url);
                         bufferedInputStream = new BufferedInputStream(u.openStream());
                         byteArrayOutputStream = new ByteArrayOutputStream();
-//                        buf = new byte[u.openConnection().getContentLength()];
                         buf = new byte[1024];
                         int current;
                         while ((current = bufferedInputStream.read(buf, 0, buf.length)) != -1)
                             byteArrayOutputStream.write(buf, 0, current);
-                        // buf = byteArrayOutputStream.toByteArray();
                         threadManager.saveData(byteArrayOutputStream.toByteArray());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
                         threadManager.threadComplete();
                     }
-                },
-                new ThreadManager.ThreadComplete() {
-                    @Override
-                    public void complete() {
-
-                    }
                 }
+                , () -> { }
         );
-        /*buf = threadManager.run();
-        return buf;*/
         return threadManager.run();
     }
 

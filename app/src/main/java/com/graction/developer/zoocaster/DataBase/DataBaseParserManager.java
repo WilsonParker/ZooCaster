@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by graction03 on 2017-09-28.
+ * Created by JeongTaehyun
  */
-
 public class DataBaseParserManager extends ObjectParserManager {
     private static final DataBaseParserManager instance = new DataBaseParserManager();
     private ContentValues values;

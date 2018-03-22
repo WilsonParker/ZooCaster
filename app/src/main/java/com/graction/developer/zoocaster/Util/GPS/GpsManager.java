@@ -23,11 +23,9 @@ import com.graction.developer.zoocaster.Util.Log.HLogger;
 import static com.graction.developer.zoocaster.Data.DataStorage.Request.RESULT_OK;
 
 /**
- * Created by Hare on 2017-07-16.
+ * Created by JeongTaehyun on 2017-07-16.
  */
-
 public class GpsManager {
-    private HLogger logger;
     private Activity activity;
     //              현재 GPS 사용 유무,       네트워크 사용 유무        GPS 상태값               설정창 사용 유무
     private boolean isGPSEnabled = false, isNetworkEnabled = false, isGetLocation = false, showSettingAlert = false;
@@ -68,7 +66,6 @@ public class GpsManager {
 
     public GpsManager(Activity activity) {
         this.activity = activity;
-        logger = new HLogger(getClass());
         getLocation();
     }
 
@@ -77,7 +74,6 @@ public class GpsManager {
         isNetworkEnabled = false;
         isGPSEnabled = false;
         try {
-            logger.log(HLogger.LogType.INFO, "getLocation()", String.format("Permission ACCESS_FINE_LOCATION : ACCESS_COARSE_LOCATION = : %s, %s", PermissionChecker.checkCallingOrSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED, PermissionChecker.checkCallingOrSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED));
             if (PermissionChecker.checkCallingOrSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED || PermissionChecker.checkCallingOrSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
 
                 locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
@@ -87,19 +83,11 @@ public class GpsManager {
                 // GPS 정보 가져오기
                 isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-                logger.log(HLogger.LogType.INFO, "getLocation()", String.format("Network : %s, GPS : %s", isNetworkEnabled, isGPSEnabled));
-                logger.log(HLogger.LogType.INFO, "getLocation()", String.format("GPS : %s, Permission %s", isGPSEnabled, ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED));
-                logger.log(HLogger.LogType.INFO, "getLocation()", String.format("GPS : %s, Permission %s", isNetworkEnabled, ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED));
-                /*if (ContextCompat.checkSelfPermission(activity, Manifest.Permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    showSettingsAlert();
-                }*/
                 if (isGPSEnabled && isNetworkEnabled) {
                     //  GPS 와 네트워크가 사용가능 상태가 아닐 경우
                 } else {
                     isGetLocation = true;
                     if (isNetworkEnabled) {
-                        logger.log(HLogger.LogType.INFO, "getLocation()", "Network Enabled");
-
                         //  네트워크 정보로 부터 위치 값 가져오기
                         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
                         if (locationManager != null) {
@@ -108,8 +96,6 @@ public class GpsManager {
                         }
 
                     } else if (isGPSEnabled && ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        logger.log(HLogger.LogType.INFO, "getLocation()", String.format("location : %s, locatinoManager: %s", location == null, locationManager == null));
-                        logger.log(HLogger.LogType.INFO, "getLocation()", "GPS Enabled");
 
                         if (location == null) {
                             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, locationListener);
@@ -120,16 +106,13 @@ public class GpsManager {
                             }
                         }
                     } else {
-                        logger.log(HLogger.LogType.WARN, "getLocation()", "err1");
                         showSettingsAlert();
                     }
                 }
             } else {
-                logger.log(HLogger.LogType.WARN, "getLocation()", "err2");
                 showSettingsAlert();
             }
         } catch (Exception e) {
-            logger.log(HLogger.LogType.ERROR, "getLocation()", "getLocation Error", e);
             showSettingsAlert();
         }
         return location;
@@ -176,55 +159,34 @@ public class GpsManager {
 
     //  GPS 정보르르 가져오지 못했을 때 "설정" 으로 가는 창을 띄움
     public void showSettingsAlert() {
-        if(!showSettingAlert)
+        if (!showSettingAlert)
             return;
 
         if (DataStorage.GpsPermissionOn)
             return;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            activity.requestPermissions(Permission, RESULT_OK);
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, RESULT_OK);
         }
-     /*   if (activity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED || activity.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
-            return;
-        }*/
-        logger.log(HLogger.LogType.INFO, "showSettingsAlert()", "showSettingAlert");
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
 
         alertDialog.setTitle("GPS 사용 유무 세팅");
         alertDialog.setMessage("GPS 사용 설정이 안되어 있습니다 \n 설정 창으로 이동 하시겠습니까?");
         // Go 를 누를 경우 설정창으로 이동
-        alertDialog.setPositiveButton("Go", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                activity.startActivity(intent);
-            }
+        alertDialog.setPositiveButton("Go", (dialogInterface, i) -> {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            activity.startActivity(intent);
         });
 
         //  No 를 누를 경우 종료
-        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        alertDialog.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
         alertDialog.show();
     }
 
-    public void requestPermissions(String[] permissions, int requestCode){
+    public void requestPermissions(String[] permissions, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            logger.log(HLogger.LogType.INFO,"SDK is upper than M");
             ActivityCompat.requestPermissions(activity, permissions, requestCode);
-//            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, DataStorage.Request.GPS_REQUEST);
         }
     }
-
-    public int checkPermissions(String permission){
-        int permissionCheck = ContextCompat.checkSelfPermission(activity, permission);
-        return permissionCheck;
-    }
-
 
 }
